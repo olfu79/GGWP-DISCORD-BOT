@@ -80,7 +80,7 @@ namespace ggwp
             var userAccount = UserAccounts.GetAccount(user);
             UserAccounts.SaveAccounts();
             return Task.CompletedTask;
-            //daj role nowy członek 1/4
+            //daj role "nowy członek 1/4"
         }
 
         private async Task Log(LogMessage msg)

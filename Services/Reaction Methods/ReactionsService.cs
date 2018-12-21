@@ -278,6 +278,7 @@ namespace ggwp.Services.Reaction_Methods
             await msg.AddReactionAsync(r5);
             await msg.AddReactionAsync(r6);
         }
+
         public static async Task Rules(IMessage message, ISocketMessageChannel channel)
         {
             await message.DeleteAsync();

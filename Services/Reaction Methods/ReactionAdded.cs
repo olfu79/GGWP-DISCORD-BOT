@@ -228,6 +228,807 @@ namespace ggwp.Services.Reaction_Methods
             }
         }
 
+        public static async Task ReactionGambling(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            //main vars
+            var guildChannel = channel as IGuildChannel;
+            var guild = guildChannel.Guild as SocketGuild;
+            var msg = await cache.GetOrDownloadAsync();
+            var UserToAddRoleTo = (SocketGuildUser)reaction.User;
+            //accounts
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+            var UserAccount = UserAccounts.GetAccount(reaction.User.Value);
+
+            //msg sloty
+            EmbedBuilder slots = new EmbedBuilder();
+            slots.AddField("Sloty", $"```,```");
+            slots.WithColor(Color.DarkBlue);
+            //msg ruletka
+            EmbedBuilder rulette = new EmbedBuilder();
+            slots.AddField("Ruletka", $"```,```");
+            slots.WithColor(Color.DarkGreen);
+            //msg coinflip
+            string coinflip = "coinflip";
+
+            if (reaction.MessageId == ReactionChannels.channels.gambling)
+            {
+                if (reaction.User.Value.IsBot)
+                {
+                    return;
+                }
+                else
+                {
+                    await msg.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
+                    //slots stuff
+                    var o1 = "    _____       \n   /__   /      \n     /  /       \n    /__/        ".Split("\n");
+                    var o2 = "   |\\           \n   \\|_\\_        \n    (_)_)       \n      (_)       ".Split("\n");
+                    var o3 = "   __/^\\__      \n   \\  *  /      \n    >   <       \n   /.-^-.\\      ".Split("\n");
+                    var o4 = "      )         \n    .-'-.       \n   (     )      \n    `-=-'       ".Split("\n");
+                    var o5 = "      )         \n    .-'-.       \n   (/////)      \n    `-=-'       ".Split("\n");
+                    var o6 = "    _____       \n   |=====|      \n   |B A R|      \n   |_____|      ".Split("\n");
+                    var o7 = "     _o_        \n    (   )       \n    )   (       \n   '-'o'-'      ".Split("\n");
+
+                    uint m1 = 2;
+                    uint m2 = 4;
+                    uint m3 = 8;
+                    uint m4 = 10;
+                    uint m5 = 15;
+                    uint m6 = 20;
+                    uint m7 = 25;
+
+                    var figures = new List<string[]> { o1, o2, o3, o4, o5, o6, o7 };
+
+                    Random rnd = new Random();
+                    var n1 = rnd.Next(figures.Count());
+                    var n2 = rnd.Next(figures.Count());
+                    var n3 = rnd.Next(figures.Count());
+
+                    var s1 = figures[n1];
+                    var s2 = figures[n2];
+                    var s3 = figures[n3];
+
+                    StringBuilder sb = new StringBuilder("");
+
+                    for (var i = 0; i < s1.Length && i < s2.Length && i < s3.Length; i++)
+                    {
+                        sb.Append($"{s1[i]} {s2[i]} {s3[i]}\n");
+                    }
+
+                    EmbedBuilder fslots = new EmbedBuilder();
+                    fslots.AddField("🎰 JEDNORĘKI BANDYTA ", $"```yaml\n{sb}```");
+                    fslots.AddField("Nagrody:", "\u0037\u20e3 x2 | 🍇 x4 | ⭐ x8 | 🍑 x10 | 🍊 x15 | 🍫 x20 | 🔔 x25", true);
+                    fslots.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
+                    fslots.WithColor(Color.DarkBlue);
+
+                    //rulette stuff
+                    uint roulettemultiplier = 1;
+                    string colors = "";
+
+                    var red = Emote.Parse("<:red:546427447797612546>");
+                    var green = Emote.Parse("<:green:546426978820030464>");
+
+                    Random rndom = new Random();
+                    var r = rnd.Next(1,100);
+
+                    if(r < 49)
+                    {
+                        roulettemultiplier = 2;
+                        colors = $"**\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_**\n│:black_large_square::black_large_square:{red}{red}║:black_large_square::black_large_square:║{red}{red}:black_large_square::black_large_square:│\n│:black_large_square::black_large_square:{red}{red}║:black_large_square::black_large_square:║{red}{red}:black_large_square::black_large_square:│\n**ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ**";
+                    }
+                    else if(r > 49 && r < 99)
+                    {
+                        roulettemultiplier = 2;
+                        colors = $"**\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_**\n│{red}{red}:black_large_square::black_large_square:║{red}{red}║:black_large_square::black_large_square:{red}{red}│\n│{red}{red}:black_large_square::black_large_square:║{red}{red}║:black_large_square::black_large_square:{red}{red}│\n**ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ**";
+                    }
+                    else
+                    {
+                        roulettemultiplier = 25;
+                        colors = $"**\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_**\n│{red}{red}:black_large_square::black_large_square:║{green}{green}║{red}{red}:black_large_square::black_large_square:│\n│{red}{red}:black_large_square::black_large_square:║{green}{green}║{red}{red}:black_large_square::black_large_square:│\n**ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ**";
+                    }
+
+                    EmbedBuilder frulette = new EmbedBuilder();
+                    frulette.AddField("🏵 RULETKA ", $"\n{colors}");
+                    frulette.AddField("Nagrody:", $"{red} x2 | ⬛ x2 │ {green} x25", true);
+                    frulette.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
+                    frulette.WithColor(Color.DarkGreen);
+
+                    //coinflip stuff
+
+                    //bones stuff
+
+                    if (reaction.Emote.Name == "◀")
+                    {
+                        if (GuildAccount.GamblingPage == 1)
+                        {
+                            await msg.ModifyAsync(message =>
+                            {
+                                message.Content = "";
+                                message.Embed = null;
+                                message.Embed = slots.Build();
+                            });
+                            GuildAccount.GamblingPage = 3;
+                            GuildAccounts.SaveAccounts();
+                        }
+                        else if (GuildAccount.GamblingPage == 2)
+                        {
+                            await msg.ModifyAsync(message =>
+                            {
+                                message.Content = "";
+                                message.Embed = null;
+                                message.Embed = rulette.Build();
+                            });
+                            GuildAccount.GamblingPage = 1;
+                            GuildAccounts.SaveAccounts();
+                        }
+                        else if (GuildAccount.GamblingPage == 3)
+                        {
+                            await msg.ModifyAsync(message =>
+                            {
+                                message.Content = coinflip;
+                            });
+                            GuildAccount.GamblingPage = 2;
+                            GuildAccounts.SaveAccounts();
+                        }
+                    }
+                    else if (reaction.Emote.Name == "▶")
+                    {
+                        if (GuildAccount.GamblingPage == 1)
+                        {
+                            await msg.ModifyAsync(message =>
+                            {
+                                message.Content = "";
+                                message.Embed = null;
+                                message.Embed = rulette.Build();
+                            });
+                            GuildAccount.GamblingPage = 2;
+                            GuildAccounts.SaveAccounts();
+                        }
+                        else if (GuildAccount.GamblingPage == 2)
+                        {
+                            await msg.ModifyAsync(mmessage =>
+                            {
+                                mmessage.Content = coinflip;
+                            });
+                            GuildAccount.GamblingPage = 3;
+                            GuildAccounts.SaveAccounts();
+                        }
+                        else if (GuildAccount.GamblingPage == 3)
+                        {
+                            await msg.ModifyAsync(message =>
+                            {
+                                message.Content = "";
+                                message.Embed = null;
+                                message.Embed = slots.Build();
+                            });
+                            GuildAccount.GamblingPage = 1;
+                            GuildAccounts.SaveAccounts();
+                        }
+                    }
+                    else if (reaction.Emote.Name == "❤")
+                    {
+                        ulong bid = 100;
+
+                        if (GuildAccount.GamblingPage == 1)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = fslots.Build();
+                                });
+
+                                ulong reward = 0;
+
+                                // 3 liczby
+                                if (s1 == s2 && s2 == s3)
+                                {
+                                    if (s1 == o1)
+                                        reward = bid * m1;
+                                    if (s1 == o2)
+                                        reward = bid * m2;
+                                    if (s1 == o3)
+                                        reward = bid * m3;
+                                    if (s1 == o4)
+                                        reward = bid * m4;
+                                    if (s1 == o5)
+                                        reward = bid * m5;
+                                    if (s1 == o6)
+                                        reward = bid * m6;
+                                    if (s1 == o7)
+                                        reward = bid * m7;
+                                }
+                                // 2 liczby
+                                else if (s1 == s2 || s1 == s3 || s2 == s3)
+                                {
+                                    if (s1 == o1 || s2 == o1)
+                                        reward = bid * m1 / 2;
+                                    if (s1 == o2 || s2 == o2)
+                                        reward = bid * m2 / 2;
+                                    if (s1 == o3 || s2 == o3)
+                                        reward = bid * m3 / 2;
+                                    if (s1 == o4 || s2 == o4)
+                                        reward = bid * m4 / 2;
+                                    if (s1 == o5 || s2 == o5)
+                                        reward = bid * m5 / 2;
+                                    if (s1 == o6 || s2 == o6)
+                                        reward = bid * m6 / 2;
+                                    if (s1 == o7 || s2 == o7)
+                                        reward = bid * m7 / 2;
+                                }
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 2)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = frulette.Build();
+                                });
+
+                                ulong reward = bid * roulettemultiplier;
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 3)
+                        {
+                        }
+                    }
+                    else if (reaction.Emote.Name == "💛")
+                    {
+                        ulong bid = 500;
+
+                        if (GuildAccount.GamblingPage == 1)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = fslots.Build();
+                                });
+
+                                ulong reward = 0;
+
+                                // 3 liczby
+                                if (s1 == s2 && s2 == s3)
+                                {
+                                    if (s1 == o1)
+                                        reward = bid * m1;
+                                    if (s1 == o2)
+                                        reward = bid * m2;
+                                    if (s1 == o3)
+                                        reward = bid * m3;
+                                    if (s1 == o4)
+                                        reward = bid * m4;
+                                    if (s1 == o5)
+                                        reward = bid * m5;
+                                    if (s1 == o6)
+                                        reward = bid * m6;
+                                    if (s1 == o7)
+                                        reward = bid * m7;
+                                }
+                                // 2 liczby
+                                else if (s1 == s2 || s1 == s3 || s2 == s3)
+                                {
+                                    if (s1 == o1 || s2 == o1)
+                                        reward = bid * m1 / 2;
+                                    if (s1 == o2 || s2 == o2)
+                                        reward = bid * m2 / 2;
+                                    if (s1 == o3 || s2 == o3)
+                                        reward = bid * m3 / 2;
+                                    if (s1 == o4 || s2 == o4)
+                                        reward = bid * m4 / 2;
+                                    if (s1 == o5 || s2 == o5)
+                                        reward = bid * m5 / 2;
+                                    if (s1 == o6 || s2 == o6)
+                                        reward = bid * m6 / 2;
+                                    if (s1 == o7 || s2 == o7)
+                                        reward = bid * m7 / 2;
+                                }
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+
+                        else if (GuildAccount.GamblingPage == 2)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = frulette.Build();
+                                });
+
+                                ulong reward = bid * roulettemultiplier;
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 3)
+                        {
+                        }
+                    }
+                    else if (reaction.Emote.Name == "💚")
+                    {
+                        ulong bid = 1000;
+
+                        if (GuildAccount.GamblingPage == 1)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = fslots.Build();
+                                });
+
+                                ulong reward = 0;
+
+                                // 3 liczby
+                                if (s1 == s2 && s2 == s3)
+                                {
+                                    if (s1 == o1)
+                                        reward = bid * m1;
+                                    if (s1 == o2)
+                                        reward = bid * m2;
+                                    if (s1 == o3)
+                                        reward = bid * m3;
+                                    if (s1 == o4)
+                                        reward = bid * m4;
+                                    if (s1 == o5)
+                                        reward = bid * m5;
+                                    if (s1 == o6)
+                                        reward = bid * m6;
+                                    if (s1 == o7)
+                                        reward = bid * m7;
+                                }
+                                // 2 liczby
+                                else if (s1 == s2 || s1 == s3 || s2 == s3)
+                                {
+                                    if (s1 == o1 || s2 == o1)
+                                        reward = bid * m1 / 2;
+                                    if (s1 == o2 || s2 == o2)
+                                        reward = bid * m2 / 2;
+                                    if (s1 == o3 || s2 == o3)
+                                        reward = bid * m3 / 2;
+                                    if (s1 == o4 || s2 == o4)
+                                        reward = bid * m4 / 2;
+                                    if (s1 == o5 || s2 == o5)
+                                        reward = bid * m5 / 2;
+                                    if (s1 == o6 || s2 == o6)
+                                        reward = bid * m6 / 2;
+                                    if (s1 == o7 || s2 == o7)
+                                        reward = bid * m7 / 2;
+                                }
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 2)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = frulette.Build();
+                                });
+
+                                ulong reward = bid * roulettemultiplier;
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 3)
+                        {
+                        }
+                    }
+                    else if (reaction.Emote.Name == "💙")
+                    {
+                        ulong bid = 5000;
+
+                        if (GuildAccount.GamblingPage == 1)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = fslots.Build();
+                                });
+
+                                ulong reward = 0;
+
+                                // 3 liczby
+                                if (s1 == s2 && s2 == s3)
+                                {
+                                    if (s1 == o1)
+                                        reward = bid * m1;
+                                    if (s1 == o2)
+                                        reward = bid * m2;
+                                    if (s1 == o3)
+                                        reward = bid * m3;
+                                    if (s1 == o4)
+                                        reward = bid * m4;
+                                    if (s1 == o5)
+                                        reward = bid * m5;
+                                    if (s1 == o6)
+                                        reward = bid * m6;
+                                    if (s1 == o7)
+                                        reward = bid * m7;
+                                }
+                                // 2 liczby
+                                else if (s1 == s2 || s1 == s3 || s2 == s3)
+                                {
+                                    if (s1 == o1 || s2 == o1)
+                                        reward = bid * m1 / 2;
+                                    if (s1 == o2 || s2 == o2)
+                                        reward = bid * m2 / 2;
+                                    if (s1 == o3 || s2 == o3)
+                                        reward = bid * m3 / 2;
+                                    if (s1 == o4 || s2 == o4)
+                                        reward = bid * m4 / 2;
+                                    if (s1 == o5 || s2 == o5)
+                                        reward = bid * m5 / 2;
+                                    if (s1 == o6 || s2 == o6)
+                                        reward = bid * m6 / 2;
+                                    if (s1 == o7 || s2 == o7)
+                                        reward = bid * m7 / 2;
+                                }
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 2)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = frulette.Build();
+                                });
+
+                                ulong reward = bid * roulettemultiplier;
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 3)
+                        {
+                        }
+                    }
+                    else if (reaction.Emote.Name == "💜")
+                    {
+                        ulong bid = 10000;
+
+                        if (GuildAccount.GamblingPage == 1)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = fslots.Build();
+                                });
+
+                                ulong reward = 0;
+
+                                // 3 liczby
+                                if (s1 == s2 && s2 == s3)
+                                {
+                                    if (s1 == o1)
+                                        reward = bid * m1;
+                                    if (s1 == o2)
+                                        reward = bid * m2;
+                                    if (s1 == o3)
+                                        reward = bid * m3;
+                                    if (s1 == o4)
+                                        reward = bid * m4;
+                                    if (s1 == o5)
+                                        reward = bid * m5;
+                                    if (s1 == o6)
+                                        reward = bid * m6;
+                                    if (s1 == o7)
+                                        reward = bid * m7;
+                                }
+                                // 2 liczby
+                                else if (s1 == s2 || s1 == s3 || s2 == s3)
+                                {
+                                    if (s1 == o1 || s2 == o1)
+                                        reward = bid * m1 / 2;
+                                    if (s1 == o2 || s2 == o2)
+                                        reward = bid * m2 / 2;
+                                    if (s1 == o3 || s2 == o3)
+                                        reward = bid * m3 / 2;
+                                    if (s1 == o4 || s2 == o4)
+                                        reward = bid * m4 / 2;
+                                    if (s1 == o5 || s2 == o5)
+                                        reward = bid * m5 / 2;
+                                    if (s1 == o6 || s2 == o6)
+                                        reward = bid * m6 / 2;
+                                    if (s1 == o7 || s2 == o7)
+                                        reward = bid * m7 / 2;
+                                }
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 2)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = frulette.Build();
+                                });
+
+                                ulong reward = bid * roulettemultiplier;
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 3)
+                        {
+                        }
+                    }
+                    else if (reaction.Emote.Name == "🖤")
+                    {
+                        ulong bid = 50000;
+
+                        if (GuildAccount.GamblingPage == 1)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = fslots.Build();
+                                });
+
+                                ulong reward = 0;
+
+                                // 3 liczby
+                                if (s1 == s2 && s2 == s3)
+                                {
+                                    if (s1 == o1)
+                                        reward = bid * m1;
+                                    if (s1 == o2)
+                                        reward = bid * m2;
+                                    if (s1 == o3)
+                                        reward = bid * m3;
+                                    if (s1 == o4)
+                                        reward = bid * m4;
+                                    if (s1 == o5)
+                                        reward = bid * m5;
+                                    if (s1 == o6)
+                                        reward = bid * m6;
+                                    if (s1 == o7)
+                                        reward = bid * m7;
+                                }
+                                // 2 liczby
+                                else if (s1 == s2 || s1 == s3 || s2 == s3)
+                                {
+                                    if (s1 == o1 || s2 == o1)
+                                        reward = bid * m1 / 2;
+                                    if (s1 == o2 || s2 == o2)
+                                        reward = bid * m2 / 2;
+                                    if (s1 == o3 || s2 == o3)
+                                        reward = bid * m3 / 2;
+                                    if (s1 == o4 || s2 == o4)
+                                        reward = bid * m4 / 2;
+                                    if (s1 == o5 || s2 == o5)
+                                        reward = bid * m5 / 2;
+                                    if (s1 == o6 || s2 == o6)
+                                        reward = bid * m6 / 2;
+                                    if (s1 == o7 || s2 == o7)
+                                        reward = bid * m7 / 2;
+                                }
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 2)
+                        {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                UserAccount.MoneyWallet -= bid;
+
+                                await msg.ModifyAsync(message =>
+                                {
+                                    message.Content = $"";
+                                    message.Embed = null;
+                                    message.Embed = frulette.Build();
+                                });
+
+                                ulong reward = bid * roulettemultiplier;
+
+                                UserAccount.MoneyWallet += reward;
+
+                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+                                if (reward != 0)
+                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                                else
+                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                            }
+                        }
+                        else if (GuildAccount.GamblingPage == 3)
+                        {
+
+                        }
+                    }
+                    //end
+                }
+            }
+        }
+
         public static async Task ReactionCashmashine(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
         {
             var msg = await cache.GetOrDownloadAsync();
@@ -1553,9 +2354,102 @@ namespace ggwp.Services.Reaction_Methods
             }
         }
 
-        /*internal static Task ReactionJackpot(Cacheable<IUserMessage, ulong> arg1, ISocketMessageChannel arg2, SocketReaction arg3)
+        public static async Task ReactionApproval (Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            throw new NotImplementedException();
-        }*/
+            var client = Global.Client;
+            var guild = client.GetGuild(448884032391086090);
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+            var admChannel = guild.GetChannel(GuildAccount.AdmChannelID) as ITextChannel;
+            var sugChannel = guild.GetChannel(GuildAccount.SuggestionsChannelID) as ITextChannel;
+            var msg = await cache.GetOrDownloadAsync();
+
+            if (reaction.Channel == admChannel)
+            {
+                if (reaction.User.Value.IsBot)
+                {
+                    return;
+                }
+                if (reaction.Emote.Name == "🆗")
+                {
+                        //remove
+                        var MsgToReact = await sugChannel.SendMessageAsync("", false, msg.Embeds.FirstOrDefault() as Embed);
+
+                        var nie = Emote.Parse(Messages.wrong);
+                        var tak = Emote.Parse(Messages.check);
+                        await MsgToReact.AddReactionAsync(tak);
+                        await MsgToReact.AddReactionAsync(nie);
+                }
+                if (reaction.Emote.Name == "WrongMark")
+                {
+                    var x = msg as IMessage;
+                    await x.DeleteAsync();
+                }
+            }
+        }
+
+        public static async Task ReactionProfile (Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if (reaction.MessageId == ReactionChannels.channels.profile)
+            {
+                if (reaction.User.Value.IsBot)
+                {
+                    return;
+                }
+                else
+                {
+                    var msg = await cache.GetOrDownloadAsync();
+
+                    await msg.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
+
+                    var account = UserAccounts.GetAccount(reaction.User.Value);
+
+                    string avatar = reaction.User.Value.GetAvatarUrl();
+                    string userlvl = account.LevelNumber.ToString();
+                    string userexp = account.XP.ToString();
+                    string username = reaction.User.Value.Username;
+                    string moneyw = account.MoneyWallet.ToString();
+                    string moneyac = account.MoneyAccount.ToString();
+                    string NoWarns = account.Warns.ToString();
+
+                    EmbedBuilder eb = new EmbedBuilder();
+                    eb.WithAuthor($"Profil gracza {username}");
+                    eb.Author.WithIconUrl(avatar);
+                    eb.WithThumbnailUrl(avatar);
+                    eb.AddField("Nazwa:", $"{username}", true);
+                    eb.AddField("Liczba ostrzeżeń:", $"{NoWarns}/5", true);
+                    eb.AddField("Poziom:", $"{userlvl} lvl", true);
+                    eb.AddField("Exp:", $"{userexp} xp", true);
+                    eb.AddField("Portfel:", $"{moneyw} {Messages.coin}", true);
+                    eb.AddField("Konto:", $"{moneyac} {Messages.coin}", true);
+                    eb.WithColor(Color.DarkGrey);
+
+                    EmbedBuilder eb2 = new EmbedBuilder();
+                    eb2.WithAuthor($"Kliknij aby załadować swój profil");
+                    eb2.Author.WithIconUrl("https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-squares-01/3/30-512.png");
+                    eb2.WithThumbnailUrl("https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-squares-01/3/30-512.png");
+                    eb2.AddField("Nazwa:", "-", true);
+                    eb2.AddField("Liczba ostrzeżeń:", "-", true);
+                    eb2.AddField("Poziom:", "-", true);
+                    eb2.AddField("Exp:", "-", true);
+                    eb2.AddField("Portfel:", "-", true);
+                    eb2.AddField("Konto:", "-", true);
+                    eb2.WithColor(Color.DarkGrey);
+
+                    await msg.ModifyAsync(mmessage =>
+                    {
+                        mmessage.Content = "";
+                        mmessage.Embed = null;
+                        mmessage.Embed = eb.Build();
+                    });
+                    await Task.Delay(10000);
+                    await msg.ModifyAsync(mmessage =>
+                    {
+                        mmessage.Content = "";
+                        mmessage.Embed = null;
+                        mmessage.Embed = eb2.Build();
+                    });
+                }
+            }
+        }
     }
 }

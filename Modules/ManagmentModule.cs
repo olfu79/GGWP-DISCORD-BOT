@@ -71,5 +71,57 @@ namespace ggwp.Modules
             //dodać żeby nie mogło usuwać ról wyższych niż svip chyba że ktoś jest ownerem
             await ManagmentService.Demote(Context.Guild, Context.Message, role, user, (IGuildUser)Context.User, reason);
         }
+
+        [Command("ogłoszenie")]
+        [Alias("ogl", "ogł", "ogloszenie")]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
+        public async Task Announcment([Remainder] string content)
+        {
+            await ManagmentService.Announcment(Context.Guild, Context.Message, (IGuildUser)Context.User, content);
+        }
+
+        [Command("ankieta")]
+        [Alias("vote")]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
+        public async Task Vote(string option, [Remainder] string question)
+        {
+            await ManagmentService.Vote(Context.Guild, Context.Message, (IGuildUser)Context.User, question, option);
+        }
+
+        [Command("purge", RunMode = RunMode.Async)]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
+        public async Task Clear(int amountOfMessagesToDelete)
+        {
+            if (amountOfMessagesToDelete > 100 || amountOfMessagesToDelete < 0)
+            {
+                //err message wiecej niz 100 mniej niż 0 błąd
+                return;
+            }
+
+
+            await Context.Message.DeleteAsync();
+
+            await ReplyAsync("***🗑️ Usuwam " + $"{amountOfMessagesToDelete}" + " wiadomości...***");
+
+            var messages = await Context.Channel.GetMessagesAsync(amountOfMessagesToDelete + 1).FlattenAsync();
+
+            var channel = Context.Message.Channel as SocketTextChannel;
+
+            try
+            {
+                await channel.DeleteMessagesAsync(messages);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                //err message starsze niż 14 dni
+                var num = await Context.Channel.GetMessagesAsync(1).FlattenAsync();
+                var channelx = Context.Message.Channel as SocketTextChannel;
+                await channelx.DeleteMessagesAsync(num);
+                await ReplyAsync("Wiadomości nie mogą być starsze niż 14 dni!");
+            }
+
+            const int delay = 5000;
+            await Task.Delay(delay);
+        }
     }
 }

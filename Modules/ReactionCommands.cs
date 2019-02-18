@@ -21,7 +21,6 @@ namespace ggwp.Modules
 {
     public class ReactionCommands : ModuleBase
     {
-        ////PRZYWOŁUJEMY TYLKO METODY KTÓRE BĘDĄ W Reaction Methods!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         [Command("a meme")]
         public async Task Meme()//sklep: sklep z itemami
         {
@@ -31,17 +30,7 @@ namespace ggwp.Modules
         [Command("a sklep")]
         public async Task Shop()//sklep: sklep z itemami
         {
-            await ReactionsService.Shop(Context.Guild ,Context.Message, (ISocketMessageChannel)Context.Channel);
-        }
-
-        [Command("a coinflip")]
-        public async Task Coinflip()//kasyno: coinflip
-        {
-        }
-
-        [Command("a ruletka")]
-        public async Task Rulette()//kasyno: ruletka
-        {
+            await ReactionsService.Shop(Context.Guild, Context.Message, (ISocketMessageChannel)Context.Channel);
         }
 
         [Command("a bankomat")]
@@ -78,6 +67,18 @@ namespace ggwp.Modules
         public async Task Rules()
         {
             await ReactionsService.Rules(Context.Message, (ISocketMessageChannel)Context.Channel);
+        }
+
+        [Command("a profil")]
+        public async Task Profile()
+        {
+            await ReactionsService.Profile((ISocketMessageChannel)Context.Channel, Context.User, Context.Message);
+        }
+
+        [Command("a gmbl", RunMode = RunMode.Async)]
+        public async Task Gambling()
+        {
+            await ReactionsService.Gambling(Context.Guild, (ISocketMessageChannel)Context.Channel, Context.User, Context.Message);
         }
     }
 }

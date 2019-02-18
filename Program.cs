@@ -21,15 +21,16 @@ using ggwp.Services.Managment_Methods;
 using ggwp.Services.Reaction_Methods;
 using ggwp.Core.UserAccounts;
 using ggwp.Core.GuildAccounts;
+using ggwp.Core.LevelingSystem;
 using Discord.Addons.Interactive;
 using ggwp.Services;
+using ggwp.Services.Weather;
 
 namespace ggwp
 {
     class Program
     {
         DiscordSocketClient _client;
-        CommandHandler _handler;
         private IServiceProvider _services;
         //Time variable
         readonly string time = DateTime.Now.ToString("dd.MM.yyyy");
@@ -45,8 +46,8 @@ namespace ggwp
                 LogLevel = LogSeverity.Verbose
             });
             _client.Log += Log;
-            //_client.Ready += RepeatingTimer.StartTimer;
-            //_client.MessageReceived += AntiSwear;
+            _client.Ready += RepeatingTimer.StartTimer;
+            _client.MessageReceived += AntiSwear;
             //_client.MessageReceived += AntiAdv;
             //_client.ReactionAdded += Reaction_Added.ReactionReport;
             _client.ReactionAdded += Reaction_Added.ReactionGames;
@@ -57,20 +58,24 @@ namespace ggwp
             _client.ReactionAdded += Reaction_Added.ReactionPomoc;
             _client.ReactionAdded += Reaction_Added.ReactionMeme;
             _client.ReactionAdded += Reaction_Added.ReactionCashmashine;
-            //_client.ReactionAdded += Reaction_Added.ReactionJackpot;
+            _client.ReactionAdded += Reaction_Added.ReactionApproval;
+            _client.ReactionAdded += Reaction_Added.ReactionProfile;
+            _client.ReactionAdded += Reaction_Added.ReactionGambling;
             _client.UserJoined += UserJoined;
-            //Global.weatherService = new WeatherService();
-            //_services = new ServiceCollection().AddSingleton<WeatherService>().BuildServiceProvider();
+            Global.weatherService = new WeatherService();
             _services = new ServiceCollection()
                 .AddSingleton(_client)
-                .AddSingleton<InteractiveService>()
+                .AddSingleton<LevelingHandle>()
+                .AddSingleton<CommandHandler>()
+                .AddSingleton<WeatherService>()
                 .BuildServiceProvider();
             await _client.LoginAsync(TokenType.Bot, Config.bot.token);
             await _client.StartAsync();
             Global.Client = _client;
-            //_client.Ready += SetGame;
-            _handler = new CommandHandler();
-            await _handler.InitializeAsync(_client);
+            var commandHandler = _services.GetRequiredService<CommandHandler>();
+            commandHandler.Initialize();
+            var levelHandler = _services.GetRequiredService<LevelingHandle>();
+            levelHandler.Initialize();
             //await ConsoleInput();
             await Task.Delay(-1);
         }
@@ -83,7 +88,18 @@ namespace ggwp
             //daj role "nowy członek 1/4"
         }
 
-        private async Task Log(LogMessage msg)
+        private async Task AntiSwear(SocketMessage arg)
+        {
+            if (Global.Swearwords.Any(word => arg.Content.ToLower().Contains(word)) == false) return;
+            {
+                if (arg.Channel is SocketDMChannel) return;
+                await arg.DeleteAsync();
+                var msg = await arg.Channel.SendMessageAsync($":angry: {arg.Author.Mention} Nie przeklinaj! :zipper_mouth:");
+                await Helpers.RemoveMessage(msg, 5);
+            }
+        }
+
+        public static async Task Log(LogMessage msg)
         {
             Console.WriteLine(msg.Message);
         }

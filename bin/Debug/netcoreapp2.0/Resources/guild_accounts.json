@@ -2,8 +2,14 @@
   {
     "ID": 448884032391086090,
     "PenaltyChannelID": 517789718772056095,
-    "BankChannelID": 517792233194258432,
+    "AnnouncmentChannelID": 517790762608492544,
+    "VoteChannelID": 517796076707905568,
+    "BankChannelID": 545278785625522194,
     "WelcomeChannelID": 517789854906712074,
-    "ShopPage": 1
+    "ShopPage": 1,
+    "GamblingPage": 2,
+    "AdmChannelID": 517441530848346135,
+    "SuggestionsChannelID": 534453281179566081,
+    "InviteLink": "https://discord.gg/3AWcgC9"
   }
 ]

@@ -17,11 +17,15 @@ namespace ggwp
         DiscordSocketClient _client;
         CommandService _service;
 
-        public async Task InitializeAsync(DiscordSocketClient client)
+        public CommandHandler(DiscordSocketClient client)
         {
             _client = client;
+        }
+
+        public void Initialize()
+        {
             _service = new CommandService();
-            await _service.AddModulesAsync(Assembly.GetEntryAssembly());
+            _service.AddModulesAsync(Assembly.GetEntryAssembly());
             _client.MessageReceived += HandleCommandAsync;
         }
 
@@ -40,7 +44,7 @@ namespace ggwp
                 return;
             }
 
-            // Leveling up
+            /*// Leveling up
             if (msg.Channel is SocketDMChannel) return;
             try
             {
@@ -52,7 +56,7 @@ namespace ggwp
                 { if (message.CreatedAt >= DateTimeOffset.UtcNow.Subtract(TimeSpan.FromSeconds(10))) { GiveXP = false; } }
                 if (GiveXP) { Leveling.UserSentMessage((SocketGuildUser)context.User, (SocketTextChannel)context.Channel, context.Message); }
             }
-            catch { }
+            catch { }*/
 
             // Error System
             int argPos = 0;
@@ -63,7 +67,7 @@ namespace ggwp
                 var cmdSearchResult = _service.Search(context, argPos);
 
                 if (!cmdSearchResult.IsSuccess) return;
-#pragma warning disable CS4014
+                #pragma warning disable CS4014
                 var executionTask = _service.ExecuteAsync(context, argPos);
                 executionTask.ContinueWith(task =>
                 {

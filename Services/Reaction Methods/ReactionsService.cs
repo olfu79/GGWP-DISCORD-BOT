@@ -77,6 +77,75 @@ namespace ggwp.Services.Reaction_Methods
             await msg.AddReactionAsync(right);
         }
 
+        public static async Task Gambling(IGuild guild, ISocketMessageChannel channel, IUser user, IUserMessage message)
+        {
+            await message.DeleteAsync();
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+
+            var one = new Emoji("❤");
+            var two = new Emoji("💛");
+            var three = new Emoji("💚");
+            var four = new Emoji("💙");
+            var five = new Emoji("💜");
+            var six = new Emoji("🖤");
+            var left = new Emoji("◀");
+            var right = new Emoji("▶");
+
+            EmbedBuilder eb = new EmbedBuilder();
+            // eb.Author.WithIconUrl(avatar);
+            eb.AddField("Sloty", $"```,```");
+            eb.WithColor(Color.DarkGrey);
+
+            RestUserMessage msg = await channel.SendMessageAsync("", false, eb.Build());
+            ReactionChannels.channels.gambling = msg.Id;
+            ReactionChannels.SaveChannels();
+
+            GuildAccount.GamblingPage = 1;
+
+            await msg.AddReactionAsync(left);
+            await msg.AddReactionAsync(one);
+            await msg.AddReactionAsync(two);
+            await msg.AddReactionAsync(three);
+            await msg.AddReactionAsync(four);
+            await msg.AddReactionAsync(five);
+            await msg.AddReactionAsync(six);
+            await msg.AddReactionAsync(right);
+        }
+
+        public static async Task Profile(ISocketMessageChannel channel, IUser user, IMessage message)
+        {
+            await message.DeleteAsync();
+
+            var account = UserAccounts.GetAccount(user);
+
+            string avatar = user.GetAvatarUrl();
+            string userlvl = account.LevelNumber.ToString();
+            string userexp = account.XP.ToString();
+            string username = user.Username;
+            string moneyw = account.MoneyWallet.ToString();
+            string moneyac = account.MoneyAccount.ToString();
+            string NoWarns = account.Warns.ToString();
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor($"Kliknij aby załadować swój profil");
+            eb.Author.WithIconUrl("https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-squares-01/3/30-512.png");
+            eb.WithThumbnailUrl("https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-squares-01/3/30-512.png");
+            eb.AddField("Nazwa:", "-", true);
+            eb.AddField("Liczba ostrzeżeń:", "-", true);
+            eb.AddField("Poziom:", "-", true);
+            eb.AddField("Exp:", "-", true);
+            eb.AddField("Portfel:", "-", true);
+            eb.AddField("Konto:", "-", true);
+            eb.WithColor(Color.DarkGrey);
+
+            RestUserMessage msg = await channel.SendMessageAsync("", false, eb.Build());
+            ReactionChannels.channels.profile = msg.Id;
+            ReactionChannels.SaveChannels();
+
+            var reaction = new Emoji("🚹");
+            await msg.AddReactionAsync(reaction);
+        }
+
         public static async Task Meme(IUserMessage message, ISocketMessageChannel channel)
         {
             await message.DeleteAsync();

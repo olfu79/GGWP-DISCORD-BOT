@@ -82,6 +82,60 @@ namespace ggwp.Services.Managment_Methods
             await PenaltyChannel.SendMessageAsync("", false, Messages.GenerateKickEmbed(kickuser, administrator, TimeByDate, reason));
         }
 
+        public static async Task Vote(IGuild guild, IMessage message, IGuildUser user, string question, string option)
+        {
+            await message.DeleteAsync();
+
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+            var ContextGuild = guild as SocketGuild;
+            ulong VoteChannelID = GuildAccount.VoteChannelID;
+            var VoteChannel = ContextGuild.GetChannel(VoteChannelID) as IMessageChannel;
+
+            var yes = Emote.Parse(Messages.check);
+            var no = Emote.Parse(Messages.wrong);
+
+            string[] emotes = { "\u0031\u20e3", "\u0032\u20e3", "\u0033\u20e3", "\u0034\u20e3", "\u0035\u20e3", "\u0036\u20e3", "\u0037\u20e3", "\u0038\u20e3", "\u0039\u20e3" };
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor($"ANKIETA");
+            eb.Author.WithIconUrl("https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-and-shapes-3/177800/136-512.png");
+            eb.WithDescription(question);
+            eb.WithColor(Color.Blue);
+            var msg = await VoteChannel.SendMessageAsync("", false, eb.Build());
+
+            int.TryParse(option, out var num);
+
+            if (option == "yesno" || option == "taknie" || option == "noyes" || option == "nietak")
+            {
+                await msg.AddReactionAsync(yes);
+                await msg.AddReactionAsync(no);
+            }
+            else if(num <= emotes.Length)
+            {
+                for (var i = 0; i < num; i++)
+                {
+                    await msg.AddReactionAsync(new Emoji(emotes[i]));
+                }
+            }
+        }
+
+        public static async Task Announcment(IGuild guild, IMessage message, IGuildUser user, string content)
+        {
+            await message.DeleteAsync();
+
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+            var ContextGuild = guild as SocketGuild;
+            ulong AnnChannelID = GuildAccount.AnnouncmentChannelID;
+            var AnnChannel = ContextGuild.GetChannel(AnnChannelID) as IMessageChannel;
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor($"OGŁOSZENIE");
+            eb.Author.WithIconUrl("http://www.wsbedu.eu/wp-content/uploads/2017/05/bhp.png");
+            eb.WithDescription(content);
+            eb.WithColor(new Color(250, 166, 26));
+            await AnnChannel.SendMessageAsync("@everyone", false, eb.Build());
+        }
+
         public static async Task Ban(IGuild guild, IMessage message, IGuildUser banuser, IGuildUser administrator, [Remainder] string reason)
         {
             await message.DeleteAsync();

@@ -25,5 +25,9 @@ namespace ggwp.Core.ReactionsSystem
         public ulong rulette { get; set; }
 
         public ulong coinflip { get; set; }
+
+        public ulong profile { get; set; }
+
+        public ulong gambling { get; set; }
     }
 }

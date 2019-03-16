@@ -21,8 +21,14 @@ namespace ggwp
 
         public static string[] Swearwords = new[] { "kurw", "dziwk", "pierdo", "pierda", "huj", "pizd", "jeba", "jebi", "cwel", "kutas" };
 
+        public static string[] Advertismentwords = new[] { "discord.gg/", "ord.gg /" };
+
         public static string TimeDate = DateTime.Now.ToString("dd.MM.yyyy");
 
         public static long[] OffLevelingChannelsId = new[] { 517789718772056095 }; //TO TRZEBA KONIECZNIE ZMIENIC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        public static string GamblingRouletteChoice { get; set; }
+
+        public static ulong GiveawayMessageID { get; set; }
     }
 }

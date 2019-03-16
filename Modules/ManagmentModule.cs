@@ -98,8 +98,12 @@ namespace ggwp.Modules
                 return;
             }
 
-
-            await Context.Message.DeleteAsync();
+            try
+            {
+                await Context.Message.DeleteAsync();
+            }
+            catch
+            {}
 
             await ReplyAsync("***🗑️ Usuwam " + $"{amountOfMessagesToDelete}" + " wiadomości...***");
 
@@ -122,6 +126,14 @@ namespace ggwp.Modules
 
             const int delay = 5000;
             await Task.Delay(delay);
+        }
+
+        [Command("giveaway", RunMode = RunMode.Async)]
+        [Alias("ga", "gaway")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        public async Task Giveaway(uint TimeInHours, uint Money = 0, IRole role = null)
+        {
+            await ManagmentService.Giveaway(Context.Guild, Context.Message, TimeInHours, Money, role);
         }
     }
 }

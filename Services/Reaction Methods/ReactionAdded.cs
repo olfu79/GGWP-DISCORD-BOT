@@ -245,10 +245,12 @@ namespace ggwp.Services.Reaction_Methods
             slots.WithColor(Color.DarkBlue);
             //msg ruletka
             EmbedBuilder rulette = new EmbedBuilder();
-            slots.AddField("Ruletka", $"```,```");
-            slots.WithColor(Color.DarkGreen);
+            rulette.AddField("Ruletka", $"```,```");
+            rulette.WithColor(Color.DarkGreen);
             //msg coinflip
-            string coinflip = "coinflip";
+            EmbedBuilder coinflip = new EmbedBuilder();
+            coinflip.AddField("Coinflip", $"```,```");
+            coinflip.WithColor(Color.Gold);
 
             if (reaction.MessageId == ReactionChannels.channels.gambling)
             {
@@ -299,32 +301,15 @@ namespace ggwp.Services.Reaction_Methods
                     fslots.AddField("Nagrody:", "\u0037\u20e3 x2 | 🍇 x4 | ⭐ x8 | 🍑 x10 | 🍊 x15 | 🍫 x20 | 🔔 x25", true);
                     fslots.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
                     fslots.WithColor(Color.DarkBlue);
-
-                    //rulette stuff
+                    //ruletka stuff
                     uint roulettemultiplier = 1;
+                    uint option = 0;
+                    uint userchoice = 0;
+                    string depmessage = "㊙ Przepraszam, wystąpił błąd.";
                     string colors = "";
 
                     var red = Emote.Parse("<:red:546427447797612546>");
                     var green = Emote.Parse("<:green:546426978820030464>");
-
-                    Random rndom = new Random();
-                    var r = rnd.Next(1,100);
-
-                    if(r < 49)
-                    {
-                        roulettemultiplier = 2;
-                        colors = $"**\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_**\n│:black_large_square::black_large_square:{red}{red}║:black_large_square::black_large_square:║{red}{red}:black_large_square::black_large_square:│\n│:black_large_square::black_large_square:{red}{red}║:black_large_square::black_large_square:║{red}{red}:black_large_square::black_large_square:│\n**ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ**";
-                    }
-                    else if(r > 49 && r < 99)
-                    {
-                        roulettemultiplier = 2;
-                        colors = $"**\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_**\n│{red}{red}:black_large_square::black_large_square:║{red}{red}║:black_large_square::black_large_square:{red}{red}│\n│{red}{red}:black_large_square::black_large_square:║{red}{red}║:black_large_square::black_large_square:{red}{red}│\n**ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ**";
-                    }
-                    else
-                    {
-                        roulettemultiplier = 25;
-                        colors = $"**\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_\\_**\n│{red}{red}:black_large_square::black_large_square:║{green}{green}║{red}{red}:black_large_square::black_large_square:│\n│{red}{red}:black_large_square::black_large_square:║{green}{green}║{red}{red}:black_large_square::black_large_square:│\n**ˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉˉ**";
-                    }
 
                     EmbedBuilder frulette = new EmbedBuilder();
                     frulette.AddField("🏵 RULETKA ", $"\n{colors}");
@@ -364,7 +349,9 @@ namespace ggwp.Services.Reaction_Methods
                         {
                             await msg.ModifyAsync(message =>
                             {
-                                message.Content = coinflip;
+                                message.Content = "";
+                                message.Embed = null;
+                                message.Embed = coinflip.Build();
                             });
                             GuildAccount.GamblingPage = 2;
                             GuildAccounts.SaveAccounts();
@@ -385,9 +372,11 @@ namespace ggwp.Services.Reaction_Methods
                         }
                         else if (GuildAccount.GamblingPage == 2)
                         {
-                            await msg.ModifyAsync(mmessage =>
+                            await msg.ModifyAsync(message =>
                             {
-                                mmessage.Content = coinflip;
+                                message.Content = "";
+                                message.Embed = null;
+                                message.Embed = coinflip.Build();
                             });
                             GuildAccount.GamblingPage = 3;
                             GuildAccounts.SaveAccounts();
@@ -465,7 +454,6 @@ namespace ggwp.Services.Reaction_Methods
 
                                 UserAccount.MoneyWallet += reward;
 
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
                                 if (reward != 0)
                                     depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
                                 else
@@ -481,30 +469,18 @@ namespace ggwp.Services.Reaction_Methods
                                 return;
                             else
                             {
-                                UserAccount.MoneyWallet -= bid;
-
-                                await msg.ModifyAsync(message =>
-                                {
-                                    message.Content = $"";
-                                    message.Embed = null;
-                                    message.Embed = frulette.Build();
-                                });
-
-                                ulong reward = bid * roulettemultiplier;
-
-                                UserAccount.MoneyWallet += reward;
-
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
-                                if (reward != 0)
-                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
-                                else
-                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
-                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
-                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                                _ = HandleReactionGamblingRoulette(channel, reaction, msg, bid);
                             }
                         }
                         else if (GuildAccount.GamblingPage == 3)
                         {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                _ = HandleReactionGamblingCoinflip(channel, reaction, msg, bid);
+                            }
                         }
                     }
                     else if (reaction.Emote.Name == "💛")
@@ -568,7 +544,6 @@ namespace ggwp.Services.Reaction_Methods
 
                                 UserAccount.MoneyWallet += reward;
 
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
                                 if (reward != 0)
                                     depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
                                 else
@@ -577,7 +552,6 @@ namespace ggwp.Services.Reaction_Methods
                                 await Helpers.RemoveMessage(MsgToRemove, 5);
                             }
                         }
-
                         else if (GuildAccount.GamblingPage == 2)
                         {
                             var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
@@ -585,30 +559,18 @@ namespace ggwp.Services.Reaction_Methods
                                 return;
                             else
                             {
-                                UserAccount.MoneyWallet -= bid;
-
-                                await msg.ModifyAsync(message =>
-                                {
-                                    message.Content = $"";
-                                    message.Embed = null;
-                                    message.Embed = frulette.Build();
-                                });
-
-                                ulong reward = bid * roulettemultiplier;
-
-                                UserAccount.MoneyWallet += reward;
-
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
-                                if (reward != 0)
-                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
-                                else
-                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
-                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
-                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                                _ = HandleReactionGamblingRoulette(channel, reaction, msg, bid);
                             }
                         }
                         else if (GuildAccount.GamblingPage == 3)
                         {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                _ = HandleReactionGamblingCoinflip(channel, reaction, msg, bid);
+                            }
                         }
                     }
                     else if (reaction.Emote.Name == "💚")
@@ -672,7 +634,6 @@ namespace ggwp.Services.Reaction_Methods
 
                                 UserAccount.MoneyWallet += reward;
 
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
                                 if (reward != 0)
                                     depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
                                 else
@@ -688,30 +649,18 @@ namespace ggwp.Services.Reaction_Methods
                                 return;
                             else
                             {
-                                UserAccount.MoneyWallet -= bid;
-
-                                await msg.ModifyAsync(message =>
-                                {
-                                    message.Content = $"";
-                                    message.Embed = null;
-                                    message.Embed = frulette.Build();
-                                });
-
-                                ulong reward = bid * roulettemultiplier;
-
-                                UserAccount.MoneyWallet += reward;
-
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
-                                if (reward != 0)
-                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
-                                else
-                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
-                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
-                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                                _ = HandleReactionGamblingRoulette(channel, reaction, msg, bid);
                             }
                         }
                         else if (GuildAccount.GamblingPage == 3)
                         {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                _ = HandleReactionGamblingCoinflip(channel, reaction, msg, bid);
+                            }
                         }
                     }
                     else if (reaction.Emote.Name == "💙")
@@ -775,7 +724,6 @@ namespace ggwp.Services.Reaction_Methods
 
                                 UserAccount.MoneyWallet += reward;
 
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
                                 if (reward != 0)
                                     depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
                                 else
@@ -791,30 +739,18 @@ namespace ggwp.Services.Reaction_Methods
                                 return;
                             else
                             {
-                                UserAccount.MoneyWallet -= bid;
-
-                                await msg.ModifyAsync(message =>
-                                {
-                                    message.Content = $"";
-                                    message.Embed = null;
-                                    message.Embed = frulette.Build();
-                                });
-
-                                ulong reward = bid * roulettemultiplier;
-
-                                UserAccount.MoneyWallet += reward;
-
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
-                                if (reward != 0)
-                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
-                                else
-                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
-                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
-                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                                _ = HandleReactionGamblingRoulette(channel, reaction, msg, bid);
                             }
                         }
                         else if (GuildAccount.GamblingPage == 3)
                         {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                _ = HandleReactionGamblingCoinflip(channel, reaction, msg, bid);
+                            }
                         }
                     }
                     else if (reaction.Emote.Name == "💜")
@@ -878,7 +814,6 @@ namespace ggwp.Services.Reaction_Methods
 
                                 UserAccount.MoneyWallet += reward;
 
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
                                 if (reward != 0)
                                     depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
                                 else
@@ -894,30 +829,18 @@ namespace ggwp.Services.Reaction_Methods
                                 return;
                             else
                             {
-                                UserAccount.MoneyWallet -= bid;
-
-                                await msg.ModifyAsync(message =>
-                                {
-                                    message.Content = $"";
-                                    message.Embed = null;
-                                    message.Embed = frulette.Build();
-                                });
-
-                                ulong reward = bid * roulettemultiplier;
-
-                                UserAccount.MoneyWallet += reward;
-
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
-                                if (reward != 0)
-                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
-                                else
-                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
-                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
-                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                                _ = HandleReactionGamblingRoulette(channel, reaction, msg, bid);
                             }
                         }
                         else if (GuildAccount.GamblingPage == 3)
                         {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                _ = HandleReactionGamblingCoinflip(channel, reaction, msg, bid);
+                            }
                         }
                     }
                     else if (reaction.Emote.Name == "🖤")
@@ -981,7 +904,6 @@ namespace ggwp.Services.Reaction_Methods
 
                                 UserAccount.MoneyWallet += reward;
 
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
                                 if (reward != 0)
                                     depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
                                 else
@@ -997,34 +919,21 @@ namespace ggwp.Services.Reaction_Methods
                                 return;
                             else
                             {
-                                UserAccount.MoneyWallet -= bid;
-
-                                await msg.ModifyAsync(message =>
-                                {
-                                    message.Content = $"";
-                                    message.Embed = null;
-                                    message.Embed = frulette.Build();
-                                });
-
-                                ulong reward = bid * roulettemultiplier;
-
-                                UserAccount.MoneyWallet += reward;
-
-                                string depmessage = "㊙ Przepraszam, wystąpił błąd.";
-                                if (reward != 0)
-                                    depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
-                                else
-                                    depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
-                                var MsgToRemove = await channel.SendMessageAsync(depmessage);
-                                await Helpers.RemoveMessage(MsgToRemove, 5);
+                                _ = HandleReactionGamblingRoulette(channel, reaction, msg, bid);
                             }
                         }
                         else if (GuildAccount.GamblingPage == 3)
                         {
+                            var BalanceCheck = await Helpers.BalanceCheck(reaction.User.Value, channel, bid);
+                            if (BalanceCheck == false)
+                                return;
+                            else
+                            {
+                                _ = HandleReactionGamblingCoinflip(channel, reaction, msg, bid);
+                            }
 
                         }
                     }
-                    //end
                 }
             }
         }
@@ -1199,6 +1108,236 @@ namespace ggwp.Services.Reaction_Methods
             UserAccount.MoneyWallet -= x;
             UserAccount.MoneyAccount += x;
             UserAccounts.SaveAccounts();
+        }
+
+        private static async Task HandleReactionGamblingRoulette(ISocketMessageChannel channel, SocketReaction reaction, IUserMessage msg, ulong bid)
+        {
+            //main vars
+            var guildChannel = channel as IGuildChannel;
+            var guild = guildChannel.Guild as SocketGuild;
+            //accounts
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+            var UserAccount = UserAccounts.GetAccount(reaction.User.Value);
+
+            //msg ruletka
+            EmbedBuilder rulette = new EmbedBuilder();
+            rulette.AddField("Ruletka", $"```,```");
+            rulette.WithColor(Color.DarkGreen);
+
+            //rulette stuff
+            uint roulettemultiplier = 1;
+            uint option = 0;
+            uint userchoice = 0;
+            string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+            string colors = "";
+
+            var red = Emote.Parse("<:red:546427447797612546>");
+            var green = Emote.Parse("<:green:546426978820030464>");
+
+            Random rndom = new Random();
+            var r = rndom.Next(1, 100);
+
+            if (r < 49)
+            {
+                roulettemultiplier = 2;
+                option = 1;
+                colors = $"{red}{red}:black_large_square::black_large_square:{red}{red}║:black_large_square::black_large_square:║{red}{red}:black_large_square::black_large_square:{red}{red}\n{red}{red}:black_large_square::black_large_square:{red}{red}║:black_large_square::black_large_square:║{red}{red}:black_large_square::black_large_square:{red}{red}";
+            }
+            else if (r > 49 && r < 99)
+            {
+                option = 2;
+                roulettemultiplier = 2;
+                colors = $":black_large_square::black_large_square:{red}{red}:black_large_square::black_large_square:║{red}{red}║:black_large_square::black_large_square:{red}{red}:black_large_square::black_large_square:\n:black_large_square::black_large_square:{red}{red}:black_large_square::black_large_square:║{red}{red}║:black_large_square::black_large_square:{red}{red}:black_large_square::black_large_square:";
+            }
+            else
+            {
+                option = 3;
+                roulettemultiplier = 25;
+                colors = $":black_large_square::black_large_square:{red}{red}:black_large_square::black_large_square:║{green}{green}║{red}{red}:black_large_square::black_large_square:{red}{red}\n:black_large_square::black_large_square:{red}{red}:black_large_square::black_large_square:║{green}{green}║{red}{red}:black_large_square::black_large_square:{red}{red}";
+            }
+
+            EmbedBuilder frulette = new EmbedBuilder();
+            frulette.AddField("🏵 RULETKA ", $"\n{colors}");
+            frulette.AddField("Nagrody:", $"{red} x2 | ⬛ x2 │ {green} x25", true);
+            frulette.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
+            frulette.WithColor(Color.DarkGreen);
+
+            //initial message
+            var msg1 = await channel.SendMessageAsync($"**Wybierz kolor:**\n{red} - `red` / `r` / `czerwony` / `czerw`\n:black_large_square: - `black` / `b` / `czarny` / `czar`\n{green} - `green` / `g` / `zielony` / `ziel`");
+            //awaiting users message
+            var result = await AwaitForUserMessage.AwaitMessage(reaction.UserId, channel.Id, 5000);
+            //Checking if its timeout
+            if (result is null)
+            {
+                var msg2 = await channel.SendMessageAsync($"{Messages.wrong} Twój czas na wybór minął. Pieniądze nie zostały pobrane. Spróbuj ponownie.");
+                await Helpers.RemoveMessage(msg2);
+                await Helpers.RemoveMessage(msg1, 0);
+                return;
+            }
+
+            Global.GamblingRouletteChoice = result.Content;
+
+            if (Global.GamblingRouletteChoice == "b" || Global.GamblingRouletteChoice == "black" || Global.GamblingRouletteChoice == "czarny" || Global.GamblingRouletteChoice == "czar")
+                userchoice = 1;
+            else if (Global.GamblingRouletteChoice == "r" || Global.GamblingRouletteChoice == "red" || Global.GamblingRouletteChoice == "czerwony" || Global.GamblingRouletteChoice == "czerw")
+                userchoice = 2;
+            else if (Global.GamblingRouletteChoice == "g" || Global.GamblingRouletteChoice == "green" || Global.GamblingRouletteChoice == "zielony" || Global.GamblingRouletteChoice == "ziel")
+                userchoice = 3;
+
+            string ChosenColor = "";
+            string PickedColor = "";
+
+            if (userchoice == 1)
+                ChosenColor = ":black_large_square:";
+            else if (userchoice == 2)
+                ChosenColor = $"{red}";
+            else if (userchoice == 3)
+                ChosenColor = $"{green}";
+
+            if (option == 1)
+                PickedColor = ":black_large_square:";
+            else if (option == 2)
+                PickedColor = $"{red}";
+            else if (option == 3)
+                PickedColor = $"{green}";
+
+            if (userchoice == 0)
+            {
+                await Helpers.RemoveMessage(msg1, 0);
+                await Helpers.RemoveMessage((IUserMessage)result, 0);
+                depmessage = $"{Messages.wrong} Nie ma takiej opcji. Pieniądze nie zostały pobrane. Spróbuj ponownie.";
+                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                await Helpers.RemoveMessage(MsgToRemove, 5);
+                return;
+            }
+            else
+            {
+                await Helpers.RemoveMessage(msg1, 0);
+                await Helpers.RemoveMessage((IUserMessage)result, 0);
+                var msg6 = await channel.SendMessageAsync($"{Messages.check} Pomyślnie wybrano kolor {ChosenColor}. Kręcę ruletką!");
+                await Helpers.RemoveMessage(msg6);
+            }
+
+            UserAccount.MoneyWallet -= bid;
+
+            await msg.ModifyAsync(message =>
+            {
+                message.Content = $"";
+                message.Embed = null;
+                message.Embed = frulette.Build();
+            });
+
+            ulong reward = bid * roulettemultiplier;
+
+            string comparison = $"**Wylosowany kolor:** {PickedColor}\n**Wybrałeś:** {ChosenColor}";
+            var comp = await channel.SendMessageAsync(comparison);
+            await Task.Delay(1500);
+
+            if (option == userchoice)
+            {
+                UserAccount.MoneyWallet += reward;
+                depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wygrałeś {reward} {Messages.coin}";
+                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                await Helpers.RemoveMessage(comp, 3);
+                await Helpers.RemoveMessage(MsgToRemove, 1);
+            }
+            else
+            {
+                depmessage = $"😢 Niestety {reaction.User.Value.Username}, nic nie wygrałeś. Spróbuj ponownie.";
+                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                await Helpers.RemoveMessage(comp, 3);
+                await Helpers.RemoveMessage(MsgToRemove, 1);
+            }
+        }
+
+        private static async Task HandleReactionGamblingCoinflip(ISocketMessageChannel channel, SocketReaction reaction, IUserMessage msg, ulong bid)
+        {
+            //main vars
+            var guildChannel = channel as IGuildChannel;
+            var guild = guildChannel.Guild as SocketGuild;
+            //accounts
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+            var UserAccount = UserAccounts.GetAccount(reaction.User.Value);
+
+            //msg coinflip
+            EmbedBuilder rulette = new EmbedBuilder();
+            rulette.AddField("Coinflip", $"```,```");
+            rulette.WithColor(Color.Gold);
+
+            //coinflip stuff
+            string depmessage = "㊙ Przepraszam, wystąpił błąd.";
+
+            string pic = "";
+            string HorT = "";
+
+            string heads = "https://i.imgur.com/JC9V4mn.png";
+            string tails = "https://i.imgur.com/rnonsta.png";
+            string drawing = "https://thumbs.gfycat.com/BabyishShrillKomododragon-small.gif";
+
+            Random rndom = new Random();
+            var r = rndom.Next(0, 2);
+
+            if (r == 1)
+            {
+                pic = heads;
+                HorT = "Orzeł";
+            }
+            else
+            {
+                pic = tails;
+                HorT = "Reszka";
+            }
+
+
+            EmbedBuilder f1coinflip = new EmbedBuilder();
+            f1coinflip.WithThumbnailUrl(drawing);
+            f1coinflip.WithTitle($"{Messages.coin} Coinflip");
+            f1coinflip.WithDescription("**Losowanie...**");
+            f1coinflip.AddField("Nagrody:", $"{Messages.coin} Orzeł - wygrana, {Messages.coin} Reszka - przegrana", true);
+            f1coinflip.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
+            f1coinflip.WithColor(Color.Gold);
+
+            await msg.ModifyAsync(message =>
+            {
+                message.Content = $"";
+                message.Embed = null;
+                message.Embed = f1coinflip.Build();
+            });
+
+            UserAccount.MoneyWallet -= bid;
+
+            ulong reward = bid * 2;
+
+            await Task.Delay(2000);
+
+            EmbedBuilder f2coinflip = new EmbedBuilder();
+            f2coinflip.WithThumbnailUrl(pic);
+            f2coinflip.WithTitle($"{Messages.coin} Coinflip");
+            f2coinflip.WithDescription($"\n**Wypada:** {HorT}\n");
+            f2coinflip.AddField("Nagrody:", $"🏆 Orzeł - wygrana || 😟 Reszka - przegrana\n", true);
+            f2coinflip.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
+            f2coinflip.WithColor(Color.Gold);
+
+            await msg.ModifyAsync(message =>
+            {
+                message.Content = $"";
+                message.Embed = null;
+                message.Embed = f2coinflip.Build();
+            });
+
+            if (r == 1)
+            {
+                UserAccount.MoneyWallet += reward;
+                depmessage = $"🎊 Gratulacje {reaction.User.Value.Username}! Wypada orzeł, wygrałeś {reward} {Messages.coin}";
+                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                await Helpers.RemoveMessage(MsgToRemove);
+            }
+            else
+            {
+                depmessage = $"😢 Niestety {reaction.User.Value.Username}, wypada reszka. Nic nie wygrałeś. Spróbuj ponownie.";
+                var MsgToRemove = await channel.SendMessageAsync(depmessage);
+                await Helpers.RemoveMessage(MsgToRemove);
+            }
         }
 
         public static async Task ReactionMeme(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)

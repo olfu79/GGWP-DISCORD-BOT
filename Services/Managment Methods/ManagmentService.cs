@@ -18,7 +18,7 @@ namespace ggwp.Services.Managment_Methods
 {
     public static class ManagmentService
     {
-        public static async Task Warn(IGuild guild, IMessage message, IGuildUser warneduser, IGuildUser administrator, [Remainder] string reason)
+        public static async Task Warn(IGuild guild, IMessage message, IGuildUser warneduser, IUser administrator, [Remainder] string reason)
         {
             await message.DeleteAsync();
             //Variables
@@ -118,6 +118,65 @@ namespace ggwp.Services.Managment_Methods
                 }
             }
         }
+
+        public static async Task Giveaway(IGuild guild, IMessage message, uint timeInHours, uint money, IRole role = null)
+        {
+            await message.DeleteAsync();
+
+            string reward = "";
+
+            var emoji = new Emoji("🎊");
+            var coin = Messages.coin;
+
+            if (money == 0 && role == null)
+            {
+                return;
+            }
+            if (money == 0 && role != null)
+                reward = $"👤 {role.Mention}";
+            if (money != 0 && role == null)
+                reward = $"{coin} {money}";
+            if (money != 0 && role != null)
+            {
+                reward = $"{coin} {money}\n👤 {role.Mention}";
+            }
+
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+            var ContextGuild = guild as SocketGuild;
+            ulong GiveawayChannelID = GuildAccount.GiveawayChannelID;
+            var GiveawayChannel = ContextGuild.GetChannel(GiveawayChannelID) as IMessageChannel;
+
+            uint TimeInMilisecs = timeInHours * 3600000;
+
+            var time = DateTime.Now;
+            var time2 = time.AddHours(TimeInMilisecs);
+            var time3 = time2.ToString("HH:mm");
+
+            RestUserMessage msg = (RestUserMessage)await GiveawayChannel.SendMessageAsync($"@everyone\n:confetti_ball: **GIVEAWAY** :confetti_ball:\n\nNagroda to: **\n{reward}**\n\nWyniki o: {time3}\n :confetti_ball: Zareaguj aby wziąć udział!");
+            Global.GiveawayMessageID = msg.Id;
+            await msg.AddReactionAsync(emoji);
+
+            await Task.Delay(Convert.ToInt32(TimeInMilisecs));
+
+            await msg.UpdateAsync();
+            var UsersThatReacted = (await msg.GetReactionUsersAsync(emoji)).Where(u => u.IsBot == false).ToArray();
+            Random rand = new Random();
+            var randomuser = UsersThatReacted[rand.Next(UsersThatReacted.Length)];
+            await GiveawayChannel.SendMessageAsync($":confetti_ball: GRATULACJE :confetti_ball:\n{randomuser.Mention} wygrywa.");
+            try
+            {
+                var UserToAddRole = ContextGuild.GetUser(randomuser.Id);
+                await UserToAddRole.AddRoleAsync(role);
+            }
+            catch { }
+            try
+            {
+                var UserAccount = UserAccounts.GetAccount(randomuser);
+                UserAccount.MoneyAccount += money;
+                UserAccounts.SaveAccounts();
+            }
+            catch { }
+    }
 
         public static async Task Announcment(IGuild guild, IMessage message, IGuildUser user, string content)
         {

@@ -144,37 +144,132 @@ namespace ggwp.Modules
             }
         }
 
-        [Command("test")]
-        public async Task test()
+        [Command("reverse")]
+        public async Task TextReverse([Remainder] string text)
         {
-            var s1 = "      )   \n    .-'-. \n   (     )\n    `-=-' ".Split("\n");
+            string reversedString = new string(text.Reverse().ToArray());
+            await ReplyAsync(reversedString);
+        }
 
-            var s2 = "      )   \n    .-'-. \n   (/////)\n    `-=-' ".Split("\n");
+        [Command("iq")]
+        public async Task IQtest(IUser user = null)
+        {
+            if (user is null)
+                user = Context.User;
 
-            var s3 = "     _o_  \n    (   ) \n    )   ( \n   '-'o'-'".Split("\n");
+            await Context.Message.DeleteAsync();
 
-            //siedem
-            //"    _____ \n   /__   /\n     /  / \n    /__/  "
-            //winogrono
-            //"   |\\     \n   \\|_\\_  \n    (_)_) \n      (_) "
-            //gwiazdka
-            //"   __/^\\__\n   \\  *  /\n    >   < \n   /.-^-.\\"
-            //puste
-            //"      )   \n    .-'-. \n   (     )\n    `-=-' "
-            //pełne
-            //"      )   \n    .-'-. \n   (/////)\n    `-=-' "
-            //batonik
-            //"    _____ \n   |=====|\n   |B A R|\n   |_____|"
-            //dzwonek
-            //"     _o_  \n    (   ) \n    )   ( \n   '-'o'-'"
+            Random rand1 = new Random();
+            int RandomNumber = rand1.Next(0, 110);
 
-            StringBuilder sb = new StringBuilder("");
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithTitle("💡 Poziom Inteligencji");
+            eb.WithDescription($"{user} ma **{RandomNumber}** IQ");
+            eb.WithColor(Color.Blue);
 
-            for (var i = 0; i < s1.Length && i < s2.Length && i < s3.Length; i++)
+            await ReplyAsync("", false, eb.Build());
+        }
+
+        [Command("banan")]
+        public async Task PeePeeSize(IUser user = null)
+        {
+            if (user is null)
+                user = Context.User;
+
+            await Context.Message.DeleteAsync();
+
+            Random rand1 = new Random();
+            int RandomNumber = rand1.Next(0, 40);
+            string scale = "";
+            if (RandomNumber <= 5)
+                scale = "ŒΞ8";
+            else if (RandomNumber <= 10)
+                scale = "ŒΞΞ8";
+            else if (RandomNumber <= 15)
+                scale = "ŒΞΞΞ8";
+            else if (RandomNumber <= 20)
+                scale = "ŒΞΞΞΞ8";
+            else if (RandomNumber <= 25)
+                scale = "ŒΞΞΞΞΞ8";
+            else if (RandomNumber <= 30)
+                scale = "ŒΞΞΞΞΞΞ8";
+            else if (RandomNumber <= 35)
+                scale = "ŒΞΞΞΞΞΞΞ8";
+            else if (RandomNumber <= 40)
+                scale = "ŒΞΞΞΞΞΞΞΞ8";
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithTitle("🍌 Długość banana");
+            eb.WithDescription($"Długość banana {user.Username} wynosi **{RandomNumber} cm**");
+            eb.WithColor(new Color(255, 240, 30));
+            eb.AddField("Długość w skali 1:5", $"```{scale}```");
+            await ReplyAsync("", false, eb.Build());
+        }
+
+        [Command("ocen")]
+        public async Task Rate([Remainder] string text)
+        {
+            await Context.Message.DeleteAsync();
+
+            Random rand1 = new Random();
+            int RandomNumber = rand1.Next(1, 11);
+
+            string ans = "";
+            string o1 = "⭐✴✴✴✴✴✴✴✴✴";
+            string o2 = "⭐⭐✴✴✴✴✴✴✴✴";
+            string o3 = "⭐⭐⭐✴✴✴✴✴✴✴";
+            string o4 = "⭐⭐⭐⭐✴✴✴✴✴✴";
+            string o5 = "⭐⭐⭐⭐⭐✴✴✴✴✴";
+            string o6 = "⭐⭐⭐⭐⭐⭐✴✴✴✴";
+            string o7 = "⭐⭐⭐⭐⭐⭐⭐✴✴✴";
+            string o8 = "⭐⭐⭐⭐⭐⭐⭐⭐✴✴";
+            string o9 = "⭐⭐⭐⭐⭐⭐⭐⭐⭐✴";
+            string o10 = "⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐";
+
+            switch (RandomNumber)
             {
-                sb.Append($"{s1[i]} {s2[i]} {s3[i]}\n");
+                case 1:
+                    ans = o1;
+                    break;
+                case 2:
+                    ans = o2;
+                    break;
+                case 3:
+                    ans = o3;
+                    break;
+                case 4:
+                    ans = o4;
+                    break;
+                case 5:
+                    ans = o5;
+                    break;
+                case 6:
+                    ans = o6;
+                    break;
+                case 7:
+                    ans = o7;
+                    break;
+                case 8:
+                    ans = o8;
+                    break;
+                case 9:
+                    ans = o9;
+                    break;
+                case 10:
+                    ans = o10;
+                    break;
+                default:
+                    ans = "Wystąpił błąd.";
+                    break;
             }
-            await Context.Channel.SendMessageAsync($"```{sb}```");
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithTitle("🌟 Ocena");
+            eb.WithDescription($"Oceniam **{text}** na **{RandomNumber}/10**");
+            eb.AddField("Gwiazdki", $"{ans}");
+            eb.WithColor(Color.Gold);
+
+            await ReplyAsync("", false, eb.Build());
         }
 
         [Command("ship")]
@@ -186,6 +281,83 @@ namespace ggwp.Modules
             var combined = ($"{firsthalf}{lasthalf}").Replace(" ", "");
             await ReplyAsync($"{user1.Mention}, {user2.Mention} szipuje was 😍 💒 Od teraz nazywacie się **{combined}** ♥");
         }
+
+        [Command("calc")]
+        public async Task Calculate(double n1, string op, double n2)
+        {
+            string[] operations = { "+", "-", "*", "/", "^", "%" };
+
+            double result = 0;
+            double firstNumber = n1;
+            double secondNumber = n2;
+
+            string stringOperation = SetOperation();
+
+            switch (stringOperation)
+            {
+                case "+":
+                case "addition":
+                    result = firstNumber + secondNumber;
+                    break;
+                case "-":
+                case "soustraction":
+                    result = firstNumber - secondNumber;
+                    break;
+                case "*":
+                case "multiplication":
+                    result = firstNumber * secondNumber;
+                    break;
+                case "/":
+                case "division":
+                    result = firstNumber / secondNumber;
+                    break;
+                case "^":
+                case "exposant":
+                    result = Math.Pow(firstNumber, secondNumber);
+                    break;
+                case "%":
+                case "reste":
+                    result = firstNumber % secondNumber;
+                    break;
+            }
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("Kalkulator");
+            eb.Author.WithIconUrl("https://cdn0.iconfinder.com/data/icons/finance-icons-rounded/110/Calculator-512.png");
+            eb.WithDescription($"```{firstNumber} {stringOperation} {secondNumber} = {result}```");
+            eb.WithColor(Color.DarkBlue);
+            await ReplyAsync("", false, eb.Build());
+
+        double SetNumber(string outputText)
+        {
+            double parse;
+            ReplyAsync(outputText);
+            string tempInput = op;
+            while (!double.TryParse(tempInput, out parse))
+            {
+                ReplyAsync($"{Messages.wrong} Nieprawidłowy znak lub liczba!");
+                ReplyAsync(outputText);
+                tempInput = op;
+            }
+            return double.Parse(tempInput);
+        }
+
+        bool IsValidOperation(string input)
+        {
+            return operations.Contains(input);
+        }
+
+        string SetOperation()
+        {
+            string tempInput = op;
+            while (!IsValidOperation(tempInput))
+            {
+                ReplyAsync($"{Messages.wrong} Nieprawidłowy znak lub liczba!");
+                tempInput = op;
+            }
+            return tempInput;
+        }
+    }
 
         [Command("pocisk")]
         [Alias("pocisnij", "pociśnij", "diss", "dis")]
@@ -417,7 +589,7 @@ namespace ggwp.Modules
             }
         }
 
-        [Command("kick")]
+        [Command("kopnij")]
         public async Task PictureKick(IUser user)
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");

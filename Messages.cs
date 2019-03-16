@@ -19,7 +19,7 @@ namespace ggwp
 
         public static string MentionError = $"{wrong} Musisz kogoś oznaczyć!";
 
-        public static Embed GenerateWarnEmbed(IGuildUser warnedUser, IGuildUser administrator,string DateTime, string warnnumbermessage, string reason = "Brak.")
+        public static Embed GenerateWarnEmbed(IGuildUser warnedUser, IUser administrator,string DateTime, string warnnumbermessage, string reason = "Brak.")
         {
             EmbedBuilder eb = new EmbedBuilder();
             eb.WithAuthor("Ostrzeżenie.");

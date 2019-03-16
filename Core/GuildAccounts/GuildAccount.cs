@@ -18,6 +18,12 @@ namespace ggwp.Core.GuildAccounts
 
         public ulong WelcomeChannelID { get; set; }
 
+        public ulong CountingChannelID { get; set; }
+
+        public ulong MemesChannelID { get; set; }
+
+        public ulong GiveawayChannelID { get; set; }
+
         public uint ShopPage { get; set; }
 
         public uint GamblingPage { get; set; }

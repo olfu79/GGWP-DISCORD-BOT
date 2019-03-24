@@ -21,13 +21,15 @@ using SixLabors.Primitives;
 using SixLabors.Shapes;
 using System.Net;
 using System.Net.Http;
+using ggwp.Services.Cooldown;
 
 namespace ggwp.Modules
 {
     public class FunModule : ModuleBase
     {
+        [Cooldown(10)]
         [Command("8ball")]
-        [Alias("8 ball")]
+        [Alias("8 ball", "8b")]
         public async Task Eightball([Remainder] string question)
         {
             await Context.Message.DeleteAsync();
@@ -68,6 +70,7 @@ namespace ggwp.Modules
             await ReplyAsync("", false, eb.Build());
         }
 
+        [Cooldown(10)]
         [Command("kostka")]
         [Alias("kosc", "kosci", "kość", "kości")]
         public async Task Kosc()
@@ -87,8 +90,9 @@ namespace ggwp.Modules
             await ReplyAsync("", false, eb.Build());
         }
 
+        [Cooldown(10)]
         [Command("moneta")]
-        [Alias("orzelreszka", "orzel reszka", "orzeł reszka", "orzełreszka")]
+        [Alias("orzelreszka", "orzel reszka", "orzeł reszka", "orzełreszka", "coinflip", "coin flip", "flip coin", "flipcoin")]
         public async Task Moneta()
         {
             await Context.Message.DeleteAsync();
@@ -107,6 +111,7 @@ namespace ggwp.Modules
             await ReplyAsync("", false, eb.Build());
         }
 
+        [Cooldown(5)]
         [Command("emojify")]
         [Alias("emoji")]
         public async Task Emotify([Remainder] string args)
@@ -126,6 +131,7 @@ namespace ggwp.Modules
             await ReplyAsync(convertedText);
         }
 
+        [Cooldown(5)]
         [Command("wyjdz")]
         [Alias("drzwi", "wyjdź", "door", "doors")]
         public async Task Doors(IUser user = null)
@@ -144,13 +150,16 @@ namespace ggwp.Modules
             }
         }
 
+        [Cooldown(5)]
         [Command("reverse")]
+        [Alias("odwroc", "odwróć", "odwroctekst")]
         public async Task TextReverse([Remainder] string text)
         {
             string reversedString = new string(text.Reverse().ToArray());
             await ReplyAsync(reversedString);
         }
 
+        [Cooldown(5)]
         [Command("iq")]
         public async Task IQtest(IUser user = null)
         {
@@ -170,7 +179,9 @@ namespace ggwp.Modules
             await ReplyAsync("", false, eb.Build());
         }
 
+        [Cooldown(5)]
         [Command("banan")]
+        [Alias("bananek", "cm")]
         public async Task PeePeeSize(IUser user = null)
         {
             if (user is null)
@@ -206,7 +217,9 @@ namespace ggwp.Modules
             await ReplyAsync("", false, eb.Build());
         }
 
+        [Cooldown(10)]
         [Command("ocen")]
+        [Alias("oceń", "rate", "ocena")]
         public async Task Rate([Remainder] string text)
         {
             await Context.Message.DeleteAsync();
@@ -272,8 +285,9 @@ namespace ggwp.Modules
             await ReplyAsync("", false, eb.Build());
         }
 
+        [Cooldown(10)]
         [Command("ship")]
-        [Alias("szip")]
+        [Alias("szip", "szipuj")]
         public async Task Ship(SocketGuildUser user1, SocketGuildUser user2)
         {
             var firsthalf = (user1.Username.Substring(0, (user1.Username.Length / 2)));
@@ -282,7 +296,9 @@ namespace ggwp.Modules
             await ReplyAsync($"{user1.Mention}, {user2.Mention} szipuje was 😍 💒 Od teraz nazywacie się **{combined}** ♥");
         }
 
+        [Cooldown(5)]
         [Command("calc")]
+        [Alias("kalk", "kalkulator", "calculate", "oblicz", "przelicz", "policz")]
         public async Task Calculate(double n1, string op, double n2)
         {
             string[] operations = { "+", "-", "*", "/", "^", "%" };
@@ -328,39 +344,40 @@ namespace ggwp.Modules
             eb.WithColor(Color.DarkBlue);
             await ReplyAsync("", false, eb.Build());
 
-        double SetNumber(string outputText)
-        {
-            double parse;
-            ReplyAsync(outputText);
-            string tempInput = op;
-            while (!double.TryParse(tempInput, out parse))
+            double SetNumber(string outputText)
             {
-                ReplyAsync($"{Messages.wrong} Nieprawidłowy znak lub liczba!");
+                double parse;
                 ReplyAsync(outputText);
-                tempInput = op;
+                string tempInput = op;
+                while (!double.TryParse(tempInput, out parse))
+                {
+                    ReplyAsync($"{Messages.wrong} Nieprawidłowy znak lub liczba!");
+                    ReplyAsync(outputText);
+                    tempInput = op;
+                }
+                return double.Parse(tempInput);
             }
-            return double.Parse(tempInput);
-        }
 
-        bool IsValidOperation(string input)
-        {
-            return operations.Contains(input);
-        }
-
-        string SetOperation()
-        {
-            string tempInput = op;
-            while (!IsValidOperation(tempInput))
+            bool IsValidOperation(string input)
             {
-                ReplyAsync($"{Messages.wrong} Nieprawidłowy znak lub liczba!");
-                tempInput = op;
+                return operations.Contains(input);
             }
-            return tempInput;
-        }
-    }
 
+            string SetOperation()
+            {
+                string tempInput = op;
+                while (!IsValidOperation(tempInput))
+                {
+                    ReplyAsync($"{Messages.wrong} Nieprawidłowy znak lub liczba!");
+                    tempInput = op;
+                }
+                return tempInput;
+            }
+        }
+
+        [Cooldown(3)]
         [Command("pocisk")]
-        [Alias("pocisnij", "pociśnij", "diss", "dis")]
+        [Alias("pocisnij", "pociśnij", "diss", "dis", "disuj")]
         public async Task Diss(IUser user)
         {
             await Context.Message.DeleteAsync();
@@ -400,13 +417,16 @@ namespace ggwp.Modules
             await ReplyAsync("", false, eb.Build());
         }
 
+        [Cooldown(5)]
         [Command("ping")]
         public async Task Ping()
         {
             await Context.Channel.SendMessageAsync($"🏓 pong!");
         }
 
+        [Cooldown(5)]
         [Command("wybierz")]
+        [Alias("choose", "wybór", "wybor")]
         public async Task Pick([Remainder] string message)
         {
             string UserAvatar = Context.User.GetAvatarUrl();
@@ -431,11 +451,13 @@ namespace ggwp.Modules
             }
             catch
             {
-                //err message here
+                await ReplyAsync(Messages.UnknownError);
             }
         }
 
+        [Cooldown(10)]
         [Command("kill")]
+        [Alias("zabij", "murder")]
         public async Task PictureKill(IUser user)
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
@@ -462,7 +484,9 @@ namespace ggwp.Modules
             }
         }
 
-        [Command("fp")]
+        [Cooldown(10)]
+        [Command("facepalm")]
+        [Alias("fp")]
         public async Task PictureFacepalm()
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
@@ -486,7 +510,9 @@ namespace ggwp.Modules
             }
         }
 
-        [Command("slp")]
+        [Cooldown(10)]
+        [Command("sleep")]
+        [Alias("spać", "spac", "spij", "śpij", "spanie", "spanko")]
         public async Task PictureSleep()
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
@@ -508,7 +534,9 @@ namespace ggwp.Modules
             }
         }
 
+        [Cooldown(5)]
         [Command("hi")]
+        [Alias("hej", "cześć", "czesc", "elo", "siema", "siemka", "yo", "hay")]
         public async Task PictureWelcome(IUser user)
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
@@ -535,7 +563,9 @@ namespace ggwp.Modules
             }
         }
 
+        [Cooldown(10)]
         [Command("hit")]
+        [Alias("uderz", "punch", "walnij")]
         public async Task PictureHit(IUser user)
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
@@ -562,7 +592,9 @@ namespace ggwp.Modules
             }
         }
 
+        [Cooldown(10)]
         [Command("hug")]
+        [Alias("przytul", "przytulas")]
         public async Task PictureHug(IUser user)
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
@@ -589,7 +621,9 @@ namespace ggwp.Modules
             }
         }
 
+        [Cooldown(10)]
         [Command("kopnij")]
+        [Alias("kick", "kop")]
         public async Task PictureKick(IUser user)
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
@@ -616,7 +650,9 @@ namespace ggwp.Modules
             }
         }
 
+        [Cooldown(10)]
         [Command("kiss")]
+        [Alias("pocałuj", "pocaluj", "całus", "calus", "cmok")]
         public async Task PictureKiss(IUser user)
         {
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");

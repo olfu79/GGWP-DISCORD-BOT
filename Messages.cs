@@ -17,6 +17,8 @@ namespace ggwp
         public static string vip = "<:supervip:462351820501549066>";
         public static string svip = "<:ultravip:462351820308873246>";
 
+        public static string UnknownError = $"{wrong} Nieznany błąd!";
+
         public static string MentionError = $"{wrong} Musisz kogoś oznaczyć!";
 
         public static Embed GenerateWarnEmbed(IGuildUser warnedUser, IUser administrator,string DateTime, string warnnumbermessage, string reason = "Brak.")

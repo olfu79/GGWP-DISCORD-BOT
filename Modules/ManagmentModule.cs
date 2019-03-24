@@ -18,6 +18,22 @@ namespace ggwp.Modules
 {
     public class ManagmentModule : ModuleBase<SocketCommandContext>
     {
+        [Command("sayasbot")]
+        [Alias("botmsg", "botsay")]
+        [RequireUserPermission(GuildPermission.KickMembers)]
+        public async Task SayAsBot([Remainder] string text = "")
+        {
+            await ManagmentService.SayAsBot(Context.Message, Context.Channel, text);
+        }
+
+        [Command("config")]
+        [Alias("settings", "opcje")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        public async Task Config(string Action, string Option = null, string Value = null)
+        {
+            await ManagmentService.Config(Context.Guild, Context.Channel, Context.Message, Action, Option, Value);
+        }
+
         [Command("warn")]
         [Alias("ostrzezenie", "ostrzeżenie")]
         [RequireUserPermission(GuildPermission.KickMembers)]
@@ -46,7 +62,7 @@ namespace ggwp.Modules
         }
 
         [Command("mute")]
-        [Alias("wycisz")]
+        [Alias("wycisz", "mutuj", "wyciszenie")]
         [RequireUserPermission(GuildPermission.MuteMembers)]
         public async Task MuteUser(IGuildUser user, int TimeInSeconds = 0, [Remainder] string reason = "Brak.")
         {
@@ -89,21 +105,24 @@ namespace ggwp.Modules
         }
 
         [Command("purge", RunMode = RunMode.Async)]
+        [Alias("clear", "clean", "delete", "czyść", "czysc", "cc")]
         [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Clear(int amountOfMessagesToDelete)
         {
-            if (amountOfMessagesToDelete > 100 || amountOfMessagesToDelete < 0)
-            {
-                //err message wiecej niz 100 mniej niż 0 błąd
-                return;
-            }
-
             try
             {
                 await Context.Message.DeleteAsync();
             }
             catch
-            {}
+            {
+                await ReplyAsync(Messages.UnknownError);
+            }
+
+            if (amountOfMessagesToDelete > 100 || amountOfMessagesToDelete < 0)
+            {
+                await ReplyAsync($"{Messages.wrong} {Context.User.Mention}, musisz wybrać więcej niż 0 lecz mniej niż 100 wiadomości!");
+                return;
+            }
 
             await ReplyAsync("***🗑️ Usuwam " + $"{amountOfMessagesToDelete}" + " wiadomości...***");
 
@@ -117,11 +136,10 @@ namespace ggwp.Modules
             }
             catch (ArgumentOutOfRangeException)
             {
-                //err message starsze niż 14 dni
                 var num = await Context.Channel.GetMessagesAsync(1).FlattenAsync();
                 var channelx = Context.Message.Channel as SocketTextChannel;
                 await channelx.DeleteMessagesAsync(num);
-                await ReplyAsync("Wiadomości nie mogą być starsze niż 14 dni!");
+                await ReplyAsync($"{Messages.wrong} {Context.User.Mention}, wiadomości nie mogą być starsze niż 14 dni!");
             }
 
             const int delay = 5000;

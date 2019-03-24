@@ -25,6 +25,7 @@ namespace ggwp.Core
 
             var kanalStaty = Global.Client.GetGuild(448884032391086090).GetTextChannel(521725645592723468);
 
+            //trycatch here
             var messages = await kanalStaty.GetMessagesAsync((int)100).FlattenAsync();
             await kanalStaty.DeleteMessagesAsync(messages);
 

@@ -33,5 +33,7 @@ namespace ggwp.Core.GuildAccounts
         public ulong SuggestionsChannelID { get; set; }
 
         public string InviteLink { get; set; }
+
+        public long[] OffLevelingChannelsId  { get; set; }
     }
 }

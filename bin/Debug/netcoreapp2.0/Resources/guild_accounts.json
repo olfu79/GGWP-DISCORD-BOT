@@ -10,9 +10,18 @@
     "MemesChannelID": 552166126319173742,
     "GiveawayChannelID": 517790762608492544,
     "ShopPage": 1,
-    "GamblingPage": 3,
+    "GamblingPage": 1,
     "AdmChannelID": 517441530848346135,
     "SuggestionsChannelID": 534453281179566081,
-    "InviteLink": "https://discord.gg/3AWcgC9"
+    "InviteLink": "https://discord.gg/3AWcgC9",
+    "OffLevelingChannelsId": [
+      521726999648010280,
+      552166126319173742,
+      552167729113595914,
+      517789718772056095,
+      521729686070624262,
+      521729775903965243,
+      517792562489327617
+    ]
   }
 ]

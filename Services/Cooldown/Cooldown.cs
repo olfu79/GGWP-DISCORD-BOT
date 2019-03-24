@@ -4,10 +4,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-//
-//todo odpowiedz jezeli cooldown.
-//
-
 namespace ggwp.Services.Cooldown
 {
     public class Cooldown : PreconditionAttribute
@@ -47,7 +43,7 @@ namespace ggwp.Services.Cooldown
 
                 if (difference.Ticks > 0)
                 {
-                    return Task.FromResult(PreconditionResult.FromError($"Możesz użyć tej komendy znów za: {difference.ToString(@"mm\:ss")}"));
+                    return Task.FromResult(PreconditionResult.FromError($"Możesz użyć tej komendy znów za: **{difference.ToString(@"mm\:ss")}**"));
                 }
 
                 var time = DateTime.UtcNow.Add(CooldownLength);

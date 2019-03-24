@@ -29,5 +29,9 @@ namespace ggwp.Core.ReactionsSystem
         public ulong profile { get; set; }
 
         public ulong gambling { get; set; }
+
+        public ulong fun1 { get; set; }
+
+        public ulong fun2 { get; set; }
     }
 }

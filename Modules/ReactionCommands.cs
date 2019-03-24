@@ -80,5 +80,11 @@ namespace ggwp.Modules
         {
             await ReactionsService.Gambling(Context.Guild, (ISocketMessageChannel)Context.Channel, Context.User, Context.Message);
         }
+
+        [Command("a fun", RunMode = RunMode.Async)]
+        public async Task Fun()
+        {
+            await ReactionsService.Fun(Context.Guild, (ISocketMessageChannel)Context.Channel, Context.User, Context.Message);
+        }
     }
 }

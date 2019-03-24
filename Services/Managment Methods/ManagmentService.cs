@@ -66,6 +66,70 @@ namespace ggwp.Services.Managment_Methods
                 await PenaltyChannel.SendMessageAsync("", false, Messages.GenerateWarnEmbed(warneduser, administrator, TimeByDate, WarnNumberString, reason));
             }
         }
+
+        public static async Task Config(SocketGuild guild, ISocketMessageChannel channel, SocketUserMessage message, string action, string option, string value)
+        {
+            await message.DeleteAsync();
+
+            var GuildAccount = GuildAccounts.GetAccount(guild);
+
+            if (action == "viev" || action == "list")
+            {
+                var DivideArray1 = (GuildAccount.OffLevelingChannelsId == null) ? null : GuildAccount.OffLevelingChannelsId.Skip(1).Aggregate(GuildAccount.OffLevelingChannelsId[0].ToString(), (s, i) => s + "," + i.ToString());
+                await channel.SendMessageAsync($"```cs\nID: {GuildAccount.ID}\nPenaltyChannelID: {GuildAccount.PenaltyChannelID}\nAnnouncmentChannelID: {GuildAccount.AnnouncmentChannelID}\nVoteChannelID: {GuildAccount.VoteChannelID}\nBankChannelID: {GuildAccount.BankChannelID}\nWelcomeChannelID: {GuildAccount.WelcomeChannelID}\nCountingChannelID: {GuildAccount.CountingChannelID}\nMemesChannelID: {GuildAccount.MemesChannelID}\nGiveawayChannelID: {GuildAccount.GiveawayChannelID}\nShopPage: {GuildAccount.ShopPage}\nGamblingPage: {GuildAccount.GamblingPage}\nAdmChannelID: {GuildAccount.AdmChannelID}\nSuggestionsChannelID: {GuildAccount.SuggestionsChannelID}\nInviteLink: {GuildAccount.InviteLink}\nOffLevelingChannelsId: {DivideArray1}```");
+            }
+            else if (action == "set")
+            {
+                if (option == null || value == null)
+                {
+                    await channel.SendMessageAsync($"{Messages.wrong} Opcja i Wartość nie mogą być puste. `!config set opcja wartość`");
+                    return;
+                }
+                if (option == "ID")
+                    GuildAccount.ID = Convert.ToUInt64(value);
+                else if(option == "PenaltyChannelID")
+                    GuildAccount.PenaltyChannelID = Convert.ToUInt64(value);
+                else if (option == "AnnouncmentChannelID")
+                    GuildAccount.AnnouncmentChannelID = Convert.ToUInt64(value);
+                else if (option == "VoteChannelID")
+                    GuildAccount.VoteChannelID = Convert.ToUInt64(value);
+                else if (option == "BankChannelID")
+                    GuildAccount.BankChannelID = Convert.ToUInt64(value);
+                else if (option == "WelcomeChannelID")
+                    GuildAccount.WelcomeChannelID = Convert.ToUInt64(value);
+                else if (option == "CountingChannelID")
+                    GuildAccount.CountingChannelID = Convert.ToUInt64(value);
+                else if (option == "MemesChannelID")
+                    GuildAccount.MemesChannelID = Convert.ToUInt64(value);
+                else if (option == "GiveawayChannelID")
+                    GuildAccount.GiveawayChannelID = Convert.ToUInt64(value);
+                else if (option == "ShopPage")
+                    GuildAccount.ShopPage = Convert.ToUInt32(value);
+                else if (option == "GamblingPage")
+                    GuildAccount.GamblingPage = Convert.ToUInt32(value);
+                else if (option == "AdmChannelID")
+                    GuildAccount.AdmChannelID = Convert.ToUInt64(value);
+                else if (option == "SuggestionsChannelID")
+                    GuildAccount.SuggestionsChannelID = Convert.ToUInt64(value);
+                else if (option == "InviteLink")
+                    GuildAccount.InviteLink = value;
+                else if (option == "OffLevelingChannelsId")
+                {
+                    long[] ConvertedArray = value.Split(",").Select(long.Parse).ToArray();
+                    GuildAccount.OffLevelingChannelsId = ConvertedArray;
+                }
+
+                GuildAccounts.SaveAccounts();
+                await channel.SendMessageAsync($"{Messages.check} Pomyślnie zaktualizowano `{option}: {value}`");
+            }
+        }
+
+        public static async Task SayAsBot(IMessage message, ISocketMessageChannel channel, string text)
+        {
+            await message.DeleteAsync();
+            await channel.SendMessageAsync($"{text}");
+        }
+
         public static async Task Kick(IGuild guild, IMessage message, IGuildUser kickuser, IGuildUser administrator, [Remainder] string reason)
         {
             await message.DeleteAsync();

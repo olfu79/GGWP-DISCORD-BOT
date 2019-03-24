@@ -30,7 +30,11 @@ namespace ggwp.Core.LevelingSystem
             }
             catch { }
 
-            if (Global.OffLevelingChannelsId.Contains((long)message.Channel.Id)) return;
+            var guild = user.Guild;
+            var GuildAccount = GuildAccounts.GuildAccounts.GetAccount(guild);
+            long[] ChannelsOffLeveling = GuildAccount.OffLevelingChannelsId;
+
+            if (ChannelsOffLeveling.Contains((long)message.Channel.Id)) return;
 
             var coin = Emote.Parse("<:coin:462351821910835200>");
 
@@ -50,7 +54,6 @@ namespace ggwp.Core.LevelingSystem
                 await Helpers.RemoveMessage(msg, 5);
             }
 
-            var guild = user.Guild;
             var r1 = guild.Roles.FirstOrDefault(x => x.Id == 548964370517065740);
             var r2 = guild.Roles.FirstOrDefault(x => x.Id == 548963386713440276);
             var r3 = guild.Roles.FirstOrDefault(x => x.Id == 548963384910151701);

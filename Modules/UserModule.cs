@@ -11,13 +11,14 @@ using Discord.WebSocket;
 using Discord.Rest;
 
 using ggwp.Core;
-using ggwp.Services;
+using ggwp.Services.Cooldown;
 using ggwp.Core.GuildAccounts;
 
 namespace ggwp.Modules
 {
     public class User : ModuleBase
     {
+        [Cooldown(60)]
         [Command("podanie")]
         public async Task Application([Remainder] string podanie)
         {
@@ -53,9 +54,11 @@ namespace ggwp.Modules
             }
             catch
             {
-                //err nieznany
+                await ReplyAsync(Messages.UnknownError);
             }
         }
+
+        [Cooldown(30)]
         [Command("propozycja")]
         public async Task Suggestion([Remainder] string propozycja)
         {
@@ -96,12 +99,13 @@ namespace ggwp.Modules
             }
             catch
             {
-                //err nieznany
+                await ReplyAsync(Messages.UnknownError);
             }
         }
 
+        [Cooldown(20)]
         [Command("link")]
-        [Alias("zaproszenie", "zapro")]
+        [Alias("zaproszenie", "zapro", "invite", "inv")]
         public async Task Invitation()
         {
             try
@@ -124,15 +128,22 @@ namespace ggwp.Modules
             }
             catch
             {
-                //err nieznany
+                await ReplyAsync(Messages.UnknownError);
             }
         }
 
+        [Cooldown(2)]
         [Command("cytat")]
         [Alias("cytuj")]
         public async Task Cytat(IUser user, [Remainder]string cytat)
         {
             await Context.Message.DeleteAsync();
+
+            if (cytat == "")
+            {
+                await ReplyAsync($"{Messages.wrong} {Context.User.Mention}, musisz wpisać tekst!");
+                return;
+            }
 
             await ReplyAsync($"{Context.User.Mention} cytuje użytkownika {user.Mention}\n*{cytat}*");
         }

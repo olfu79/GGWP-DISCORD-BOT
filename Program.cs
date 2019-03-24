@@ -63,6 +63,8 @@ namespace ggwp
             _client.ReactionAdded += Reaction_Added.ReactionApproval;
             _client.ReactionAdded += Reaction_Added.ReactionProfile;
             _client.ReactionAdded += Reaction_Added.ReactionGambling;
+            _client.ReactionAdded += Reaction_Added.ReactionFun1;
+            _client.ReactionAdded += Reaction_Added.ReactionFun2;
             _client.UserJoined += UserJoined;
             Global.weatherService = new WeatherService();
             _services = new ServiceCollection()
@@ -153,12 +155,14 @@ namespace ggwp
         {
             var userAccount = UserAccounts.GetAccount(user);
             UserAccounts.SaveAccounts();
+            var r1 = user.Guild.Roles.FirstOrDefault(x => x.Name == "WERYFIKACJA 1/5");
+            user.AddRoleAsync(r1);
             return Task.CompletedTask;
-            //daj role "nowy członek 1/4"
         }
 
         private async Task AntiSwear(SocketMessage arg)
         {
+            if (arg.Author.IsBot) return;
             if (Global.Swearwords.Any(word => arg.Content.ToLower().Contains(word)) == false) return;
             {
                 if (arg.Channel is SocketDMChannel) return;
@@ -175,6 +179,7 @@ namespace ggwp
             var user = msg.Author as SocketGuildUser;
             var rola = guild.Roles.FirstOrDefault(x => x.Id == 446765076490223618);
 
+            if (msg.Author.IsBot) return;
             if (Global.Advertismentwords.Any(word => msg.Content.ToLower().Contains(word)) == false || msg.Content.Contains("discord.gg/xXKrd5R") || user.Roles.Contains(rola)) return;
             {
                 var pamietaj = Emote.Parse("<:thinksmart:460770233171443713>");

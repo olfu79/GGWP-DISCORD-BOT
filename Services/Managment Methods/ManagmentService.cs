@@ -76,7 +76,7 @@ namespace ggwp.Services.Managment_Methods
             if (action == "viev" || action == "list")
             {
                 var DivideArray1 = (GuildAccount.OffLevelingChannelsId == null) ? null : GuildAccount.OffLevelingChannelsId.Skip(1).Aggregate(GuildAccount.OffLevelingChannelsId[0].ToString(), (s, i) => s + "," + i.ToString());
-                await channel.SendMessageAsync($"```cs\nID: {GuildAccount.ID}\nPenaltyChannelID: {GuildAccount.PenaltyChannelID}\nAnnouncmentChannelID: {GuildAccount.AnnouncmentChannelID}\nVoteChannelID: {GuildAccount.VoteChannelID}\nBankChannelID: {GuildAccount.BankChannelID}\nWelcomeChannelID: {GuildAccount.WelcomeChannelID}\nCountingChannelID: {GuildAccount.CountingChannelID}\nMemesChannelID: {GuildAccount.MemesChannelID}\nGiveawayChannelID: {GuildAccount.GiveawayChannelID}\nShopPage: {GuildAccount.ShopPage}\nGamblingPage: {GuildAccount.GamblingPage}\nAdmChannelID: {GuildAccount.AdmChannelID}\nSuggestionsChannelID: {GuildAccount.SuggestionsChannelID}\nInviteLink: {GuildAccount.InviteLink}\nOffLevelingChannelsId: {DivideArray1}```");
+                await channel.SendMessageAsync($"```cs\nID: {GuildAccount.ID}\nPenaltyChannelID: {GuildAccount.PenaltyChannelID}\nAnnouncmentChannelID: {GuildAccount.AnnouncmentChannelID}\nVoteChannelID: {GuildAccount.VoteChannelID}\nBankChannelID: {GuildAccount.BankChannelID}\nWelcomeChannelID: {GuildAccount.WelcomeChannelID}\nCountingChannelID: {GuildAccount.CountingChannelID}\nMemesChannelID: {GuildAccount.MemesChannelID}\nGiveawayChannelID: {GuildAccount.GiveawayChannelID}\nShopPage: {GuildAccount.ShopPage}\nGamblingPage: {GuildAccount.GamblingPage}\nAdmChannelID: {GuildAccount.AdmChannelID}\nSuggestionsChannelID: {GuildAccount.SuggestionsChannelID}\nInviteLink: {GuildAccount.InviteLink}\nOffLevelingChannelsId: {DivideArray1}\nRekrutacja: {GuildAccount.Rekrutacja}```");
             }
             else if (action == "set")
             {
@@ -118,6 +118,8 @@ namespace ggwp.Services.Managment_Methods
                     long[] ConvertedArray = value.Split(",").Select(long.Parse).ToArray();
                     GuildAccount.OffLevelingChannelsId = ConvertedArray;
                 }
+                else if (option == "Rekrutacja")
+                    GuildAccount.Rekrutacja = Convert.ToBoolean(value);
 
                 GuildAccounts.SaveAccounts();
                 await channel.SendMessageAsync($"{Messages.check} Pomyślnie zaktualizowano `{option}: {value}`");
@@ -216,7 +218,14 @@ namespace ggwp.Services.Managment_Methods
             var time2 = time.AddHours(TimeInMilisecs);
             var time3 = time2.ToString("HH:mm");
 
-            RestUserMessage msg = (RestUserMessage)await GiveawayChannel.SendMessageAsync($"@everyone\n:confetti_ball: **GIVEAWAY** :confetti_ball:\n\nNagroda to: **\n{reward}**\n\nWyniki o: {time3}\n :confetti_ball: Zareaguj aby wziąć udział!");
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("GIVEAWAY");
+            eb.Author.WithIconUrl("https://freeiconshop.com/wp-content/uploads/edd/gift-flat.png");
+            eb.WithDescription($"**Nagroda:**\n {reward}\n\n**Wyniki o:** {time3}");
+            eb.WithFooter("👇 ZAREAGUJ ABY WZIĄĆ UDZIAŁ!");
+            eb.WithColor(Color.Gold);
+
+            RestUserMessage msg = (RestUserMessage)await GiveawayChannel.SendMessageAsync("@everyone", false, eb.Build());
             Global.GiveawayMessageID = msg.Id;
             await msg.AddReactionAsync(emoji);
 

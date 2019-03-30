@@ -87,6 +87,10 @@ namespace ggwp.Core
             string time = DateTime.Now.ToString("HH:mm");
             var channelTime = Global.Client.GetGuild(448884032391086090).GetVoiceChannel(482943719742505001);
             await channelTime.ModifyAsync(y => y.Name = $"🕒 Godzina: {time}");
+            //data
+            string date = DateTime.Now.ToString("dd.MM.yyyy");
+            var channelDate = Global.Client.GetGuild(448884032391086090).GetVoiceChannel(561613046305259531);
+            await channelDate.ModifyAsync(y => y.Name = $"📅 Data: {date}");
             //użytkownicy
             int howManyUsers = Global.Client.GetGuild(448884032391086090).Users.Count();
             var channelUsers = Global.Client.GetGuild(448884032391086090).GetVoiceChannel(482933282745483284);
@@ -153,21 +157,21 @@ namespace ggwp.Core
                 }
 
                 if (response.Contains("\"main\":\"Rain\""))
-                    weatherString = "🌧️ Deszczowo";
+                    weatherString = "🌧️ Pogoda: Deszczowo";
                 if (response.Contains("\"main\":\"Clouds\""))
-                    weatherString = "☁️ Pochmurnie";
+                    weatherString = "☁️ Pogoda: Pochmurnie";
                 if (response.Contains("\"main\":\"Snow\""))
-                    weatherString = "🌨️ Śnieg";
+                    weatherString = "🌨️ Pogoda: Śnieg";
                 if (response.Contains("\"main\":\"Clear\""))
-                    weatherString = "☀️ Słonecznie";
+                    weatherString = "☀️ Pogoda: Słonecznie";
                 if (response.Contains("\"main\":\"Thunderstorm\""))
-                    weatherString = "⛈️ Burza";
+                    weatherString = "⛈️ Pogoda: Burza";
                 if (response.Contains("\"main\":\"Extreme\""))
-                    weatherString = "⛈️ Apokalipsa";
+                    weatherString = "⛈️ Pogoda: Apokalipsa";
                 if (response.Contains("\"main\":\"Drizzle\""))
-                    weatherString = "🌦️ Lekki deszcz";
+                    weatherString = "🌦️ Pogoda: Lekki deszcz";
                 if (response.Contains("\"main\":\"Mist\""))
-                    weatherString = "🌫️ Mgliście";
+                    weatherString = "🌫️ Pogoda: Mgliście";
                 await weatherchannel.ModifyAsync(y => y.Name = $"{weatherString}");
             }
             catch (Exception f)

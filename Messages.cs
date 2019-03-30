@@ -14,8 +14,10 @@ namespace ggwp
         public static string coin = "<:coin:462351821910835200>";
         public static string check = "<:CheckMark:460770234177945610>";
         public static string wrong = "<:WrongMark:460770239286870017>";
-        public static string vip = "<:supervip:462351820501549066>";
-        public static string svip = "<:ultravip:462351820308873246>";
+        public static string vip = "<:vip:560937493176909827>";
+        public static string svip = "<:svip:560937492451426325>";
+        public static string sponsor = "<:sponsor:560937492551827483>";
+        public static string ban = "<:ban:560931842094530582>";
 
         public static string UnknownError = $"{wrong} Nieznany błąd!";
 
@@ -170,9 +172,9 @@ namespace ggwp
             return EconomyDailyError;
         }
 
-        public static string BankDailySuccess(IUser user)
+        public static string BankDailySuccess(IUser user, uint ammount)
         {
-            string BankDailySuccess = $"{check} {user.Mention}, właśnie odebrałeś swoją dzienną nagrodę. Przelano **250** {coin} na twoje konto.";
+            string BankDailySuccess = $"{check} {user.Mention}, właśnie odebrałeś swoją dzienną nagrodę. Przelano **{ammount}** {coin} na twoje konto.";
             return BankDailySuccess;
         }
 
@@ -182,26 +184,144 @@ namespace ggwp
             return BankUserBalance;
         }
 
-        //Welcome msg
         public static string WelcomeMessage(string guild, string user)
         {
             string WelcomeMessage = $"Witaj {user} na serwerze {guild}! Mamy nadzieje że będziesz się tu dobrze bawił/a :smile:";
             return WelcomeMessage;
         }
+
+        public static Embed GenerateCommandsCategoriesEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("DOSTĘPNE KATEGORIE");
+            eb.Author.WithIconUrl("https://cdn3.iconfinder.com/data/icons/mobile-apps-settings-ii-flat-multicolor-background/2048/458_-_Language__input-512.png");
+            eb.AddField(
+                "👤 GRACZ\n" +
+                "🎳 ZABAWA\n" +
+                "💰 EKONOMIA\n" +
+                "⛅ POGODA\n" +
+                "🎵 MUZYKA\n" +
+                "👻 AKINATOR\n", "​Wpisz !komendy <kategoria>");
+            eb.WithColor(new Color(0, 129, 140));
+            return eb.Build();
+        }
+
+        public static Embed GenerateCommandsGraczEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND");
+            eb.Author.WithIconUrl("https://cdn3.iconfinder.com/data/icons/mobile-apps-settings-ii-flat-multicolor-background/2048/458_-_Language__input-512.png");
+            eb.AddField("GRACZ", 
+                "**Komenda**: `podanie <tekst>`\n**Opis**: jeśli jest rekrutacja, możesz wysłać swoje podanie w wiadomości prywatnej.\n**Aliasy**: `brak`\n\n" +
+                "**Komenda**: `propozycja <tekst>`\n**Opis**: możesz zaproponować zmiany na serwerze. Po napisaniu w wiadomości prywatnej, propozycja zostanie przekierowana do administracji i będzie oczekiwać na zatwierdzenie.\n**Aliasy**: `proponuj`\n\n" +
+                "**Komenda**: `link`\n**Opis**: Uzyskaj zaproszenie na ten serwer. Możesz je później wysłać znajomym itp.\n**Aliasy**: `zaproszenie`, `zapro`, `invite`, `inv`\n\n" +
+                "**Komenda**: `cytat <osoba> <tekst>`\n**Opis**: cytuje dowolną osobę.\n**Aliasy**: `cytuj`\n\n" +
+                "**Komenda**: `pomoc`\n**Opis**: wyświetla pomoc.\n**Aliasy**: `help`\n\n" +
+                "**Komenda**: `kalkulator <liczba 1> <operator> <liczba 2>`\n**Opis**: Poprostu kalkulator :)\n**Aliasy**: `kalk`, `calc`, `oblicz`, `przelicz`, `policz`\n\n");
+            eb.WithColor(new Color(0, 129, 140));
+            return eb.Build();
+        }
+
+        public static Embed GenerateCommandsFunEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND");
+            eb.Author.WithIconUrl("https://cdn3.iconfinder.com/data/icons/mobile-apps-settings-ii-flat-multicolor-background/2048/458_-_Language__input-512.png");
+            eb.AddField("ZABAWA",
+                "**Komenda**: `8ball <pytanie>`\n**Opis**: magiczna kula, odpowie na twoje pytanie.\n**Aliasy**: `8 ball`, `8b`\n\n" +
+                "**Komenda**: `kostka`\n**Opis**:  losuje liczbe od 1 do 6\n**Aliasy**: `kosc`, `kosci`, `kość`, `kości`\n\n" +
+                "**Komenda**: `moneta`\n**Opis**: podrzuca monetą.\n**Aliasy**: `orzelreszka`, `orzel reszka`, `orzeł reszka`, `orzełreszka`, `coinflip`, `coin flip`, `flip coin`, `flipcoin`\n\n" +
+                "**Komenda**: `emojify <tekst>`\n**Opis**: zamienia tekst na emoji.\n**Aliasy**: `emoji`\n\n" +
+                "**Komenda**: `wyjdz <osoba>`\n**Opis**: każe wyjść danej osobie.\n**Aliasy**: `drzwi`, `wyjdź`, `door`, `doors`\n\n" +
+                "**Komenda**: `reverse <tekst>`\n**Opis**:  zamienia tekst tak by był od tyłu.\n**Aliasy**: `odwróć`, `odwroc`, `odwroctekst`, `odwróćtekst`\n\n" +
+                "**Komenda**: `iq <osoba>`\n**Opis**: podaje IQ danej osoby.\n**Aliasy**: `brak`");
+            eb.AddField("​",
+                "**Komenda**: `banan <osoba>`\n**Opis**: podaje długość banana danej osoby.\n**Aliasy**: `bananek`, `cm`\n\n" +
+                "**Komenda**: `ocena <rzecz/przedmiot>`\n**Opis**: ocenia cokolwiek wpiszesz na ilość gwiazdek od 1 do 10\n**Aliasy**: `oceń`, `rate`, `ocen`\n\n" +
+                "**Komenda**: `szip <osoba 1> <osoba 2>`\n**Opis**: szipuje ze sobą dwie osoby.\n**Aliasy**: `ship`, `szipuj`\n\n" +
+                "**Komenda**: `pocisk <osoba>`\n**Opis**: disuje daną osobę w twoim imieniu\n**Aliasy**: `pocisnij`, `pociśnij`, `diss`, `dis`, `disuj`\n\n" +
+                "**Komenda**: `ping`\n**Opis**: pinguje.\n**Aliasy**: `brak`\n\n" +
+                "**Komenda**: `wybierz <wybór1 | wybór2 | wybór 3 | itd...>`\n**Opis**: wybiera jedną z danych opcji.\n**Aliasy**: `choose`, `wybór`, `wybor`\n\n" +
+                "**Komenda**: `kill <osoba>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `zabij`, `murder`");
+            eb.AddField("​",
+                "**Komenda**: `facepalm`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `fp`\n\n" +
+                "**Komenda**: `sleep`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `spać`, `spac`, `spij`, `śpij`, `spanie`, `spanko`\n\n" +
+                "**Komenda**: `hej <gracz>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `hi`, `cześć`, `czesc`, `elo`, `siema`, `siemka`, `yo`, `hay`\n\n" +
+                "**Komenda**: `uderz <gracz>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `hit`, `walnij`, `punch`\n\n" +
+                "**Komenda**: `przytul <osoba>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `hug`, `przytulas`\n\n" +
+                "**Komenda**: `kopnij`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `kick`, `kop`\n\n" +
+                "**Komenda**: `całus`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `calus`, `kiss`, `pocałuj`, `pocaluj`, `cmok`\n\n");
+            eb.WithColor(new Color(0, 129, 140));
+            return eb.Build();
+        }
+
+        public static Embed GenerateCommandsMoneyEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND");
+            eb.Author.WithIconUrl("https://cdn3.iconfinder.com/data/icons/mobile-apps-settings-ii-flat-multicolor-background/2048/458_-_Language__input-512.png");
+            eb.AddField("PIENIĄDZE",
+                "**Komenda**: `stankonta`\n**Opis**: Wyświetla informacje instruującą gdzie sprawdzić swój stan konta.\n**Aliasy**: `stan konta`, `kasa`, `money`, `pieniądze`, `pieniadze`\n\n" +
+                "**Komenda**: `daily`\n**Opis**: Wyświetla informacje instruującą gdzie odebrać codzienną nagrodę.\n**Aliasy**: `dzienna`, `free`\n\n" +
+                "**Komenda**: `przelew <osoba> <kwota>`\n**Opis**: Przelej daną kwotę pieniędzy danej osobie.\n**Aliasy**: `przelej`, `przekaż`, `plac`, `płać`, `pay`\n\n");
+            eb.WithColor(new Color(0, 129, 140));
+            return eb.Build();
+        }
+
+        public static Embed GenerateCommandsWeatherEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND");
+            eb.Author.WithIconUrl("https://cdn3.iconfinder.com/data/icons/mobile-apps-settings-ii-flat-multicolor-background/2048/458_-_Language__input-512.png");
+            eb.AddField("POGODA",
+                "**Komenda**: `pogoda <miasto>`\n**Opis**: Wyświetla pogodę dla danego miasta.\n**Aliasy**: `weather`\n\n");
+            eb.WithColor(new Color(0, 129, 140));
+            return eb.Build();
+        }
+
+        public static Embed GenerateCommandsMusicEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND");
+            eb.Author.WithIconUrl("https://cdn3.iconfinder.com/data/icons/mobile-apps-settings-ii-flat-multicolor-background/2048/458_-_Language__input-512.png");
+            eb.AddField("MUZYKA (Dostępne po odblokowaniu \"dostępu do muzyki\" w sklepie.)",
+                "**Komenda**: `play <nazwa utworu>`\n**Opis**: Puszcza dany utwór.\n**Aliasy**: `brak`\n\n" +
+                "**Komenda**: `skip`\n**Opis**: Przechodzi do następnego utworu.\n**Aliasy**: `brak`\n\n" +
+                "**Komenda**: `np`\n**Opis**: Wyświetla nazwe aktualne granego utworu.\n**Aliasy**: `brak`\n\n" +
+                "**Komenda**: `pause`\n**Opis**: Pauzuje aktualnie grany utwór.\n**Aliasy**: `brak`\n\n" +
+                "**Komenda**: `resume`\n**Opis**: Wznawia zpauzowany utwór.\n**Aliasy**: `brak`\n\n");
+            eb.WithColor(new Color(0, 129, 140));
+            return eb.Build();
+        }
+
+        public static Embed GenerateCommandsAkinatorEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND");
+            eb.Author.WithIconUrl("https://cdn3.iconfinder.com/data/icons/mobile-apps-settings-ii-flat-multicolor-background/2048/458_-_Language__input-512.png");
+            eb.AddField("AKINATOR (Dostępne po odblokowaniu \"dostępu do akinatora\" w sklepie.)",
+                "**Komenda**: `start`\n**Opis**: Rozpoczyna zabawę.\n**Aliasy**: `brak`\n\n" +
+                "**Komenda**: `stop`\n**Opis**: Zatrzymuje zabawę.\n**Aliasy**: `brak`\n\n" +
+                "**Komenda**: `lang pl`\n**Opis**: Ustawia język na polski.\n**Aliasy**: `brak`\n\n");
+            eb.WithColor(new Color(0, 129, 140));
+            return eb.Build();
+        }
+
         //Help answers
-        public static string HelpMoney = $":moneybag: Jak zarabiać pieniądze?\n";
-        public static string HelpOffend = $":zipper_mouth: Co zrobić jeśli ktoś mnie obraża?\n";
-        public static string HelpCandidate = $":hand_splayed: Jak kandydować do administracji?\n";
-        public static string HelpIdea = $":bulb: Mam pomysł na serwer gdzie to napisać?\n";
-        public static string HelpPartner = $":star2: Chciał bym zostać partnerem? Jakie wymogi muszę spełniać?\n";
-        public static string HelpInvite = $":incoming_envelope: W jaki sposób mogę zaprosić moich znajomych?\n";
-        public static string HelpCommands = $":scroll: Gdzie znajdę listę komend?\n";
-        public static string HelpVIP = $"<:supervip:462351820501549066> Wszystko o randze <@&517063123690061834>\n";
-        public static string HelpSVIP = $"<:ultravip:462351820308873246> Wszystko o randze <@&517063059659817000>\n";
-        public static string HelpSponsor = $"<:sponsor:462351820006883340> Wszystko o randze <@&517062733699612684>\n";
-        public static string HelpAki = $":ghost: Mogę popisać z akinatorem?\n";
-        public static string HelpMusic = $":musical_note: Mogę posłuchać muzyki?\n";
-        public static string HelpYT = $"<:blob_youtube:460770184689352705> Wszystko o rangach <@&517063084368723991> <@&517062956022890517> <@&517063026273157120>\n";
-        public static string HelpOther = $"​:helmet_with_cross: Potrzebuje innej pomocy. Mam sprawę do administracji.\n";
+        public static string HelpChannel = $"<#521726999648010280>";
+        public static string HelpMoney = $"**:moneybag: Jak zarabiać pieniądze?**\nZarabiać można na kilka sposobów:\n- Pisząc na czacie zdobywasz poziomy a wraz z nimi pieniądze.\n- Odbierając dzienne nagrody na kanale <#545278785625522194>\n- Grając w kasynie (Ruletka, Sloty, Coinflip\n- Wygrywając je na różnych konkursach i eventach)";
+        public static string HelpOffend = $"**:zipper_mouth: Co zrobić jeśli ktoś mnie obraża?**\nJeśli ktoś Cię obraża bądź publikuje niestosowne treści poinformuj o tym administacje dodając emoji {ban} do jego wiadomości. Reakcja natychmiast zniknie więc nikt się nie dowie kto zgłosił daną wiadomość.";
+        public static string HelpCandidate = $"**:hand_splayed: Jak kandydować do administracji?**\nJeśli chcesz kandydować do administracji musisz poczekać na **REKRUTACJE**. Wtedy piszesz podanie w wiadomości prywatnej bota komendą `!podanie [tekst]` i oczekujesz wyników :)";
+        public static string HelpIdea = $"**:bulb: Mam pomysł na serwer gdzie to napisać?**\n Użyj komendy `!propozycja [tekst]` - Twoja propozycja zostanie przesłana do administracji, jeśli zostanie zatwierdzona, gracze będą mogli nad nią głosować.";
+        public static string HelpPartner = $"**:star2: Chciał bym zostać partnerem? Jakie wymogi muszę spełniać?**\n Żeby zostać naszym partnerem, trzeba spełniać kilka wymogów:\n- Twój serwer musi mieć podobną tematkę\n- Liczba osób na Twoim serwerz musi być przynajmniej połową liczby osób z tego serwera.\n- Twój serwer musi posiadać specjalny kanał, na którym ten serwer zostanie zareklamowany.\n**Jeśli spełniasz powyższe warunki i chcesz nawiązać partnerstwo, napisz do <@&517061559105748993> lub <@&517061604928520202>**";
+        public static string HelpInvite = $"**:incoming_envelope: W jaki sposób mogę zaprosić moich znajomych?**\nUżyj komendy `!link` lub `!zaproszenie` by otrzymać link z zaproszeniem w wiadomości prywatnej. Następnie go przekopiuj i podaj znajomemu :)";
+        public static string HelpCommands = $"**:scroll: Gdzie znajdę listę komend?**\n Listę komend znajdziesz pod komendą: `!komendy`";
+        public static string HelpVIP = $"**{vip} Wszystko o randze <@&517063123690061834>**\n**KUPNO:**\n- Możesz ją kupić w <#545279215025651735> za 5000{coin}\n**Przywileje:**\n- Złoty nick na czacie\n- Darmowa zmiana pseudonimu.\n- Zarobki z daily x2\n- Jego linki są embedowane.\n- Może używać zewnętrznych emoji.";
+        public static string HelpSVIP = $"**{svip} Wszystko o randze <@&517063059659817000>**\n**KUPNO:**\n- Możesz ją kupić w <#545279215025651735> za 10000{coin}\n**Przywileje:**\n- Złoty nick na czacie\n- Darmowa zmiana pseudonimu.\n- Zarobki z daily x3\n- Może wysyłać pliki (w tym obrazki) a jego linki są embedowane.\n- Może wysyłać wiadomości TTS\n- Może używać zewnętrznych emoji.";
+        public static string HelpSponsor = $"**{sponsor} Wszystko o randze <@&517062733699612684>**\n**KUPNO:**\n- Możesz ją kupić w sklepie internetowym za 10zł (wpisz `donate`)\n**Przywileje:**\n- Żółty nick na czacie\n- Darmowa zmiana pseudonimu.\n- Zarobki z daily x5\n- Może wysyłać pliki (w tym obrazki) a jego linki są embedowane.\n- Może wysyłać wiadomości TTS\n- Może używać zewnętrznych emoji.\n- Może oznaczać wszystkich\n- Posiada \"Priorytet Mówienia\" dzięki czemu gdy on mówi - wszyscy go słuchają ;)";
+        public static string HelpAki = $"**:ghost: Mogę popisać z akinatorem?**\nTak! Jedyne czego potrzebujesz to rola **DOSTĘP DO AKINATORA**, którą możesz kupić w <#545279215025651735>";
+        public static string HelpMusic = $"**:musical_note: Mogę posłuchać muzyki?**\nTak! Jedyne czego potrzebujesz to rola **DOSTĘP DO MUZYKI**, którą możesz kupić w <#545279215025651735>";
+        public static string HelpYT = $"**<:blob_youtube:460770184689352705> Wszystko o rangach <@&517063084368723991> <@&517062956022890517> <@&517063026273157120>**\n<@&517063084368723991> - Minimum 300 subskrypcji. Przywileje: Te same co <@&517063123690061834>\n<@&517062956022890517> - Minimum 1000 subskrypcji. Przywileje: Te same co <@&517063059659817000>\n<@&517063026273157120> - Minimum 50 obserwujących. Przywileje: Te same co <@&517063059659817000>";
+        public static string HelpOther = $"**​:helmet_with_cross: Potrzebuje innej pomocy. Mam sprawę do administracji.**\nZostał dla Ciebie utworzony specjalny kanał pomocy. Przejdź do niego, tam znajdziesz kolejne instrukcje.";
     }
 }

@@ -152,7 +152,7 @@ namespace ggwp.Modules
 
         [Cooldown(5)]
         [Command("reverse")]
-        [Alias("odwroc", "odwróć", "odwroctekst")]
+        [Alias("odwroc", "odwróć", "odwroctekst", "odwróćtekst")]
         public async Task TextReverse([Remainder] string text)
         {
             string reversedString = new string(text.Reverse().ToArray());

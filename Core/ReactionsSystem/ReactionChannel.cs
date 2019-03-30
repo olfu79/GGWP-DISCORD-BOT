@@ -12,11 +12,17 @@ namespace ggwp.Core.ReactionsSystem
 
         public ulong age { get; set; }
 
+        public ulong age2 { get; set; }
+
         public ulong gender { get; set; }
+
+        public ulong gender2 { get; set; }
 
         public ulong help { get; set; }
 
         public ulong games { get; set; }
+
+        public ulong games2 { get; set; }
 
         public ulong shop { get; set; }
 
@@ -33,5 +39,9 @@ namespace ggwp.Core.ReactionsSystem
         public ulong fun1 { get; set; }
 
         public ulong fun2 { get; set; }
+
+        public ulong fun3 { get; set; }
+
+        public ulong fun4 { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace ggwp.Core.LevelingSystem
                 bool GiveXP = false;
                 var UserMessages = (await message.Channel.GetMessagesAsync(message, Direction.Before, 2)
                 .FlattenAsync())
-                .Where(x => x.Author == message.Author);
+                .Where(x => x.Author == message.Author);/*Discord.Net.HttpException: „The server responded with error 10003: Unknown Channel”*/
 
                 foreach (var mesage in UserMessages)
                 {

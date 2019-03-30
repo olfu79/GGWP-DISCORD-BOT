@@ -35,5 +35,7 @@ namespace ggwp.Core.GuildAccounts
         public string InviteLink { get; set; }
 
         public long[] OffLevelingChannelsId  { get; set; }
+
+        public bool Rekrutacja { get; set; }
     }
 }

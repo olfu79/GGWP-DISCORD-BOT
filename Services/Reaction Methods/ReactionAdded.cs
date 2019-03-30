@@ -15,10 +15,784 @@ namespace ggwp.Services.Reaction_Methods
 {
     public static class Reaction_Added
     {
-        /*internal static Task ReactionReport(Cacheable<IUserMessage, ulong> arg1, ISocketMessageChannel arg2, SocketReaction arg3)
+        public static async Task ReactionReport(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            throw new NotImplementedException();
-        }*/
+            if(reaction.Emote.Name == "ban")
+            {
+                if (reaction.Channel is IPrivateChannel) return;
+
+                var msg = await cache.GetOrDownloadAsync();
+                await msg.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
+
+                var guildChannel = channel as IGuildChannel;
+                var guild = guildChannel.Guild as SocketGuild;
+
+                string msgLink = "https://discordapp.com/channels/" + guild.Id + "/" + reaction.Channel.Id + "/" + reaction.MessageId;
+
+                string time = DateTime.Now.ToString("dd.MM.yyyy  H:mm:ss");
+
+                var GuildAccount = GuildAccounts.GetAccount(guild);
+
+                var ReportChannelID = GuildAccount.AdmChannelID;
+                var ReportChannel = guild.GetChannel(ReportChannelID) as IMessageChannel;
+
+                string reportedMessageFinal = $"{msg.ToString()}";
+
+                if (Helpers.HasImage(msg) == true)
+                {
+                    reportedMessageFinal = "Obraz.";
+                }
+
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.WithAuthor($"Zgłoszenie Wiadomości.");
+                eb.Author.WithIconUrl("https://cdn0.iconfinder.com/data/icons/feedback-8/24/Negative_Feedback_sad_bad_message-512.png");
+                eb.AddField($"Zgłoszony użytkownik: {msg.Author}", $"Treść: {reportedMessageFinal}");
+                eb.AddField(msgLink, $"Zgłoszone przez gracza {reaction.User}");
+                eb.WithFooter($"✅ -Rozwiązano | 🔎 -Rozpatruje • {time}");
+                eb.WithColor(Color.DarkRed);
+                var msgs = await ReportChannel.SendMessageAsync("", false, eb.Build());
+
+                var rozpatruje = new Emoji("🔎");
+                var rozwiazano = new Emoji("✅");
+                await msgs.AddReactionAsync(rozwiazano);
+                await msgs.AddReactionAsync(rozpatruje);
+            }
+        }
+
+        public static async Task ReactionFun4(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if (reaction.MessageId == ReactionChannels.channels.fun4)
+            {
+                var ReactionUser = (SocketGuildUser)reaction.User;
+                var guildChannel = channel as IGuildChannel;
+                var guild = guildChannel.Guild as SocketGuild;
+                var msg = await cache.GetOrDownloadAsync();
+                var account = UserAccounts.GetAccount(reaction.User.Value);
+
+                if (reaction.User.Value.IsBot) return;
+                else
+                {
+                    await msg.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
+
+                    var guildUser = (SocketGuildUser)reaction.User;
+
+                    if (reaction.Emote.Name == "🌅")
+                    {
+                        var r1 = guild.Roles.FirstOrDefault(x => x.Name == "🌅 Ranny Ptaszek");
+
+                        if (ReactionUser.Roles.Contains(r1))
+                            await guildUser.RemoveRoleAsync(r1);
+                        else
+                            await guildUser.AddRoleAsync(r1);
+                    }
+                    else if (reaction.Emote.Name == "🍎")
+                    {
+                        var r2 = guild.Roles.FirstOrDefault(x => x.Name == "🍎 Fit Człowiek");
+
+                        if (ReactionUser.Roles.Contains(r2))
+                            await guildUser.RemoveRoleAsync(r2);
+                        else
+                            await guildUser.AddRoleAsync(r2);
+                    }
+                    else if (reaction.Emote.Name == "😋")
+                    {
+                        var r3 = guild.Roles.FirstOrDefault(x => x.Name == "😋 Wiecznie głodny");
+
+                        if (ReactionUser.Roles.Contains(r3))
+                            await guildUser.RemoveRoleAsync(r3);
+                        else
+                            await guildUser.AddRoleAsync(r3);
+                    }
+                    else if (reaction.Emote.Name == "😊")
+                    {
+                        var r4 = guild.Roles.FirstOrDefault(x => x.Name == "😊 Miła osóbka");
+
+                        if (ReactionUser.Roles.Contains(r4))
+                            await guildUser.RemoveRoleAsync(r4);
+                        else
+                            await guildUser.AddRoleAsync(r4);
+                    }
+                    else if (reaction.Emote.Name == "👤")
+                    {
+                        var r5 = guild.Roles.FirstOrDefault(x => x.Name == "👤 Samotnik");
+
+                        if (ReactionUser.Roles.Contains(r5))
+                            await guildUser.RemoveRoleAsync(r5);
+                        else
+                            await guildUser.AddRoleAsync(r5);
+                    }
+                    else if (reaction.Emote.Name == "🤔")
+                    {
+                        var r6 = guild.Roles.FirstOrDefault(x => x.Name == "🤔 200IQ");
+
+                        if (ReactionUser.Roles.Contains(r6))
+                            await guildUser.RemoveRoleAsync(r6);
+                        else
+                            await guildUser.AddRoleAsync(r6);
+                    }
+                    else if (reaction.Emote.Name == "🥊")
+                    {
+                        var r7 = guild.Roles.FirstOrDefault(x => x.Name == "🥊 Fajter");
+
+                        if (ReactionUser.Roles.Contains(r7))
+                            await guildUser.RemoveRoleAsync(r7);
+                        else
+                            await guildUser.AddRoleAsync(r7);
+                    }
+                    else if (reaction.Emote.Name == "😉")
+                    {
+                        var r8 = guild.Roles.FirstOrDefault(x => x.Name == "😉 Wyluzowany");
+
+                        if (ReactionUser.Roles.Contains(r8))
+                            await guildUser.RemoveRoleAsync(r8);
+                        else
+                            await guildUser.AddRoleAsync(r8);
+                    }
+                    else if (reaction.Emote.Name == "🛋")
+                    {
+                        var r9 = guild.Roles.FirstOrDefault(x => x.Name == "🛋 Projektant");
+
+                        if (ReactionUser.Roles.Contains(r9))
+                            await guildUser.RemoveRoleAsync(r9);
+                        else
+                            await guildUser.AddRoleAsync(r9);
+                    }
+                    else if (reaction.Emote.Name == "🖼")
+                    {
+                        var r10 = guild.Roles.FirstOrDefault(x => x.Name == "🖼 Grafik");
+
+                        if (ReactionUser.Roles.Contains(r10))
+                            await guildUser.RemoveRoleAsync(r10);
+                        else
+                            await guildUser.AddRoleAsync(r10);
+                    }
+                    else if (reaction.Emote.Name == "🎧")
+                    {
+                        var r11 = guild.Roles.FirstOrDefault(x => x.Name == "🎧 Muzyk");
+
+                        if (ReactionUser.Roles.Contains(r11))
+                            await guildUser.RemoveRoleAsync(r11);
+                        else
+                            await guildUser.AddRoleAsync(r11);
+                    }
+                    else if (reaction.Emote.Name == "📟")
+                    {
+                        var r12 = guild.Roles.FirstOrDefault(x => x.Name == "📟 Hacker");
+
+                        if (ReactionUser.Roles.Contains(r12))
+                            await guildUser.RemoveRoleAsync(r12);
+                        else
+                            await guildUser.AddRoleAsync(r12);
+                    }
+                    else if (reaction.Emote.Name == "🎟")
+                    {
+                        var r13 = guild.Roles.FirstOrDefault(x => x.Name == "🎟 Kolekcjoner");
+
+                        if (ReactionUser.Roles.Contains(r13))
+                            await guildUser.RemoveRoleAsync(r13);
+                        else
+                            await guildUser.AddRoleAsync(r13);
+                    }
+                    else if (reaction.Emote.Name == "🛠")
+                    {
+                        var r14 = guild.Roles.FirstOrDefault(x => x.Name == "🛠 Majster");
+
+                        if (ReactionUser.Roles.Contains(r14))
+                            await guildUser.RemoveRoleAsync(r14);
+                        else
+                            await guildUser.AddRoleAsync(r14);
+                    }
+                    else if (reaction.Emote.Name == "⛹")
+                    {
+                        var r15 = guild.Roles.FirstOrDefault(x => x.Name == "⛹ Sportowiec");
+
+                        if (ReactionUser.Roles.Contains(r15))
+                            await guildUser.RemoveRoleAsync(r15);
+                        else
+                            await guildUser.AddRoleAsync(r15);
+                    }
+                    else if (reaction.Emote.Name == "💅")
+                    {
+                        var r16 = guild.Roles.FirstOrDefault(x => x.Name == "💅 Model");
+
+                        if (ReactionUser.Roles.Contains(r16))
+                            await guildUser.RemoveRoleAsync(r16);
+                        else
+                            await guildUser.AddRoleAsync(r16);
+                    }
+                    else if (reaction.Emote.Name == "🛌")
+                    {
+                        var r17 = guild.Roles.FirstOrDefault(x => x.Name == "🛌 Śpioch");
+
+                        if (ReactionUser.Roles.Contains(r17))
+                            await guildUser.RemoveRoleAsync(r17);
+                        else
+                            await guildUser.AddRoleAsync(r17);
+                    }
+                    else if (reaction.Emote.Name == "⚱")
+                    {
+                        var r18 = guild.Roles.FirstOrDefault(x => x.Name == "⚱ Dzban");
+
+                        if (ReactionUser.Roles.Contains(r18))
+                            await guildUser.RemoveRoleAsync(r18);
+                        else
+                            await guildUser.AddRoleAsync(r18);
+                    }
+                }
+            }
+        }
+
+        public static async Task ReactionFun3(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if (reaction.MessageId == ReactionChannels.channels.fun3)
+            {
+                var ReactionUser = (SocketGuildUser)reaction.User;
+                var guildChannel = channel as IGuildChannel;
+                var guild = guildChannel.Guild as SocketGuild;
+                var msg = await cache.GetOrDownloadAsync();
+                var account = UserAccounts.GetAccount(reaction.User.Value);
+
+                if (reaction.User.Value.IsBot) return;
+                else
+                {
+                    await msg.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
+
+                    var guildUser = (SocketGuildUser)reaction.User;
+
+                    if (reaction.Emote.Name == "💁")
+                    {
+                        var r1 = guild.Roles.FirstOrDefault(x => x.Name == "💁 Atencjusz");
+
+                        if (ReactionUser.Roles.Contains(r1))
+                            await guildUser.RemoveRoleAsync(r1);
+                        else
+                            await guildUser.AddRoleAsync(r1);
+                    }
+                    else if (reaction.Emote.Name == "😁")
+                    {
+                        var r2 = guild.Roles.FirstOrDefault(x => x.Name == "😁 Śmieszek");
+
+                        if (ReactionUser.Roles.Contains(r2))
+                            await guildUser.RemoveRoleAsync(r2);
+                        else
+                            await guildUser.AddRoleAsync(r2);
+                    }
+                    else if (reaction.Emote.Name == "😻")
+                    {
+                        var r3 = guild.Roles.FirstOrDefault(x => x.Name == "😻 Słodziak");
+
+                        if (ReactionUser.Roles.Contains(r3))
+                            await guildUser.RemoveRoleAsync(r3);
+                        else
+                            await guildUser.AddRoleAsync(r3);
+                    }
+                    else if (reaction.Emote.Name == "😎")
+                    {
+                        var r4 = guild.Roles.FirstOrDefault(x => x.Name == "😎 Kozak");
+
+                        if (ReactionUser.Roles.Contains(r4))
+                            await guildUser.RemoveRoleAsync(r4);
+                        else
+                            await guildUser.AddRoleAsync(r4);
+                    }
+                    else if (reaction.Emote.Name == "😏")
+                    {
+                        var r5 = guild.Roles.FirstOrDefault(x => x.Name == "😏 Zboczony");
+
+                        if (ReactionUser.Roles.Contains(r5))
+                            await guildUser.RemoveRoleAsync(r5);
+                        else
+                            await guildUser.AddRoleAsync(r5);
+                    }
+                    else if (reaction.Emote.Name == "😘")
+                    {
+                        var r6 = guild.Roles.FirstOrDefault(x => x.Name == "😘 Podrywacz");
+
+                        if (ReactionUser.Roles.Contains(r6))
+                            await guildUser.RemoveRoleAsync(r6);
+                        else
+                            await guildUser.AddRoleAsync(r6);
+                    }
+                    else if (reaction.Emote.Name == "😜")
+                    {
+                        var r7 = guild.Roles.FirstOrDefault(x => x.Name == "😜 Głupek");
+
+                        if (ReactionUser.Roles.Contains(r7))
+                            await guildUser.RemoveRoleAsync(r7);
+                        else
+                            await guildUser.AddRoleAsync(r7);
+                    }
+                    else if (reaction.Emote.Name == "💬")
+                    {
+                        var r8 = guild.Roles.FirstOrDefault(x => x.Name == "💬 Gaduła");
+
+                        if (ReactionUser.Roles.Contains(r8))
+                            await guildUser.RemoveRoleAsync(r8);
+                        else
+                            await guildUser.AddRoleAsync(r8);
+                    }
+                    else if (reaction.Emote.Name == "🙄")
+                    {
+                        var r9 = guild.Roles.FirstOrDefault(x => x.Name == "🙄 Maruda");
+
+                        if (ReactionUser.Roles.Contains(r9))
+                            await guildUser.RemoveRoleAsync(r9);
+                        else
+                            await guildUser.AddRoleAsync(r9);
+                    }
+                    else if (reaction.Emote.Name == "😠")
+                    {
+                        var r10 = guild.Roles.FirstOrDefault(x => x.Name == "😠 Nerwus");
+
+                        if (ReactionUser.Roles.Contains(r10))
+                            await guildUser.RemoveRoleAsync(r10);
+                        else
+                            await guildUser.AddRoleAsync(r10);
+                    }
+                    else if (reaction.Emote.Name == "🚬")
+                    {
+                        var r11 = guild.Roles.FirstOrDefault(x => x.Name == "🚬 Palacz");
+
+                        if (ReactionUser.Roles.Contains(r11))
+                            await guildUser.RemoveRoleAsync(r11);
+                        else
+                            await guildUser.AddRoleAsync(r11);
+                    }
+                    else if (reaction.Emote.Name == "☁")
+                    {
+                        var r12 = guild.Roles.FirstOrDefault(x => x.Name == "☁ Vaper");
+
+                        if (ReactionUser.Roles.Contains(r12))
+                            await guildUser.RemoveRoleAsync(r12);
+                        else
+                            await guildUser.AddRoleAsync(r12);
+                    }
+                    else if (reaction.Emote.Name == "🍾")
+                    {
+                        var r13 = guild.Roles.FirstOrDefault(x => x.Name == "🍾 Alkoholik");
+
+                        if (ReactionUser.Roles.Contains(r13))
+                            await guildUser.RemoveRoleAsync(r13);
+                        else
+                            await guildUser.AddRoleAsync(r13);
+                    }
+                    else if (reaction.Emote.Name == "👥")
+                    {
+                        var r14 = guild.Roles.FirstOrDefault(x => x.Name == "👥 Nolife");
+
+                        if (ReactionUser.Roles.Contains(r14))
+                            await guildUser.RemoveRoleAsync(r14);
+                        else
+                            await guildUser.AddRoleAsync(r14);
+                    }
+                    else if (reaction.Emote.Name == "😈")
+                    {
+                        var r15 = guild.Roles.FirstOrDefault(x => x.Name == "😈 Diabełek");
+
+                        if (ReactionUser.Roles.Contains(r15))
+                            await guildUser.RemoveRoleAsync(r15);
+                        else
+                            await guildUser.AddRoleAsync(r15);
+                    }
+                    else if (reaction.Emote.Name == "👫")
+                    {
+                        var r16 = guild.Roles.FirstOrDefault(x => x.Name == "👫 Przyjacielski");
+
+                        if (ReactionUser.Roles.Contains(r16))
+                            await guildUser.RemoveRoleAsync(r16);
+                        else
+                            await guildUser.AddRoleAsync(r16);
+                    }
+                    else if (reaction.Emote.Name == "😝")
+                    {
+                        var r17 = guild.Roles.FirstOrDefault(x => x.Name == "😝 Pozytywnie walnięty");
+
+                        if (ReactionUser.Roles.Contains(r17))
+                            await guildUser.RemoveRoleAsync(r17);
+                        else
+                            await guildUser.AddRoleAsync(r17);
+                    }
+                    else if (reaction.Emote.Name == "🤸")
+                    {
+                        var r18 = guild.Roles.FirstOrDefault(x => x.Name == "🤸 Kierownik imprezy");
+
+                        if (ReactionUser.Roles.Contains(r18))
+                            await guildUser.RemoveRoleAsync(r18);
+                        else
+                            await guildUser.AddRoleAsync(r18);
+                    }
+                    else if (reaction.Emote.Name == "🍞")
+                    {
+                        var r19 = guild.Roles.FirstOrDefault(x => x.Name == "🍞 Memiarz");
+
+                        if (ReactionUser.Roles.Contains(r19))
+                            await guildUser.RemoveRoleAsync(r19);
+                        else
+                            await guildUser.AddRoleAsync(r19);
+                    }
+                    else if (reaction.Emote.Name == "🌜")
+                    {
+                        var r20 = guild.Roles.FirstOrDefault(x => x.Name == "🌜 Nocny marek");
+
+                        if (ReactionUser.Roles.Contains(r20))
+                            await guildUser.RemoveRoleAsync(r20);
+                        else
+                            await guildUser.AddRoleAsync(r20);
+                    }
+                }
+            }
+        }
+
+        public static async Task ReactionWiek2(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if (reaction.MessageId == ReactionChannels.channels.age2)
+            {
+                var guildUser = (SocketGuildUser)reaction.User;
+                var guildChannel = channel as IGuildChannel;
+                var guild = guildChannel.Guild as SocketGuild;
+
+                var msg = await cache.GetOrDownloadAsync();
+
+                if (reaction.User.Value.IsBot) return;
+                else
+                {
+                    await msg.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
+
+                    if (reaction.Emote.Name == "\u0031\u20e3")
+                    {
+                        var r1 = guild.Roles.FirstOrDefault(x => x.Name == "13+");
+                        var r2 = guild.Roles.FirstOrDefault(x => x.Name == "14+");
+                        var r3 = guild.Roles.FirstOrDefault(x => x.Name == "15+");
+                        var r4 = guild.Roles.FirstOrDefault(x => x.Name == "16+");
+                        var r5 = guild.Roles.FirstOrDefault(x => x.Name == "17+");
+                        var r6 = guild.Roles.FirstOrDefault(x => x.Name == "18+");
+
+                        await guildUser.AddRoleAsync(r1);
+
+                        await guildUser.RemoveRoleAsync(r2);
+                        await guildUser.RemoveRoleAsync(r3);
+                        await guildUser.RemoveRoleAsync(r4);
+                        await guildUser.RemoveRoleAsync(r5);
+                        await guildUser.RemoveRoleAsync(r6);
+                    }
+                    else if (reaction.Emote.Name == "\u0032\u20e3")
+                    {
+                        var r1 = guild.Roles.FirstOrDefault(x => x.Name == "13+");
+                        var r2 = guild.Roles.FirstOrDefault(x => x.Name == "14+");
+                        var r3 = guild.Roles.FirstOrDefault(x => x.Name == "15+");
+                        var r4 = guild.Roles.FirstOrDefault(x => x.Name == "16+");
+                        var r5 = guild.Roles.FirstOrDefault(x => x.Name == "17+");
+                        var r6 = guild.Roles.FirstOrDefault(x => x.Name == "18+");
+
+                        await guildUser.AddRoleAsync(r2);
+
+                        await guildUser.RemoveRoleAsync(r1);
+                        await guildUser.RemoveRoleAsync(r3);
+                        await guildUser.RemoveRoleAsync(r4);
+                        await guildUser.RemoveRoleAsync(r5);
+                        await guildUser.RemoveRoleAsync(r6);
+                    }
+                    else if (reaction.Emote.Name == "\u0033\u20e3")
+                    {
+                        var r1 = guild.Roles.FirstOrDefault(x => x.Name == "13+");
+                        var r2 = guild.Roles.FirstOrDefault(x => x.Name == "14+");
+                        var r3 = guild.Roles.FirstOrDefault(x => x.Name == "15+");
+                        var r4 = guild.Roles.FirstOrDefault(x => x.Name == "16+");
+                        var r5 = guild.Roles.FirstOrDefault(x => x.Name == "17+");
+                        var r6 = guild.Roles.FirstOrDefault(x => x.Name == "18+");
+
+                        await guildUser.AddRoleAsync(r3);
+
+                        await guildUser.RemoveRoleAsync(r2);
+                        await guildUser.RemoveRoleAsync(r1);
+                        await guildUser.RemoveRoleAsync(r4);
+                        await guildUser.RemoveRoleAsync(r5);
+                        await guildUser.RemoveRoleAsync(r6);
+                    }
+                    else if (reaction.Emote.Name == "\u0034\u20e3")
+                    {
+                        var r1 = guild.Roles.FirstOrDefault(x => x.Name == "13+");
+                        var r2 = guild.Roles.FirstOrDefault(x => x.Name == "14+");
+                        var r3 = guild.Roles.FirstOrDefault(x => x.Name == "15+");
+                        var r4 = guild.Roles.FirstOrDefault(x => x.Name == "16+");
+                        var r5 = guild.Roles.FirstOrDefault(x => x.Name == "17+");
+                        var r6 = guild.Roles.FirstOrDefault(x => x.Name == "18+");
+
+                        await guildUser.AddRoleAsync(r4);
+
+                        await guildUser.RemoveRoleAsync(r2);
+                        await guildUser.RemoveRoleAsync(r3);
+                        await guildUser.RemoveRoleAsync(r1);
+                        await guildUser.RemoveRoleAsync(r5);
+                        await guildUser.RemoveRoleAsync(r6);
+                    }
+                    else if (reaction.Emote.Name == "\u0035\u20e3")
+                    {
+                        var r1 = guild.Roles.FirstOrDefault(x => x.Name == "13+");
+                        var r2 = guild.Roles.FirstOrDefault(x => x.Name == "14+");
+                        var r3 = guild.Roles.FirstOrDefault(x => x.Name == "15+");
+                        var r4 = guild.Roles.FirstOrDefault(x => x.Name == "16+");
+                        var r5 = guild.Roles.FirstOrDefault(x => x.Name == "17+");
+                        var r6 = guild.Roles.FirstOrDefault(x => x.Name == "18+");
+
+                        await guildUser.AddRoleAsync(r5);
+
+                        await guildUser.RemoveRoleAsync(r2);
+                        await guildUser.RemoveRoleAsync(r3);
+                        await guildUser.RemoveRoleAsync(r4);
+                        await guildUser.RemoveRoleAsync(r1);
+                        await guildUser.RemoveRoleAsync(r6);
+                    }
+                    else if (reaction.Emote.Name == "\u0036\u20e3")
+                    {
+                        var r1 = guild.Roles.FirstOrDefault(x => x.Name == "13+");
+                        var r2 = guild.Roles.FirstOrDefault(x => x.Name == "14+");
+                        var r3 = guild.Roles.FirstOrDefault(x => x.Name == "15+");
+                        var r4 = guild.Roles.FirstOrDefault(x => x.Name == "16+");
+                        var r5 = guild.Roles.FirstOrDefault(x => x.Name == "17+");
+                        var r6 = guild.Roles.FirstOrDefault(x => x.Name == "18+");
+
+                        await guildUser.AddRoleAsync(r6);
+
+                        await guildUser.RemoveRoleAsync(r2);
+                        await guildUser.RemoveRoleAsync(r3);
+                        await guildUser.RemoveRoleAsync(r4);
+                        await guildUser.RemoveRoleAsync(r5);
+                        await guildUser.RemoveRoleAsync(r1);
+                    }
+                }
+            }
+        }
+
+        public static async Task ReactionPlec2(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if (reaction.MessageId == ReactionChannels.channels.gender2)
+            {
+                var ReactionUser = (SocketGuildUser)reaction.User;
+                var guildChannel = channel as IGuildChannel;
+                var guild = guildChannel.Guild as SocketGuild;
+                var msg = await cache.GetOrDownloadAsync();
+
+                if (reaction.User.Value.IsBot) return;
+                else
+                {
+                    await msg.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
+                    var guildUser = (SocketGuildUser)reaction.User;
+
+                    if (reaction.Emote.Name == "🚹")
+                    {
+                        var AddRole = guild.Roles.FirstOrDefault(x => x.Name == "♂️");
+                        var DelRole = guild.Roles.FirstOrDefault(x => x.Name == "♀️");
+
+                        await guildUser.AddRoleAsync(AddRole);
+                        await guildUser.RemoveRoleAsync(DelRole);
+                    }
+                    else if (reaction.Emote.Name == "🚺")
+                    {
+                        var AddRole = guild.Roles.FirstOrDefault(x => x.Name == "♀️");
+                        var DelRole = guild.Roles.FirstOrDefault(x => x.Name == "♂️");
+
+                        await guildUser.AddRoleAsync(AddRole);
+                        await guildUser.RemoveRoleAsync(DelRole);
+                    }
+                }
+            }
+        }
+
+        public static async Task ReactionGames2(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if (reaction.MessageId == ReactionChannels.channels.games2)
+            {
+
+                var ReactionUser = (SocketGuildUser)reaction.User;
+                var guildChannel = channel as IGuildChannel;
+                var guild = guildChannel.Guild as SocketGuild;
+
+                var account = UserAccounts.GetAccount(reaction.User.Value);
+
+                var msg = await cache.GetOrDownloadAsync();
+
+                if (reaction.User.Value.IsBot) return;
+                else
+                {
+                    await msg.RemoveReactionAsync(reaction.Emote, reaction.User.Value);
+
+                    var guildUser = (SocketGuildUser)reaction.User;
+
+                    if (reaction.Emote.Name == "apex")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "APEX");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "minecraft")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "MINECRAFT");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "wow")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "WORLD OF WARCRAFT");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "wot")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "WORLD OF TANKS");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "unturned")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "UNTURNED");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "rdr2")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "RDR 2");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "pubg")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "PUBG");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "fortnite")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "FORTNITE");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "csgo")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "CS:GO");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "hearthstone")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "HEARTHSTONE");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "rocketleague")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "ROCKET LEAGUE");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "roblox")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "ROBLOX");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "gta")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "GTA V");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "lol")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "LOL");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "ov")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "OVERWATCH");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "heroes7")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "HEROES 7");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "fifa")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "FIFA 19");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "forest")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "THE FOREST");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                    else if (reaction.Emote.Name == "ets2")
+                    {
+                        var r = guild.Roles.FirstOrDefault(x => x.Name == "ETS 2");
+
+                        if (ReactionUser.Roles.Contains(r))
+                            await guildUser.RemoveRoleAsync(r);
+                        else
+                            await guildUser.AddRoleAsync(r);
+                    }
+                }
+            }
+        }
 
         public static async Task ReactionGames(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
         {
@@ -630,15 +1404,28 @@ namespace ggwp.Services.Reaction_Methods
 
                 //msg sloty
                 EmbedBuilder slots = new EmbedBuilder();
-                slots.AddField("Sloty", $"```,```");
+                slots.AddField("🎰 JEDNORĘKI BANDYTA ", $"```yaml\nZAREAGUJ ABY ZAGRAĆ```");
+                slots.AddField("Nagrody:", "\u0037\u20e3 x2 | 🍇 x4 | ⭐ x8 | 🍑 x10 | 🍊 x15 | 🍫 x20 | 🔔 x25", true);
+                slots.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
                 slots.WithColor(Color.DarkBlue);
                 //msg ruletka
+                var red = Emote.Parse("<:red:546427447797612546>");
+                var green = Emote.Parse("<:green:546426978820030464>");
+
                 EmbedBuilder rulette = new EmbedBuilder();
-                rulette.AddField("Ruletka", $"```,```");
+                rulette.AddField("🏵 RULETKA ", $"```yaml\nZAREAGUJ ABY ZAGRAĆ```");
+                rulette.AddField("Nagrody:", $"{red} x2 | ⬛ x2 │ {green} x25", true);
+                rulette.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
                 rulette.WithColor(Color.DarkGreen);
                 //msg coinflip
+                string drawing = "https://thumbs.gfycat.com/BabyishShrillKomododragon-small.gif";
+
                 EmbedBuilder coinflip = new EmbedBuilder();
-                coinflip.AddField("Coinflip", $"```,```");
+                coinflip.WithThumbnailUrl(drawing);
+                coinflip.WithTitle($"{Messages.coin} Coinflip");
+                coinflip.WithDescription("```yaml\nZAREAGUJ ABY ZAGRAĆ```");
+                coinflip.AddField("Nagrody:", $"🏆 Orzeł - wygrana, 😟 Reszka - przegrana", true);
+                coinflip.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
                 coinflip.WithColor(Color.Gold);
 
                 if (reaction.User.Value.IsBot) return;
@@ -686,23 +1473,14 @@ namespace ggwp.Services.Reaction_Methods
                     fslots.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
                     fslots.WithColor(Color.DarkBlue);
                     //ruletka stuff
-                    uint roulettemultiplier = 1;
-                    uint option = 0;
-                    uint userchoice = 0;
                     string depmessage = "㊙ Przepraszam, wystąpił błąd.";
                     string colors = "";
-
-                    var red = Emote.Parse("<:red:546427447797612546>");
-                    var green = Emote.Parse("<:green:546426978820030464>");
 
                     EmbedBuilder frulette = new EmbedBuilder();
                     frulette.AddField("🏵 RULETKA ", $"\n{colors}");
                     frulette.AddField("Nagrody:", $"{red} x2 | ⬛ x2 │ {green} x25", true);
                     frulette.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
                     frulette.WithColor(Color.DarkGreen);
-
-                    //coinflip stuff
-
                     //bones stuff
 
                     if (reaction.Emote.Name == "◀")
@@ -1344,10 +2122,24 @@ namespace ggwp.Services.Reaction_Methods
                     }
                     else if (reaction.Emote.Name == "🆓")//Daily money
                     {
-                        var result = Daily.GetDaily(reaction.User.Value);
+                        var result = Daily.GetDaily((SocketGuildUser)reaction.User.Value);
                         if (result.Success)
                         {
-                            var MessageSuccess = await channel.SendMessageAsync(Messages.BankDailySuccess(reaction.User.Value));
+                            var ReactionUser = (SocketGuildUser)reaction.User;
+                            uint monneyammount = 200;
+
+                            var rVip = ReactionUser.Guild.Roles.FirstOrDefault(x => x.Name == "VIP");
+                            var rSvip = ReactionUser.Guild.Roles.FirstOrDefault(x => x.Name == "SVIP");
+                            var rSponsor = ReactionUser.Guild.Roles.FirstOrDefault(x => x.Name == "SPONSOR");
+
+                            if (ReactionUser.Roles.Contains(rVip))
+                                monneyammount = 400;
+                            if (ReactionUser.Roles.Contains(rSvip))
+                                monneyammount = 600;
+                            if (ReactionUser.Roles.Contains(rSponsor))
+                                monneyammount = 1000;
+
+                            var MessageSuccess = await channel.SendMessageAsync(Messages.BankDailySuccess(reaction.User.Value, monneyammount));
                             await Helpers.RemoveMessage(MessageSuccess);
                         }
                         else
@@ -1398,7 +2190,7 @@ namespace ggwp.Services.Reaction_Methods
                 return;
             }
 
-            bool TryParseResult = await Helpers.TryToParse(value);
+            bool TryParseResult = Helpers.TryToParse(value);
             if (TryParseResult is true)
             {
                 x = ulong.Parse(value);
@@ -1459,7 +2251,7 @@ namespace ggwp.Services.Reaction_Methods
                 return;
             }
 
-            bool TryParseResult = await Helpers.TryToParse(value);
+            bool TryParseResult = Helpers.TryToParse(value);
             if(TryParseResult is true)
             {
                 x = ulong.Parse(value);
@@ -1500,10 +2292,9 @@ namespace ggwp.Services.Reaction_Methods
             var GuildAccount = GuildAccounts.GetAccount(guild);
             var UserAccount = UserAccounts.GetAccount(reaction.User.Value);
 
-            //msg ruletka
-            EmbedBuilder rulette = new EmbedBuilder();
-            rulette.AddField("Ruletka", $"```,```");
-            rulette.WithColor(Color.DarkGreen);
+            //emotes
+            var red = Emote.Parse("<:red:546427447797612546>");
+            var green = Emote.Parse("<:green:546426978820030464>");
 
             //rulette stuff
             uint roulettemultiplier = 1;
@@ -1511,9 +2302,6 @@ namespace ggwp.Services.Reaction_Methods
             uint userchoice = 0;
             string depmessage = "㊙ Przepraszam, wystąpił błąd.";
             string colors = "";
-
-            var red = Emote.Parse("<:red:546427447797612546>");
-            var green = Emote.Parse("<:green:546426978820030464>");
 
             Random rndom = new Random();
             var r = rndom.Next(1, 100);
@@ -1640,11 +2428,6 @@ namespace ggwp.Services.Reaction_Methods
             var GuildAccount = GuildAccounts.GetAccount(guild);
             var UserAccount = UserAccounts.GetAccount(reaction.User.Value);
 
-            //msg coinflip
-            EmbedBuilder rulette = new EmbedBuilder();
-            rulette.AddField("Coinflip", $"```,```");
-            rulette.WithColor(Color.Gold);
-
             //coinflip stuff
             string depmessage = "㊙ Przepraszam, wystąpił błąd.";
 
@@ -1674,7 +2457,7 @@ namespace ggwp.Services.Reaction_Methods
             f1coinflip.WithThumbnailUrl(drawing);
             f1coinflip.WithTitle($"{Messages.coin} Coinflip");
             f1coinflip.WithDescription("**Losowanie...**");
-            f1coinflip.AddField("Nagrody:", $"{Messages.coin} Orzeł - wygrana, {Messages.coin} Reszka - przegrana", true);
+            f1coinflip.AddField("Nagrody:", $"🏆 Orzeł - wygrana, 😟 Reszka - przegrana", true);
             f1coinflip.AddField("Cennik:", "❤ 100 | 💛 500 | 💚 1000 | 💙 5000 | 💜 10 000 | 🖤 50 000 ", true);
             f1coinflip.WithColor(Color.Gold);
 
@@ -1732,7 +2515,7 @@ namespace ggwp.Services.Reaction_Methods
 
                 try
                 {
-                    var tuple = await Helpers.GetMeme();
+                    var tuple = Helpers.GetMeme();
                     MemeUrl = tuple.url;
                     MemeAlt = tuple.alt;
                 }
@@ -1741,7 +2524,7 @@ namespace ggwp.Services.Reaction_Methods
 
                 }
 
-                string JokeUrl = await Helpers.GetJoke();
+                string JokeUrl = Helpers.GetJoke();
 
                 EmbedBuilder ebMeme = new EmbedBuilder();
                 ebMeme.WithTitle(MemeAlt);
@@ -1792,10 +2575,10 @@ namespace ggwp.Services.Reaction_Methods
                 var GuildAccount = GuildAccounts.GetAccount(guild);
                 var UserAccount = UserAccounts.GetAccount(reaction.User.Value);
                 //emojis
-                var coin = Emote.Parse("<:coin:462351821910835200>");
-                var vip = Emote.Parse("<:supervip:462351820501549066>");
-                var svip = Emote.Parse("<:ultravip:462351820308873246>");
-                var sponsor = Emote.Parse("<:sponsor:462351820006883340>");
+                var coin = Emote.Parse(Messages.coin);
+                var vip = Emote.Parse(Messages.vip);
+                var svip = Emote.Parse(Messages.svip);
+                var sponsor = Emote.Parse(Messages.sponsor);
                 //roles
                 var RoleVIP = guild.Roles.FirstOrDefault(x => x.Name == "VIP");
                 var RoleSVIP = guild.Roles.FirstOrDefault(x => x.Name == "SVIP");
@@ -2853,7 +3636,7 @@ namespace ggwp.Services.Reaction_Methods
                     {
                         string botmsg = Messages.HelpPartner;
                         var MsgToDelete = await channel.SendMessageAsync(botmsg);
-                        await Helpers.RemoveMessage(MsgToDelete, 8);
+                        await Helpers.RemoveMessage(MsgToDelete, 10);
                     }
                     else if (reaction.Emote.Name == "📨")
                     {
@@ -2867,23 +3650,23 @@ namespace ggwp.Services.Reaction_Methods
                         var MsgToDelete = await channel.SendMessageAsync(botmsg);
                         await Helpers.RemoveMessage(MsgToDelete, 8);
                     }
-                    else if (reaction.Emote.Name == "supervip")
+                    else if (reaction.Emote.Name == "vip")
                     {
                         string botmsg = Messages.HelpVIP;
                         var MsgToDelete = await channel.SendMessageAsync(botmsg);
-                        await Helpers.RemoveMessage(MsgToDelete, 8);
+                        await Helpers.RemoveMessage(MsgToDelete, 10);
                     }
-                    else if (reaction.Emote.Name == "ultravip")
+                    else if (reaction.Emote.Name == "svip")
                     {
                         string botmsg = Messages.HelpSVIP;
                         var MsgToDelete = await channel.SendMessageAsync(botmsg);
-                        await Helpers.RemoveMessage(MsgToDelete, 8);
+                        await Helpers.RemoveMessage(MsgToDelete, 10);
                     }
                     else if (reaction.Emote.Name == "sponsor")
                     {
                         string botmsg = Messages.HelpSponsor;
                         var MsgToDelete = await channel.SendMessageAsync(botmsg);
-                        await Helpers.RemoveMessage(MsgToDelete, 8);
+                        await Helpers.RemoveMessage(MsgToDelete, 10);
                     }
                     else if (reaction.Emote.Name == "👻")
                     {
@@ -2901,13 +3684,59 @@ namespace ggwp.Services.Reaction_Methods
                     {
                         string botmsg = Messages.HelpYT;
                         var MsgToDelete = await channel.SendMessageAsync(botmsg);
-                        await Helpers.RemoveMessage(MsgToDelete, 8);
+                        await Helpers.RemoveMessage(MsgToDelete, 10);
                     }
                     else if (reaction.Emote.Name == "⛑")
                     {
-                        string botmsg = Messages.HelpOther;
-                        var MsgToDelete = await channel.SendMessageAsync(botmsg);
-                        await Helpers.RemoveMessage(MsgToDelete, 8);
+                        var account = UserAccounts.GetAccount(reaction.User.Value);
+                        bool helpinprog = account.HelpInProgress;
+
+                        if (helpinprog == false)
+                        {
+                            var guildUser = (SocketGuildUser)reaction.User;
+
+                            var stazysta = guild.Roles.FirstOrDefault(x => x.Name == "STAŻYSTA");
+                            var pomocnik = guild.Roles.FirstOrDefault(x => x.Name == "POMOCNIK");
+                            var pomocnikP = guild.Roles.FirstOrDefault(x => x.Name == "POMOCNIK+");
+                            var Modetator = guild.Roles.FirstOrDefault(x => x.Name == "MODERATOR");
+                            var Administrator = guild.Roles.FirstOrDefault(x => x.Name == "ADMIN");
+
+                            ulong helpChannelId = account.HelpChannelID;
+
+                            Random rnd = new Random();
+                            int channelName = rnd.Next(1000, 9999);
+
+                            var CreateChannel = await guild.CreateTextChannelAsync($"POMOC-{channelName.ToString()}");
+
+                            account.HelpChannelID = CreateChannel.Id;
+                            account.HelpInProgress = true;
+                            UserAccounts.SaveAccounts();
+
+                            var perms = new OverwritePermissions(readMessages: PermValue.Deny);
+                            await CreateChannel.AddPermissionOverwriteAsync(guild.EveryoneRole, perms);
+
+                            perms = new OverwritePermissions(readMessages: PermValue.Allow);
+                            await CreateChannel.AddPermissionOverwriteAsync(guildUser, perms);
+                            await CreateChannel.AddPermissionOverwriteAsync(pomocnik, perms);
+                            await CreateChannel.AddPermissionOverwriteAsync(pomocnikP, perms);
+                            await CreateChannel.AddPermissionOverwriteAsync(Modetator, perms);
+                            await CreateChannel.AddPermissionOverwriteAsync(stazysta, perms);
+                            await CreateChannel.AddPermissionOverwriteAsync(Administrator, perms);
+
+                            var category = guild.CategoryChannels.FirstOrDefault(chan => chan.Id == 517076520330854410);
+                            await CreateChannel.ModifyAsync(chan => chan.CategoryId = category.Id);
+
+                            await CreateChannel.SendMessageAsync($"{stazysta.Mention} {pomocnik.Mention} {pomocnikP.Mention} {Modetator.Mention} {Administrator.Mention}\n {guildUser.Mention} **Opisz tutaj swój problem i poczekaj, aż ktoś z administracji udzieli Ci pomocy.**\nKiedy uzyskasz pomoc wpisz `!rozwiązano` lub `!rozwiazano` aby zamknąć kanał.");
+
+                            string botmsg = Messages.HelpOther;
+                            var MsgToDelete = await channel.SendMessageAsync(botmsg);
+                            await Helpers.RemoveMessage(MsgToDelete, 5);
+                        }
+                        else
+                        {
+                            var ms = await reaction.Channel.SendMessageAsync($"{Messages.wrong} Nie możesz stworzyć kolejnego kanału pomocy. Upewnij się że zamknąłeś swój aktualny kanał pomocy komendą `!rozwiązano`");
+                            await Helpers.RemoveMessage(ms, 5);
+                        }
                     }
                 }
             }

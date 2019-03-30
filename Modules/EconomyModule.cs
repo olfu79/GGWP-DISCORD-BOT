@@ -23,7 +23,7 @@ namespace ggwp.Modules
     {
         [Cooldown(5)]
         [Command("stankonta")]
-        [Alias("kasa", "stan konta", "pieniadze", "pieniądze")]
+        [Alias("kasa", "stan konta", "pieniadze", "pieniądze", "money")]
         public async Task Balance()
         {           
             await EconomyService.BalanceCommandErrorMessage(Context.Guild, Context.Channel);
@@ -31,7 +31,7 @@ namespace ggwp.Modules
 
         [Cooldown(5)]
         [Command("przelew")]
-        [Alias("przelej", "przekaż")]
+        [Alias("przelej", "przekaż", "płać", "plac", "pay")]
         public async Task TransferMoney(IGuildUser user, ulong MoneyToTransfer)
         {
             await EconomyService.TransferMoney(Context.Guild, Context.Channel, Context.Message, (IGuildUser)Context.User, user, MoneyToTransfer);

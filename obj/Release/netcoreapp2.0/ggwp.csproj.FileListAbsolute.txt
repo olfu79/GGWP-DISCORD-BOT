@@ -1,0 +1,12 @@
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\obj\Release\netcoreapp2.0\ggwp.csproj.CoreCompileInputs.cache
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\obj\Release\netcoreapp2.0\ggwp.AssemblyInfoInputs.cache
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\obj\Release\netcoreapp2.0\ggwp.AssemblyInfo.cs
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\obj\Release\netcoreapp2.0\ggwp.csprojAssemblyReference.cache
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\bin\Release\netcoreapp2.0\ggwp.dll.config
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\bin\Release\netcoreapp2.0\ggwp.deps.json
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\bin\Release\netcoreapp2.0\ggwp.runtimeconfig.json
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\bin\Release\netcoreapp2.0\ggwp.runtimeconfig.dev.json
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\bin\Release\netcoreapp2.0\ggwp.dll
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\bin\Release\netcoreapp2.0\ggwp.pdb
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\obj\Release\netcoreapp2.0\ggwp.dll
+C:\Users\wojda\Desktop\kody\GGWP\ggwp\ggwp\obj\Release\netcoreapp2.0\ggwp.pdb

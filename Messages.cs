@@ -262,6 +262,7 @@ namespace ggwp
             eb.Author.WithIconUrl("https://cdn3.iconfinder.com/data/icons/mobile-apps-settings-ii-flat-multicolor-background/2048/458_-_Language__input-512.png");
             eb.AddField("PIENIĄDZE",
                 "**Komenda**: `stankonta`\n**Opis**: Wyświetla informacje instruującą gdzie sprawdzić swój stan konta.\n**Aliasy**: `stan konta`, `kasa`, `money`, `pieniądze`, `pieniadze`\n\n" +
+                "**Komenda**: `praca`\n**Opis**: Pozwala pracować i zarabiać pieniądze.\n**Aliasy**: `pracuj`, `job`\n\n" +
                 "**Komenda**: `daily`\n**Opis**: Wyświetla informacje instruującą gdzie odebrać codzienną nagrodę.\n**Aliasy**: `dzienna`, `free`\n\n" +
                 "**Komenda**: `przelew <osoba> <kwota>`\n**Opis**: Przelej daną kwotę pieniędzy danej osobie.\n**Aliasy**: `przelej`, `przekaż`, `plac`, `płać`, `pay`\n\n");
             eb.WithColor(new Color(0, 129, 140));

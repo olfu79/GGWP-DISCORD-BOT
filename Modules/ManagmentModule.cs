@@ -13,6 +13,7 @@ using Discord.Rest;
 
 using ggwp.Services.Managment_Methods;
 using ggwp.Core.GuildAccounts;
+using ggwp.Core.UserAccounts;
 
 namespace ggwp.Modules
 {
@@ -36,7 +37,7 @@ namespace ggwp.Modules
 
         [Command("warn")]
         [Alias("ostrzezenie", "ostrzeżenie")]
-        [RequireUserPermission(GuildPermission.KickMembers)]
+        [RequireUserPermission(GuildPermission.ManageNicknames)]
         public async Task WarnUser(IGuildUser user, [Remainder] string reason = "Brak.")
         {
             //sprawdzić kogo warnuje - permy
@@ -72,7 +73,7 @@ namespace ggwp.Modules
 
         [Command("awans")]
         [Alias("awansuj", "dodaj role", "dodajrole")]
-        [RequireUserPermission(GuildPermission.ManageWebhooks)]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task PromoteUser(IGuildUser user, IRole role, [Remainder] string reason = "Brak.")
         {
             //dodać żeby nie mogło dawać ról wyższych niż svip chyba że ktoś jest ownerem
@@ -81,7 +82,7 @@ namespace ggwp.Modules
 
         [Command("degrad")]
         [Alias("degraduj", "usunrole", "usun role", "usuńrole", "usuń role")]
-        [RequireUserPermission(GuildPermission.ManageWebhooks)]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task DemoteUser(IGuildUser user, IRole role, [Remainder] string reason = "Brak.")
         {
             //dodać żeby nie mogło usuwać ról wyższych niż svip chyba że ktoś jest ownerem
@@ -152,6 +153,36 @@ namespace ggwp.Modules
         public async Task Giveaway(uint TimeInHours, uint Money = 0, IRole role = null)
         {
             await ManagmentService.Giveaway(Context.Guild, Context.Message, TimeInHours, Money, role);
+        }
+
+        [Command("userinfo", RunMode = RunMode.Async)]
+        [Alias("user", "ui")]
+        [RequireUserPermission(GuildPermission.ManageNicknames)]
+        public async Task UserInfo(IUser user)
+        {
+            var UserAccount = UserAccounts.GetAccount(user);
+
+            string avatar = user.GetAvatarUrl();
+            string userlvl = UserAccount.LevelNumber.ToString();
+            string userexp = UserAccount.XP.ToString();
+            string username = user.Username;
+            string moneyw = UserAccount.MoneyWallet.ToString();
+            string moneyac = UserAccount.MoneyAccount.ToString();
+            string NoWarns = UserAccount.Warns.ToString();
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor($"Profil gracza {username}");
+            eb.Author.WithIconUrl(avatar);
+            eb.WithThumbnailUrl(avatar);
+            eb.AddField("Nazwa:", $"{username}", true);
+            eb.AddField("Liczba ostrzeżeń:", $"{NoWarns}/5", true);
+            eb.AddField("Poziom:", $"{userlvl} lvl", true);
+            eb.AddField("Exp:", $"{userexp} xp", true);
+            eb.AddField("Portfel:", $"{moneyw} {Messages.coin}", true);
+            eb.AddField("Konto:", $"{moneyac} {Messages.coin}", true);
+            eb.WithColor(Color.DarkGrey);
+
+            await Context.Channel.SendMessageAsync("", false, eb.Build());
         }
     }
 }

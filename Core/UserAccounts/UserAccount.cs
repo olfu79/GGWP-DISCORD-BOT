@@ -28,6 +28,8 @@ namespace ggwp.Core.UserAccounts
 
         public DateTime LastDaily { get; set; } = DateTime.UtcNow.AddDays(-2);
 
+        public DateTime LastJob { get; set; } = DateTime.UtcNow.AddDays(-2);
+
         public DateTime UnmuteTime { get; set; } = DateTime.MinValue;
 
         public ulong PrivateChannelID { get; set; }

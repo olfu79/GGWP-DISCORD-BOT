@@ -24,5 +24,23 @@
       517792562489327617
     ],
     "Rekrutacja": false
+  },
+  {
+    "ID": 558711824586113035,
+    "PenaltyChannelID": 0,
+    "AnnouncmentChannelID": 0,
+    "VoteChannelID": 0,
+    "BankChannelID": 0,
+    "WelcomeChannelID": 0,
+    "CountingChannelID": 0,
+    "MemesChannelID": 0,
+    "GiveawayChannelID": 0,
+    "ShopPage": 0,
+    "GamblingPage": 0,
+    "AdmChannelID": 0,
+    "SuggestionsChannelID": 0,
+    "InviteLink": null,
+    "OffLevelingChannelsId": null,
+    "Rekrutacja": false
   }
 ]

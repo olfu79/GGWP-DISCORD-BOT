@@ -229,6 +229,275 @@ namespace ggwp.Modules
                 await Helpers.RemoveMessage(msg);
             }
         }
+        [Command("praca")]
+        [Alias("pracuj", "job")]
+        public async Task Job()
+        {
+            await Context.Message.DeleteAsync();
+
+            string GoodEvent;
+            string BadEvent;
+            const int OrderValue = 20;
+            int award = 0;
+
+            string[] jobs = { "doradzca finansowy", "projektant", "bankier", "fryzjer", "policjant", "strażak", "złodziej", "listonosz", "grabarz", "kasjer", "kucharz", "kelner", "lekarz", "informatyk", "ochroniarz", "prawnik", "taksówkarz", "mechanik", "diler narkotyków", "nauczyciel", "ksiądz", "dziennikarz", "kierowca tira", "pilot samolotu", "prostytutka", "tancerz", "wokalista", "żołnierz", "trener", "tatuażysta", "kurier" };
+
+            Random rand = new Random();
+
+            string RandomJob = jobs[rand.Next(jobs.Length)];
+            int NumberOfOrders = rand.Next(1, 15);
+            int IsAdditionalEvent = rand.Next(0,2);
+            int AdditionaEventAward = rand.Next(5, 30);
+
+            award += NumberOfOrders * OrderValue;
+
+            if (RandomJob == "doradzca finansowy")
+            {
+                GoodEvent = "Dzięki współpracy z bankiem zarobiłeś dodatkowe pieniądze.";
+                BadEvent = "Klinet był niezadowolony z wizyty.";
+            }
+            else if (RandomJob == "projektant")
+            {
+                GoodEvent = "Klientom spodobały się twoje innowacyjne pomysły.";
+                BadEvent = "Wylałeś kawę na plany.";
+            }
+            else if (RandomJob == "bankier")
+            {
+                GoodEvent = "Dostałeś premię za nadgodziny.";
+                BadEvent = "Nie miły klient złożył na Ciebie doniesienie.";
+            }
+            else if (RandomJob == "fryzjer")
+            {
+                GoodEvent = "Klinet miał dobry dzień i dał spory napiwek.";
+                BadEvent = "Klientowi nie spodobała się fryzura.";
+            }
+            else if (RandomJob == "policjant")
+            {
+                GoodEvent = "Za szybkie złapanie złodzieja dostałeś premię.";
+                BadEvent = "Zostałeś pobity i okradziony.";
+            }
+            else if (RandomJob == "strażak")
+            {
+                GoodEvent = "Podczas gaszenia starej stodoły znalazłeś na ziemi złoty naszyjnik.";
+                BadEvent = "Ogień spalił Twoje ubrania.";
+            }
+            else if (RandomJob == "złodziej")
+            {
+                GoodEvent = "W portfelu który okradłeś był plik banknotów.";
+                BadEvent = "Zostałeś przyłapany przez starszą panią.";
+            }
+            else if (RandomJob == "listonosz")
+            {
+                GoodEvent = "Szybko rozniosłeś listy i dostałeś premię.";
+                BadEvent = "Zgubiłeś cenny list i musisz pokryć jego koszty.";
+            }
+            else if (RandomJob == "grabarz")
+            {
+                GoodEvent = "Otrzymałeś dodatkową zapłatę od rodziny zmarłego.";
+                BadEvent = "Przypadkowo przebiłeś trumnę, musisz pokryć koszta naprawy.";
+            }
+            else if (RandomJob == "kasjer")
+            {
+                GoodEvent = "Bogaty człowiek zapłacił banknotem 200zł i powiedział, że reszty nie trzeba.";
+                BadEvent = "Z kasy znikło kilka banknotów, musisz ponieść konsekwencje.";
+            }
+            else if (RandomJob == "kucharz")
+            {
+                GoodEvent = "Zostałeś uznany przez krytyka kulinarnego, dostajesz premię.";
+                BadEvent = "W zupie był włos. Musisz zwrócić koszty posiłku.";
+            }
+            else if (RandomJob == "kelner")
+            {
+                GoodEvent = "Dostałeś spory napiwek.";
+                BadEvent = "Byłeś nie miły i szef uciął Ci pensje.";
+            }
+            else if (RandomJob == "lekarz")
+            {
+                GoodEvent = "Dostałeś premię za przeprowadzoną operacje.";
+                BadEvent = "Nie udało Ci się uratować człowieka. Zostało Ci potrącone z pensji.";
+            }
+            else if (RandomJob == "informatyk")
+            {
+                GoodEvent = "Sprzedałeś swój program za duże pieniądze.";
+                BadEvent = "Twój projekt ma opóźnienia. Musisz zapłacić za wydłużenie terminu.";
+            }
+            else if (RandomJob == "ochroniarz")
+            {
+                GoodEvent = "Dostałeś łapówkę.";
+                BadEvent = "Zostałeś brutalnie pobity.";
+            }
+            else if (RandomJob == "prawnik")
+            {
+                GoodEvent = "Twój klient za obronienia go przed sądem dał Ci premię.";
+                BadEvent = "Zgubiłeś ważne dokumenty.";
+            }
+            else if (RandomJob == "taksówkarz")
+            {
+                GoodEvent = "Dostałeś napiwek.";
+                BadEvent = "Klienci ubrudzili Twoją taksówkę.";
+            }
+            else if (RandomJob == "mechanik")
+            {
+                GoodEvent = "Pomyślnie przeprowadziłeś naprawę silnika i dostałeś premię.";
+                BadEvent = "Musiałeś domówić daną część mechaniczną. Jej koszty przesyłki z zagranicy są spore.";
+            }
+            else if (RandomJob == "diler narkotyków")
+            {
+                GoodEvent = "Sprzedałeś narkoryki z dużym zyskiem.s";
+                BadEvent = "Klient wisi Ci z hajsem, szef się zdenerwował.";
+            }
+            else if (RandomJob == "nauczyciel")
+            {
+                GoodEvent = "Za zajęcia wyrównawcze dostałeś dodatkowe pieniądze.";
+                BadEvent = "Gdy dyrektor dowiedział się, że bijesz uczniów, obciął Twoją pensję.";
+            }
+            else if (RandomJob == "ksiądz")
+            {
+                GoodEvent = "Dostałeś sporo pieniędzy na tace.";
+                BadEvent = "Nie dostałeś nic na tacę, ponieważ prowadziłeś mszę dla dzieci.";
+            }
+            else if (RandomJob == "dziennikarz")
+            {
+                GoodEvent = "Dostałeś premię za przeprowadzony wywiad.";
+                BadEvent = "Zaliczyłeś wpadkę \"na żywo\".";
+            }
+            else if (RandomJob == "kierowca tira")
+            {
+                GoodEvent = "Szybko dostarczyłeś towar i dostajesz premię.";
+                BadEvent = "Prawie spowodowałeś wypadek.";
+            }
+            else if (RandomJob == "pilot samolotu")
+            {
+                GoodEvent = "Podróż była bardzo spokojna. Dostajesz premię.";
+                BadEvent = "Prawie rozbiłeś samolot.";
+            }
+            else if (RandomJob == "prostytutka")
+            {
+                GoodEvent = "Klient był zadowolony z usług. Dostajesz premię.";
+                BadEvent = "Klient był rozczarowany i zapłacił mniej.";
+            }
+            else if (RandomJob == "tancerz")
+            {
+                GoodEvent = "Twój występ bardzo się spodobał, dostałeś wiele cennych rzeczy na scenie.";
+                BadEvent = "Ludziom się nie spodobał Twój występ, rządajązwrotu pieniędzy.";
+            }
+            else if (RandomJob == "wokalista")
+            {
+                GoodEvent = "Twój występ bardzo się spodobał, dostałeś wiele cennych rzeczy na scenie.";
+                BadEvent = "Ludziom się nie spodobał Twój występ, rządajązwrotu pieniędzy.";
+            }
+            else if (RandomJob == "żołnierz")
+            {
+                GoodEvent = "Zabiłeś wrogiego snajpera, otrzymujesz premię.";
+                BadEvent = "Zgubiłeś swoją broń, musisz kupić nową.";
+            }
+            else if (RandomJob == "trener")
+            {
+                GoodEvent = "Twoja drużna zwyciężyła ligę.";
+                BadEvent = "Twoja drużyna spadła na ostanie miejsce w lidze.";
+            }
+            else if (RandomJob == "tatuażysta")
+            {
+                GoodEvent = "Dostałeś dodatkową kasę za fajny tatuaż.";
+                BadEvent = "Popsułeś tatuaż, klient jest niezadowolony.";
+            }
+            else if (RandomJob == "kurier")
+            {
+                GoodEvent = "Dostałeś premię za szybką dostawę.";
+                BadEvent = "Zgubiłeś paczkę i musisz ponieść jej koszta.";
+            }
+            else
+            {
+                GoodEvent = "Błąd.";
+                BadEvent = "Błąd.";
+            }
+
+            var result = Services.Job.GetOrder((SocketGuildUser)Context.User, (uint)award);
+            if (result.Success)
+            {
+                if (IsAdditionalEvent == 0)
+                {
+                    award += AdditionaEventAward;
+                    var msg = await Context.Channel.SendMessageAsync($"Wykonałeś **{NumberOfOrders}** zleceń.\n```diff\nPoszedłeś pracować jako {RandomJob}\n+ Na wykonywaniu pracy zarobiłeś: {OrderValue * NumberOfOrders}$C\n\nDodatkowe eventy:\n+ {GoodEvent}```**Zarobione pieniądze:** {award}{Messages.coin}");
+                    await Helpers.RemoveMessage(msg, 6);
+                }
+                else if (IsAdditionalEvent == 1)
+                {
+                    award -= AdditionaEventAward;
+                    var msg = await Context.Channel.SendMessageAsync($"Wykonałeś **{NumberOfOrders}** zleceń.\n```diff\nPoszedłeś pracować jako {RandomJob}\n+ Na wykonywaniu pracy zarobiłeś: {OrderValue * NumberOfOrders}$C\n\nDodatkowe eventy:\n- {BadEvent}```**Zarobione pieniądze:** {award}{Messages.coin}");
+                    await Helpers.RemoveMessage(msg, 6);
+                }
+                else
+                {
+                    var msg = await Context.Channel.SendMessageAsync($"Wykonałeś **{NumberOfOrders}** zleceń.\n```diff\nPoszedłeś pracować jako {RandomJob}\n+ Na wykonywaniu pracy zarobiłeś: {OrderValue * NumberOfOrders}$C```**Zarobione pieniądze:** {award}{Messages.coin}");
+                    await Helpers.RemoveMessage(msg, 6);
+                }
+                var UserAccount = UserAccounts.GetAccount(Context.User);
+                UserAccount.MoneyAccount += (uint)award;
+            }
+            else
+            {
+                string timeSpanString = string.Format("{0:%h} godzin {0:%m} minut {0:%s} sekund", result.RefreshTimeSpan);
+                var msg = await Context.Channel.SendMessageAsync($"{Messages.wrong} {Context.User.Mention}, kolejną pracę możesz wykonać za **{timeSpanString}**.");
+                await Helpers.RemoveMessage(msg, 6);
+            }
+        }
+
+        [Command("temat")]
+        [Alias("losujtemat", "losuj temat")]
+        public async Task Topic()
+        {
+            await Context.Message.DeleteAsync();
+
+            string[] questions = 
+                {
+                    "Jaki był ostatni zabawny film, który widziałeś?",
+                    "Co robisz, aby pozbyć się stresu?",
+                    "Kto jest twoim ulubionym artystą estradowym (komik, muzyk, aktor itp.)?",
+                    "Jaki jest Twój ulubiony sposób na spędzanie czasu?",
+                    "Masz jakieś zwięrzęta domowe? Jak się nazywają?",
+                    "Gdzie poszedłeś/poszłaś w zeszły weekend? Co zrobiłeś/aś?",
+                    "Co zamierzasz robić w ten weekend?",
+                    "Co robiłeś na ostatnich wakacjach?",
+                    "Czy jesteś bardzo aktywny, czy wolisz odpoczywać w wolnym czasie?",
+                    "Co robisz, gdy spotykasz się ze znajomymi?",
+                    "Kim jest twój najstarszy przyjaciel? Gdzie go spotkałeś?",
+                    "Jaka jest najlepsza / najgorsza rzecz w twojej pracy / szkole?",
+                    "Gdybyś miał wybrać obojętnie jaką piosenkę, jaka byłaby to piosenka? Czemu?",
+                    "Co tak naprawdę robiłeś, kiedy byłeś dzieckiem?",
+                    "Gdybyś mógł wybrać jakiekolwiek zwierze do życia z tobą, jakie zwierzę wybrałbyś?",
+                    "Jakie trzy słowa najlepiej Cię opisują?",
+                    "Jak wyglądałby twój idealny weekend?",
+                    "Co myślisz o tatuażach? Czy masz jakieś?",
+                    "Jaki jest twój ulubiony numer? Czemu?",
+                    "Czy kiedykolwiek uratowałeś życie zwierzęciu? A co z życiem człowieka?",
+                    "Czy jesteś bardzo zorganizowaną osobą?",
+                    "Czy rozmawiałeś kiedyś z naprawdę dużą grupą ludzi? Jak poszło?",
+                    "Jakie jest najdziwniejsze marzenie, jakie kiedykolwiek miałeś?",
+                    "Kto w twoim życiu przynosi Ci największą radość?",
+                    "Kto miał największy wpływ na to kim jesteś?",
+                    "Jaki jest najbardziej denerwujący nawyk, który można mieć?",
+                    "Gdzie jest najpiękniejsze miejsce, w którym byłeś?",
+                    "Czy jest coś czego nienawidzisz ale chciałbyś to kochać?",
+                    "W jaki sposób się relaksujesz?",
+                    "Gdybyś był w zespole, to jaką muzykę byś grał?",
+                    "Jaka jest Twoja ulubiona pora roku? Czemu?",
+                    "Gdyby powstał film o twoim życiu, to jaki aktor/aktorka by cię zagrała?",
+                    "Gdybyś był warzywem, to jakim?",
+                    "Jeśli obudziłbyś się jutro jako zwierzę, jakim zwierzęciem chciał byś być?",
+                    "Gdybyś mógł mieszkać gdziekolwiek na tej planecie i zabrać ze sobą coś, co kochasz, gdzie byś zdecydował się żyć?",
+                    "Jaka jest Twoja najcenniejsza umiejętność?",
+                    "Jak myślisz, jaki jest najlepszy wiek do zawarcia małżeństwa?",
+                    "Jaki jest Twój ulubiony smak gumy do żucia?",
+                    "Jaka jest Twoja wymarzona praca?",
+                    "Jaką pierwszą rzecz kupiłeś po pierwszej wypłacie?",
+                    "Jakie jest najlepsze miejsce na pizzę, w którym kiedykolwiek byłeś?"
+            };
+            Random rand = new Random();
+            string RandomQuestion = questions[rand.Next(questions.Length)];
+            await Context.Channel.SendMessageAsync($"```fix\n{RandomQuestion}```");
+        }
+
         [Command("rozwiazano")]
         [Alias("rozwiązano", "solved", "zamknij", "close")]
         public async Task CloseHelpChannel(SocketGuildUser user = null)

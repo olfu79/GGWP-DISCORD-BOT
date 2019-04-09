@@ -90,6 +90,23 @@ namespace ggwp.Modules
             await ReplyAsync("", false, eb.Build());
         }
 
+        /*[Cooldown(10)]
+        [Command("rps")]
+        [Alias("kpn")]
+        public async Task Rps()
+        {
+            await Context.Message.DeleteAsync();
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor($"");
+            eb.Author.WithIconUrl("");
+            eb.WithFooter("");
+            eb.Footer.WithIconUrl("");
+            eb.WithColor(new Color());
+
+            await ReplyAsync("", false, eb.Build());
+        }*/
+
         [Cooldown(10)]
         [Command("moneta")]
         [Alias("orzelreszka", "orzel reszka", "orzeł reszka", "orzełreszka", "coinflip", "coin flip", "flip coin", "flipcoin")]

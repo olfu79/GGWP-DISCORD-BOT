@@ -1,0 +1,28 @@
+[
+  {
+    "ID": 448884032391086090,
+    "PenaltyChannelID": 517790197656715264,
+    "AnnouncmentChannelID": 517790762608492544,
+    "VoteChannelID": 517796076707905568,
+    "BankChannelID": 545278785625522194,
+    "WelcomeChannelID": 517789854906712074,
+    "CountingChannelID": 552167729113595914,
+    "MemesChannelID": 552166126319173742,
+    "GiveawayChannelID": 517790762608492544,
+    "ShopPage": 1,
+    "GamblingPage": 1,
+    "AdmChannelID": 517441530848346135,
+    "SuggestionsChannelID": 534453281179566081,
+    "InviteLink": "https://discord.gg/3AWcgC9",
+    "OffLevelingChannelsId": [
+      521726999648010280,
+      552166126319173742,
+      552167729113595914,
+      517789718772056095,
+      521729686070624262,
+      521729775903965243,
+      517792562489327617
+    ],
+    "Rekrutacja": false
+  }
+]

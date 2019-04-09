@@ -26,7 +26,7 @@ namespace ggwp.Core.LevelingSystem
                         GiveXP = false;
                     }
                 }
-                if (!GiveXP) { /*/ You may not give XP /*/}
+                //if (!GiveXP) { }
             }
             catch { }
 
@@ -34,9 +34,16 @@ namespace ggwp.Core.LevelingSystem
             var GuildAccount = GuildAccounts.GuildAccounts.GetAccount(guild);
             long[] ChannelsOffLeveling = GuildAccount.OffLevelingChannelsId;
 
-            if (ChannelsOffLeveling.Contains((long)message.Channel.Id)) return;
+            try
+            {
+                if (ChannelsOffLeveling.Contains((long)message.Channel.Id)) return;
+            }
+            catch(Exception e)
+            {
+                await channel.SendMessageAsync($"{Messages.UnknownError}");
+            }
 
-            var coin = Emote.Parse("<:coin:462351821910835200>");
+            var coin = Emote.Parse(Messages.coin);
 
             var userAccount = UserAccounts.UserAccounts.GetAccount(user);
             uint oldLevel = userAccount.LevelNumber;
@@ -47,7 +54,6 @@ namespace ggwp.Core.LevelingSystem
 
             if (oldLevel != newLevel)
             {
-                // the user leveled up
                 var msg = await channel.SendMessageAsync($":confetti_ball: Gratulacje {user.Mention} awansowałeś na poziom {newLevel}. Otrzymujesz {MoneyForLevel}{coin}");
                 userAccount.MoneyWallet += MoneyForLevel;
                 UserAccounts.UserAccounts.SaveAccounts();

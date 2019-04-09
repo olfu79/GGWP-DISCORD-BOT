@@ -87,7 +87,7 @@ namespace ggwp
             var r8 = user.Guild.Roles.FirstOrDefault(x => x.Id == 521734162437111821);
             var r9 = user.Guild.Roles.FirstOrDefault(x => x.Id == 556550338912452610);
 
-            await user.AddRolesAsync(new[] { r1, r2, r3, r4, r5, r6, r7, r8});
+            await user.AddRolesAsync(new[] { r1, r2, r3, r4, r5, r6, r7, r8, r9});
         }
 
         public static Task Log(LogMessage msg)

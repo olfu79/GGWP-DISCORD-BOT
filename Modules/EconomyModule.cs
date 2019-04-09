@@ -25,7 +25,10 @@ namespace ggwp.Modules
         [Command("stankonta")]
         [Alias("kasa", "stan konta", "pieniadze", "pieniądze", "money")]
         public async Task Balance()
-        {           
+        {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await EconomyService.BalanceCommandErrorMessage(Context.Guild, Context.Channel);
         }
 
@@ -34,6 +37,9 @@ namespace ggwp.Modules
         [Alias("przelej", "przekaż", "płać", "plac", "pay")]
         public async Task TransferMoney(IGuildUser user, ulong MoneyToTransfer)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await EconomyService.TransferMoney(Context.Guild, Context.Channel, Context.Message, (IGuildUser)Context.User, user, MoneyToTransfer);
         }
 
@@ -42,6 +48,9 @@ namespace ggwp.Modules
         [Alias("dzienna", "free")]
         public async Task DailyMoney()
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await EconomyService.DailyCommandErrorMessage(Context.Guild, Context.Channel);
         }
 
@@ -50,6 +59,9 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task ManageMoney(string option, string option2, IUser user, uint money)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             var UserAccount = UserAccounts.GetAccount(user);
 
             if(option == "add" || option == "dodaj")

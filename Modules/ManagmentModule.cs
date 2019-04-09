@@ -21,9 +21,12 @@ namespace ggwp.Modules
     {
         [Command("sayasbot")]
         [Alias("botmsg", "botsay")]
-        [RequireUserPermission(GuildPermission.KickMembers)]
+        [RequireUserPermission(GuildPermission.BanMembers)]
         public async Task SayAsBot([Remainder] string text = "")
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ManagmentService.SayAsBot(Context.Message, Context.Channel, text);
         }
 
@@ -32,6 +35,9 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task Config(string Action, string Option = null, string Value = null)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ManagmentService.Config(Context.Guild, Context.Channel, Context.Message, Action, Option, Value);
         }
 
@@ -40,7 +46,11 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.ManageNicknames)]
         public async Task WarnUser(IGuildUser user, [Remainder] string reason = "Brak.")
         {
-            //sprawdzić kogo warnuje - permy
+            if (Context.Channel is IPrivateChannel)
+                return;
+
+            if (user.GuildPermissions.ManageEmojis)
+                return;
             await ManagmentService.Warn(Context.Guild, Context.Message, user, (IGuildUser)Context.User, reason);
         }
 
@@ -49,7 +59,11 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.KickMembers)]
         public async Task KickUser(IGuildUser user, [Remainder] string reason = "Brak.")
         {
-            //sprawdzic kogo kickuje - permy
+            if (Context.Channel is IPrivateChannel)
+                return;
+
+            if (user.GuildPermissions.ManageMessages)
+                return;
             await ManagmentService.Kick(Context.Guild, Context.Message, user, (IGuildUser)Context.User, reason);
         }
 
@@ -58,7 +72,11 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.BanMembers)]
         public async Task BanUser(IGuildUser user, [Remainder] string reason = "Brak.")
         {
-            //sprawdzic kogo banuje - permy
+            if (Context.Channel is IPrivateChannel)
+                return;
+
+            if (user.GuildPermissions.ManageMessages)
+                return;
             await ManagmentService.Ban(Context.Guild, Context.Message, user, (IGuildUser)Context.User, reason);
         }
 
@@ -67,25 +85,33 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.MuteMembers)]
         public async Task MuteUser(IGuildUser user, int TimeInSeconds = 0, [Remainder] string reason = "Brak.")
         {
-            //sprawdzic kogo mutuje - permy
+            if (Context.Channel is IPrivateChannel)
+                return;
+
+            if (user.GuildPermissions.ManageNicknames)
+                return;
             await ManagmentService.Mute(Context.Guild, Context.Message, user, (IGuildUser)Context.User, TimeInSeconds, reason);
         }
 
         [Command("awans")]
         [Alias("awansuj", "dodaj role", "dodajrole")]
-        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.KickMembers)]
         public async Task PromoteUser(IGuildUser user, IRole role, [Remainder] string reason = "Brak.")
         {
-            //dodać żeby nie mogło dawać ról wyższych niż svip chyba że ktoś jest ownerem
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ManagmentService.Promote(Context.Guild, Context.Message, role, user, (IGuildUser)Context.User, reason);
         }
 
         [Command("degrad")]
         [Alias("degraduj", "usunrole", "usun role", "usuńrole", "usuń role")]
-        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.KickMembers)]
         public async Task DemoteUser(IGuildUser user, IRole role, [Remainder] string reason = "Brak.")
         {
-            //dodać żeby nie mogło usuwać ról wyższych niż svip chyba że ktoś jest ownerem
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ManagmentService.Demote(Context.Guild, Context.Message, role, user, (IGuildUser)Context.User, reason);
         }
 
@@ -94,6 +120,9 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Announcment([Remainder] string content)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ManagmentService.Announcment(Context.Guild, Context.Message, (IGuildUser)Context.User, content);
         }
 
@@ -102,14 +131,20 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Vote(string option, [Remainder] string question)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ManagmentService.Vote(Context.Guild, Context.Message, (IGuildUser)Context.User, question, option);
         }
 
         [Command("purge", RunMode = RunMode.Async)]
-        [Alias("clear", "clean", "delete", "czyść", "czysc", "cc")]
+        [Alias("clear", "clean", "delete", "czyść", "czysc", "cc", "usuń", "usun")]
         [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task Clear(int amountOfMessagesToDelete)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             try
             {
                 await Context.Message.DeleteAsync();
@@ -152,6 +187,9 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task Giveaway(uint TimeInHours, uint Money = 0, IRole role = null)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ManagmentService.Giveaway(Context.Guild, Context.Message, TimeInHours, Money, role);
         }
 
@@ -160,6 +198,9 @@ namespace ggwp.Modules
         [RequireUserPermission(GuildPermission.ManageNicknames)]
         public async Task UserInfo(IUser user)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             var UserAccount = UserAccounts.GetAccount(user);
 
             string avatar = user.GetAvatarUrl();

@@ -18,6 +18,9 @@
             [Alias("pogoda")]
             public async Task GetWeather([Remainder]string query)
             {
+                if (Context.Channel is IPrivateChannel)
+                    return;
+
                 await Global.weatherService.GetWeather(Context, query);
             }
         }

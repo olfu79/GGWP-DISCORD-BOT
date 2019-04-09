@@ -32,6 +32,9 @@ namespace ggwp.Modules
         [Alias("8 ball", "8b")]
         public async Task Eightball([Remainder] string question)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
             if (question == null) return;
 
@@ -75,6 +78,9 @@ namespace ggwp.Modules
         [Alias("kosc", "kosci", "kość", "kości")]
         public async Task Kosc()
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
 
             var userName = Context.User.Username;
@@ -112,6 +118,9 @@ namespace ggwp.Modules
         [Alias("orzelreszka", "orzel reszka", "orzeł reszka", "orzełreszka", "coinflip", "coin flip", "flip coin", "flipcoin")]
         public async Task Moneta()
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
 
             string[] flip = new string[] { "Orzeł", "Reszka" };
@@ -133,6 +142,9 @@ namespace ggwp.Modules
         [Alias("emoji")]
         public async Task Emotify([Remainder] string args)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
             string[] convertorArray = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
             var pattern = new Regex("^[a-zA-Z]*$", RegexOptions.Compiled);
@@ -153,7 +165,10 @@ namespace ggwp.Modules
         [Alias("drzwi", "wyjdź", "door", "doors")]
         public async Task Doors(IUser user = null)
         {
-            if(user is null)
+            if (Context.Channel is IPrivateChannel)
+                return;
+
+            if (user is null)
             {
                 var msg = await Context.Channel.SendMessageAsync(Messages.MentionError);
                 await Helpers.RemoveMessage(msg);
@@ -172,6 +187,9 @@ namespace ggwp.Modules
         [Alias("odwroc", "odwróć", "odwroctekst", "odwróćtekst")]
         public async Task TextReverse([Remainder] string text)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             string reversedString = new string(text.Reverse().ToArray());
             await ReplyAsync(reversedString);
         }
@@ -180,6 +198,9 @@ namespace ggwp.Modules
         [Command("iq")]
         public async Task IQtest(IUser user = null)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             if (user is null)
                 user = Context.User;
 
@@ -201,6 +222,9 @@ namespace ggwp.Modules
         [Alias("bananek", "cm")]
         public async Task PeePeeSize(IUser user = null)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             if (user is null)
                 user = Context.User;
 
@@ -239,6 +263,9 @@ namespace ggwp.Modules
         [Alias("oceń", "rate", "ocena")]
         public async Task Rate([Remainder] string text)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
 
             Random rand1 = new Random();
@@ -307,6 +334,9 @@ namespace ggwp.Modules
         [Alias("szip", "szipuj")]
         public async Task Ship(SocketGuildUser user1, SocketGuildUser user2)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             var firsthalf = (user1.Username.Substring(0, (user1.Username.Length / 2)));
             var lasthalf = user2.Username.Remove(0, (user2.Username.Length / 2));
             var combined = ($"{firsthalf}{lasthalf}").Replace(" ", "");
@@ -318,6 +348,9 @@ namespace ggwp.Modules
         [Alias("kalk", "kalkulator", "calculate", "oblicz", "przelicz", "policz")]
         public async Task Calculate(double n1, string op, double n2)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             string[] operations = { "+", "-", "*", "/", "^", "%" };
 
             double result = 0;
@@ -397,6 +430,9 @@ namespace ggwp.Modules
         [Alias("pocisnij", "pociśnij", "diss", "dis", "disuj")]
         public async Task Diss(IUser user)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
             if (user == null) return;
 
@@ -438,6 +474,9 @@ namespace ggwp.Modules
         [Command("ping")]
         public async Task Ping()
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Channel.SendMessageAsync($"🏓 pong!");
         }
 
@@ -446,6 +485,9 @@ namespace ggwp.Modules
         [Alias("choose", "wybór", "wybor")]
         public async Task Pick([Remainder] string message)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             string UserAvatar = Context.User.GetAvatarUrl();
             string BotAvatar = Context.Client.CurrentUser.GetAvatarUrl();
 
@@ -477,6 +519,9 @@ namespace ggwp.Modules
         [Alias("zabij", "murder")]
         public async Task PictureKill(IUser user)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
             await ImageBuilders.MakeImageRound("Fun/Avatars/User1.png", "Fun/Avatars/User1r.png");
             await ImageBuilders.GetUserAvatar(user, "Fun/Avatars/User2.png");
@@ -506,6 +551,9 @@ namespace ggwp.Modules
         [Alias("fp")]
         public async Task PictureFacepalm()
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
             await ImageBuilders.MakeImageRound("Fun/Avatars/User1.png", "Fun/Avatars/User1r.png");
 
@@ -532,6 +580,9 @@ namespace ggwp.Modules
         [Alias("spać", "spac", "spij", "śpij", "spanie", "spanko")]
         public async Task PictureSleep()
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
             await ImageBuilders.MakeImageRound("Fun/Avatars/User1.png", "Fun/Avatars/User1r.png");
 
@@ -556,6 +607,9 @@ namespace ggwp.Modules
         [Alias("hej", "cześć", "czesc", "elo", "siema", "siemka", "yo", "hay")]
         public async Task PictureWelcome(IUser user)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
             await ImageBuilders.MakeImageRound("Fun/Avatars/User1.png", "Fun/Avatars/User1r.png");
             await ImageBuilders.GetUserAvatar(user, "Fun/Avatars/User2.png");
@@ -585,6 +639,9 @@ namespace ggwp.Modules
         [Alias("uderz", "punch", "walnij")]
         public async Task PictureHit(IUser user)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
             await ImageBuilders.MakeImageRound("Fun/Avatars/User1.png", "Fun/Avatars/User1r.png");
             await ImageBuilders.GetUserAvatar(user, "Fun/Avatars/User2.png");
@@ -614,6 +671,9 @@ namespace ggwp.Modules
         [Alias("przytul", "przytulas")]
         public async Task PictureHug(IUser user)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
             await ImageBuilders.MakeImageRound("Fun/Avatars/User1.png", "Fun/Avatars/User1r.png");
             await ImageBuilders.GetUserAvatar(user, "Fun/Avatars/User2.png");
@@ -643,6 +703,9 @@ namespace ggwp.Modules
         [Alias("kick", "kop")]
         public async Task PictureKick(IUser user)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
             await ImageBuilders.MakeImageRound("Fun/Avatars/User1.png", "Fun/Avatars/User1r.png");
             await ImageBuilders.GetUserAvatar(user, "Fun/Avatars/User2.png");
@@ -672,6 +735,9 @@ namespace ggwp.Modules
         [Alias("pocałuj", "pocaluj", "całus", "calus", "cmok")]
         public async Task PictureKiss(IUser user)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await ImageBuilders.GetUserAvatar(Context.User, "Fun/Avatars/User1.png");
             await ImageBuilders.MakeImageRound("Fun/Avatars/User1.png", "Fun/Avatars/User1r.png");
             await ImageBuilders.GetUserAvatar(user, "Fun/Avatars/User2.png");

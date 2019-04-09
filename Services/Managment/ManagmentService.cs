@@ -310,8 +310,34 @@ namespace ggwp.Services.Managment_Methods
             var ContextGuild = guild as SocketGuild;
             ulong PenaltyChannelID = GuildAccount.PenaltyChannelID;
             var PenaltyChannel = ContextGuild.GetChannel(PenaltyChannelID) as IMessageChannel;
+
+            var RoleAdm = guild.Roles.FirstOrDefault(x => x.Id == 517062140612313089);
+            var RoleStazysta = guild.Roles.FirstOrDefault(x => x.Name == "STAŻYSTA");
+            var RolePomocnik = guild.Roles.FirstOrDefault(x => x.Name == "POMOCNIK");
+            var RolePomocnikPlus = guild.Roles.FirstOrDefault(x => x.Name == "POMOCNIK+");
+            var RoleModerator = guild.Roles.FirstOrDefault(x => x.Name == "MODERATOR");
+            var RoleAdministrator = guild.Roles.FirstOrDefault(x => x.Name == "ADMIN");
+            var RoleOwner = guild.Roles.FirstOrDefault(x => x.Name == "WŁAŚCICIEL");
+
+            var SocketGuildAdministrator = (SocketGuildUser)administrator;
+
+            //pomocnik
+            if (SocketGuildAdministrator.Roles.Contains(RolePomocnik) && (role == RoleStazysta || role == RolePomocnik || role == RolePomocnikPlus || role == RoleModerator || role == RoleAdministrator || role == RoleOwner))
+                return;
+            //pomocnik plus
+            if (SocketGuildAdministrator.Roles.Contains(RolePomocnikPlus) && (role == RolePomocnik || role == RolePomocnikPlus || role == RoleModerator || role == RoleAdministrator || role == RoleOwner))
+                return;
+            //moderator
+            if (SocketGuildAdministrator.Roles.Contains(RoleModerator) && (role == RoleModerator || role == RoleAdministrator || role == RoleOwner))
+                return;
+            //administrator
+            if (SocketGuildAdministrator.Roles.Contains(RoleAdministrator) && (role == RoleAdministrator || role == RoleOwner))
+                return;
+
             //Promote user
-            await promoteuser.AddRoleAsync(role);//jesli awansuje do administracyjnej roli dodaj role ADMINISTRACJA
+            await promoteuser.AddRoleAsync(role);
+            if(role == RoleStazysta || role == RolePomocnik || role == RolePomocnikPlus || role == RoleModerator || role == RoleAdministrator)
+                await promoteuser.AddRoleAsync(RoleAdm);
             //Send message
             await PenaltyChannel.SendMessageAsync("", false, Messages.GeneratePromoteEmbed(promoteuser, administrator, role, TimeDate, reason));
         }
@@ -325,8 +351,34 @@ namespace ggwp.Services.Managment_Methods
             var ContextGuild = guild as SocketGuild;
             ulong PenaltyChannelID = GuildAccount.PenaltyChannelID;
             var PenaltyChannel = ContextGuild.GetChannel(PenaltyChannelID) as IMessageChannel;
+
+            var RoleAdm = guild.Roles.FirstOrDefault(x => x.Id == 517062140612313089);
+            var RoleStazysta = guild.Roles.FirstOrDefault(x => x.Name == "STAŻYSTA");
+            var RolePomocnik = guild.Roles.FirstOrDefault(x => x.Name == "POMOCNIK");
+            var RolePomocnikPlus = guild.Roles.FirstOrDefault(x => x.Name == "POMOCNIK+");
+            var RoleModerator = guild.Roles.FirstOrDefault(x => x.Name == "MODERATOR");
+            var RoleAdministrator = guild.Roles.FirstOrDefault(x => x.Name == "ADMIN");
+            var RoleOwner = guild.Roles.FirstOrDefault(x => x.Name == "WŁAŚCICIEL");
+
+            var SocketGuildAdministrator = (SocketGuildUser)administrator;
+
+            //pomocnik
+            if (SocketGuildAdministrator.Roles.Contains(RolePomocnik) && (role == RoleStazysta || role == RolePomocnik || role == RolePomocnikPlus || role == RoleModerator || role == RoleAdministrator || role == RoleOwner))
+                return;
+            //pomocnik plus
+            if (SocketGuildAdministrator.Roles.Contains(RolePomocnikPlus) && (role == RoleStazysta || role == RolePomocnik || role == RolePomocnikPlus || role == RoleModerator || role == RoleAdministrator || role == RoleOwner))
+                return;
+            //moderator
+            if (SocketGuildAdministrator.Roles.Contains(RoleModerator) && (role == RolePomocnik || role == RolePomocnikPlus || role == RoleModerator || role == RoleAdministrator || role == RoleOwner))
+                return;
+            //administrator
+            if (SocketGuildAdministrator.Roles.Contains(RoleAdministrator) && (role == RoleModerator || role == RoleAdministrator || role == RoleOwner))
+                return;
+
             //Demote user
-            await demoteuser.RemoveRoleAsync(role); //jesli demotuje z administracyjnej roli odbirerz role ADMINISTRACJA
+            await demoteuser.RemoveRoleAsync(role);
+            if (role == RoleStazysta || role == RolePomocnik || role == RolePomocnikPlus || role == RoleModerator || role == RoleAdministrator)
+                await demoteuser.RemoveRoleAsync(RoleAdm);
             //Send message
             await PenaltyChannel.SendMessageAsync("", false, Messages.GenerateDemoteEmbed(demoteuser, administrator, role, TimeDate, reason));
         }

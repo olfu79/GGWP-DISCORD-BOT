@@ -9,7 +9,7 @@ using ggwp.Core.GuildAccounts;
 
 namespace ggwp
 {
-    internal static class Messages
+    public static class Messages
     {
         public static string coin = "<:coin:462351821910835200>";
         public static string check = "<:CheckMark:460770234177945610>";
@@ -160,6 +160,125 @@ namespace ggwp
             return BankSuccessWithdraw;
         }
 
+        public static Embed GenerateAdminCommandsCategoriesEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("DOSTĘPNE KATEGORIE");
+            eb.Author.WithIconUrl("https://cdn1.iconfinder.com/data/icons/basic-ui-elements-color-round/3/30-512.png");
+            eb.AddField(
+                "💙 POMOCNIK\n" +
+                "💛 POMOCNIK+\n" +
+                "💚 MODERATOR\n" +
+                "❤ ADMIN\n" +
+                "🎈 REAKCJE", "​Wpisz !akomendy <kategoria>");
+            eb.WithColor(new Color(23, 143, 235));
+            return eb.Build();
+        }
+
+        public static Embed GenerateAdminCommandsPomocnikEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND ADMINISTRACYJNYCH");
+            eb.Author.WithIconUrl("https://cdn1.iconfinder.com/data/icons/basic-ui-elements-color-round/3/30-512.png");
+            eb.AddField("**POMOCNIK**",
+                "**Komenda**: `usuń <ilość wiadomości>`\n**Opis**: Usuwa daną ilość wiadomości, MAKSYMALNIE 100 i nie starszych niż 14 dni.\n**Aliasy**: `usun`, `purge`, `clean`, `clear`, `czyść`, `czysc`, `delete`, `cc`\n\n" +
+                "**Komenda**: `wyrzuć <osoba> [powód]`\n**Opis**: Wyrzuca daną osobę z serwera.\n**Aliasy**: `wyrzuc`, `kick`\n\n" +
+                "**Komenda**: `wycisz <osoba> <czas w sekundach> [powód]`\n**Opis**: Wycisza daną osobę na dany czas.\n**Aliasy**: `mute`, `mutuj`, `wyciszenie`\n\n" +
+                "**Komenda**: `ostrzeżenie <osoba> [powód]`\n**Opis**: Dodaje ostrzeżenie danej osobie.\n**Aliasy**: `ostrzezenie`, `warn`\n\n" +
+                "**Komenda**: `userinfo <osoba>`\n**Opis**: Wyświetla informacje o graczu.\n**Aliasy**: `user`, `ui`");
+           eb.AddField("​",
+                "**Komenda**: `rozwiązano <osoba>`\n**Opis**: Zamyka kanał pomocy danej osoby.\n**Aliasy**: `rozwiazano`, `solved`, `close`, `zamknij`\n\n" +
+                "**Komenda**: `ankieta <opcja> <pytanie>`\n**Dostępne opcje: liczby od 1 do 9 - `<liczba>`, `tak/nie - `<yesno>`, `<taknie>`**\n**Opis**: Tworzy ankietę z pytaniem i daje do wyboru liczby od 1 do 9 lub pola wyboru tak/nie\n**Aliasy**: `vote`\n\n" +
+                "**Komenda**: `ogłoszenie <treść>`\n**Opis**: Wysyła ogłoszenie, na kanał #ogłoszenia dzięki czemu może być wywoływana gdziekolwiek.\n**Aliasy**: `ogloszenie`, `ogl`, `ogł`\n\n" +
+                "**Komenda**: `awans <osoba> <rola>`\n**Opis**: Awansuje osobę.\n**Aliasy**: `awansuj`, `dodaj role`, `dodajrole`\n\n" +
+                "**Komenda**: `degrad <osoba> <rola>`\n**Opis**: Degraduje osobę.\n**Aliasy**: `degraduj`, `usun role`, `usunrole`, `usuń role`, `usuńrole`\n\n");
+            eb.WithColor(new Color(23, 143, 235));
+            return eb.Build();
+        }
+
+        public static Embed GenerateAdminCommandsPomocnikPlusEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND ADMINISTRACYJNYCH");
+            eb.Author.WithIconUrl("https://cdn1.iconfinder.com/data/icons/basic-ui-elements-color-round/3/30-512.png");
+            eb.AddField("**POMOCNIK+**",
+                "**Komenda**: `usuń <ilość wiadomości>`\n**Opis**: Usuwa daną ilość wiadomości, MAKSYMALNIE 100 i nie starszych niż 14 dni.\n**Aliasy**: `usun`, `purge`, `clean`, `clear`, `czyść`, `czysc`, `delete`, `cc`\n\n" +
+                "**Komenda**: `wyrzuć <osoba> [powód]`\n**Opis**: Wyrzuca daną osobę z serwera.\n**Aliasy**: `wyrzuc`, `kick`\n\n" +
+                "**Komenda**: `banuj <osoba> [powód]`\n**Opis**: Banuje daną osobę z serwera.\n**Aliasy**: `ban`\n\n" +
+                "**Komenda**: `wycisz <osoba> <czas w sekundach> [powód]`\n**Opis**: Wycisza daną osobę na dany czas.\n**Aliasy**: `mute`, `mutuj`, `wyciszenie`\n\n" +
+                "**Komenda**: `ostrzeżenie <osoba> [powód]`\n**Opis**: Dodaje ostrzeżenie danej osobie.\n**Aliasy**: `ostrzezenie`, `warn`\n\n" +
+                "**Komenda**: `userinfo <osoba>`\n**Opis**: Wyświetla informacje o graczu.\n**Aliasy**: `user`, `ui`");
+            eb.AddField("​",
+               "**Komenda**: `rozwiązano <osoba>`\n**Opis**: Zamyka kanał pomocy danej osoby.\n**Aliasy**: `rozwiazano`, `solved`, `close`, `zamknij`\n\n" +
+                "**Komenda**: `ankieta <opcja> <pytanie>`\n**Dostępne opcje: liczby od 1 do 9 - `<liczba>`, `tak/nie - `<yesno>`, `<taknie>`**\n**Opis**: Tworzy ankietę z pytaniem i daje do wyboru liczby od 1 do 9 lub pola wyboru tak/nie\n**Aliasy**: `vote`\n\n" +
+                "**Komenda**: `ogłoszenie <treść>`\n**Opis**: Wysyła ogłoszenie, na kanał #ogłoszenia dzięki czemu może być wywoływana gdziekolwiek.\n**Aliasy**: `ogloszenie`, `ogl`, `ogł`\n\n" +
+                "**Komenda**: `botmsg <tekst>`\n**Opis**: Wysyła wiadomość tekstową w imieniu bota.\n**Aliasy**: `botsay`, `sayasbot`\n\n" +
+                "**Komenda**: `awans <gracz> <rola>`\n**Opis**: Awansuje osobę.\n**Aliasy**: `awansuj`, `dodaj role`, `dodajrole`\n\n" +
+                "**Komenda**: `degrad <gracz> <rola>`\n**Opis**: Degraduje osobę.\n**Aliasy**: `degraduj`, `usun role`, `usunrole`, `usuń role`, `usuńrole`\n\n");
+            eb.WithColor(new Color(23, 143, 235));
+            return eb.Build();
+        }
+
+        public static Embed GenerateAdminCommandsModEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND ADMINISTRACYJNYCH");
+            eb.Author.WithIconUrl("https://cdn1.iconfinder.com/data/icons/basic-ui-elements-color-round/3/30-512.png");
+            eb.AddField("**MODERATOR**",
+                "**Komenda**: `usuń <ilość wiadomości>`\n**Opis**: Usuwa daną ilość wiadomości, MAKSYMALNIE 100 i nie starszych niż 14 dni.\n**Aliasy**: `usun`, `purge`, `clean`, `clear`, `czyść`, `czysc`, `delete`, `cc`\n\n" +
+                "**Komenda**: `wyrzuć <osoba> [powód]`\n**Opis**: Wyrzuca daną osobę z serwera.\n**Aliasy**: `wyrzuc`, `kick`\n\n" +
+                "**Komenda**: `banuj <osoba> [powód]`\n**Opis**: Banuje daną osobę z serwera.\n**Aliasy**: `ban`\n\n" +
+                "**Komenda**: `wycisz <osoba> <czas w sekundach> [powód]`\n**Opis**: Wycisza daną osobę na dany czas.\n**Aliasy**: `mute`, `mutuj`, `wyciszenie`\n\n" +
+                "**Komenda**: `ostrzeżenie <osoba> [powód]`\n**Opis**: Dodaje ostrzeżenie danej osobie.\n**Aliasy**: `ostrzezenie`, `warn`\n\n" +
+                "**Komenda**: `userinfo <osoba>`\n**Opis**: Wyświetla informacje o graczu.\n**Aliasy**: `user`, `ui`");
+            eb.AddField("​",
+               "**Komenda**: `rozwiązano <osoba>`\n**Opis**: Zamyka kanał pomocy danej osoby.\n**Aliasy**: `rozwiazano`, `solved`, `close`, `zamknij`\n\n" +
+                "**Komenda**: `ankieta <opcja> <pytanie>`\n**Dostępne opcje: liczby od 1 do 9 - `<liczba>`, `tak/nie - `<yesno>`, `<taknie>`**\n**Opis**: Tworzy ankietę z pytaniem i daje do wyboru liczby od 1 do 9 lub pola wyboru tak/nie\n**Aliasy**: `vote`\n\n" +
+                "**Komenda**: `ogłoszenie <treść>`\n**Opis**: Wysyła ogłoszenie, na kanał #ogłoszenia dzięki czemu może być wywoływana gdziekolwiek.\n**Aliasy**: `ogloszenie`, `ogl`, `ogł`\n\n" +
+                "**Komenda**: `botmsg <tekst>`\n**Opis**: Wysyła wiadomość tekstową w imieniu bota.\n**Aliasy**: `botsay`, `sayasbot`\n\n" +
+                "**Komenda**: `awans <osoba> <rola>`\n**Opis**: Awansuje osobę.\n**Aliasy**: `awansuj`, `dodaj role`, `dodajrole`\n\n" +
+                "**Komenda**: `degrad <osoba> <rola>`\n**Opis**: Degraduje osobę.\n**Aliasy**: `degraduj`, `usun role`, `usunrole`, `usuń role`, `usuńrole`\n\n");
+            eb.WithColor(new Color(23, 143, 235));
+            return eb.Build();
+        }
+
+        public static Embed GenerateAdminCommandsAdminEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("LISTA KOMEND ADMINISTRACYJNYCH");
+            eb.Author.WithIconUrl("https://cdn1.iconfinder.com/data/icons/basic-ui-elements-color-round/3/30-512.png");
+            eb.AddField("**ADMINISTRATOR**",
+                "**Komenda**: `usuń <ilość wiadomości>`\n**Opis**: Usuwa daną ilość wiadomości, MAKSYMALNIE 100 i nie starszych niż 14 dni.\n**Aliasy**: `usun`, `purge`, `clean`, `clear`, `czyść`, `czysc`, `delete`, `cc`\n\n" +
+                "**Komenda**: `wyrzuć <osoba> [powód]`\n**Opis**: Wyrzuca daną osobę z serwera.\n**Aliasy**: `wyrzuc`, `kick`\n\n" +
+                "**Komenda**: `banuj <osoba> [powód]`\n**Opis**: Banuje daną osobę z serwera.\n**Aliasy**: `ban`\n\n" +
+                "**Komenda**: `wycisz <osoba> <czas w sekundach> [powód]`\n**Opis**: Wycisza daną osobę na dany czas.\n**Aliasy**: `mute`, `mutuj`, `wyciszenie`\n\n" +
+                "**Komenda**: `ostrzeżenie <osoba> [powód]`\n**Opis**: Dodaje ostrzeżenie danej osobie.\n**Aliasy**: `ostrzezenie`, `warn`\n\n" +
+                "**Komenda**: `userinfo <osoba>`\n**Opis**: Wyświetla informacje o graczu.\n**Aliasy**: `user`, `ui`\n\n");
+            eb.AddField("​",
+               "**Komenda**: `rozwiązano <osoba>`\n**Opis**: Zamyka kanał pomocy danej osoby.\n**Aliasy**: `rozwiazano`, `solved`, `close`, `zamknij`\n\n" +
+                "**Komenda**: `ankieta <opcja> <pytanie>`\n**Dostępne opcje: liczby od 1 do 9 - `<liczba>`, `tak/nie - `<yesno>`, `<taknie>`**\n**Opis**: Tworzy ankietę z pytaniem i daje do wyboru liczby od 1 do 9 lub pola wyboru tak/nie\n**Aliasy**: `vote`\n\n" +
+                "**Komenda**: `ogłoszenie <treść>`\n**Opis**: Wysyła ogłoszenie, na kanał #ogłoszenia dzięki czemu może być wywoływana gdziekolwiek.\n**Aliasy**: `ogloszenie`, `ogl`, `ogł`\n\n" +
+                "**Komenda**: `botmsg <tekst>`\n**Opis**: Wysyła wiadomość tekstową w imieniu bota.\n**Aliasy**: `botsay`, `sayasbot`\n\n");
+            eb.AddField("​",
+               "**Komenda**: `giveaway <czas w godzinach> [kasa] [rola]`\n**Opis**: Organizuje event. Trzeba wybrać ilość pieniędzy lub role lub oba. Jeśli chcesz tylko role w miejsce kasy wpisz 0\n**Aliasy**: `ga`, `gaway`\n\n" +
+                "**Komenda**: `userbalance <add(dodaj)/take(wez)/set(ustaw)> <konto(k)/portfel(p)> <osoba> <kwota>`\n**Opis**: Dodaje, usuwa lub ustawia pieniądze na koncie lub w portfelu użytkownika.\n**Aliasy**: `user balance`, `user b`, `usermoney`, `user money`, `userm`\n\n" +
+                "**Komenda**: `awans <osoba> <rola>`\n**Opis**: Awansuje osobę.\n**Aliasy**: `awansuj`, `dodaj role`, `dodajrole`\n\n" +
+                "**Komenda**: `degrad <osoba> <rola>`\n**Opis**: Degraduje osobę.\n**Aliasy**: `degraduj`, `usun role`, `usunrole`, `usuń role`, `usuńrole`\n\n");
+            eb.WithColor(new Color(23, 143, 235));
+            return eb.Build();
+        }
+
+        public static Embed GenerateAdminCommandsReactionsEmbed()
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.WithAuthor("KOMENDY REAKCJI");
+            eb.Author.WithIconUrl("https://cdn1.iconfinder.com/data/icons/basic-ui-elements-color-round/3/30-512.png");
+            eb.AddField("**REJESTRACJA**", "`a ver gry`\n`a ver plec`\n`a ver wiek`\n`a ver regulamin`\n`a ver fun`\n");
+            eb.AddField("**RESZTA**", "`a meme`\n`a sklep`\n`a bankomat`\n`a gry`\n`a plec`\n`a wiek`\n`a fun`\n`a pomoc`\n`a profil`\n`a gmbl`");
+            eb.WithColor(new Color(23, 143, 235));
+            return eb.Build();
+        }
+
         public static string BankSuccessDeposit(ulong ammount)
         {
             string BankSuccessDeposit = $"**{check} Pomyślnie wpłacono {ammount} {coin} na konto.**";
@@ -246,8 +365,8 @@ namespace ggwp
             eb.AddField("​",
                 "**Komenda**: `facepalm`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `fp`\n\n" +
                 "**Komenda**: `sleep`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `spać`, `spac`, `spij`, `śpij`, `spanie`, `spanko`\n\n" +
-                "**Komenda**: `hej <gracz>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `hi`, `cześć`, `czesc`, `elo`, `siema`, `siemka`, `yo`, `hay`\n\n" +
-                "**Komenda**: `uderz <gracz>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `hit`, `walnij`, `punch`\n\n" +
+                "**Komenda**: `hej <osoba>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `hi`, `cześć`, `czesc`, `elo`, `siema`, `siemka`, `yo`, `hay`\n\n" +
+                "**Komenda**: `uderz <osoba>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `hit`, `walnij`, `punch`\n\n" +
                 "**Komenda**: `przytul <osoba>`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `hug`, `przytulas`\n\n" +
                 "**Komenda**: `kopnij`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `kick`, `kop`\n\n" +
                 "**Komenda**: `całus`\n**Opis**: wysyła śmieszny obrazek.\n**Aliasy**: `calus`, `kiss`, `pocałuj`, `pocaluj`, `cmok`\n\n");

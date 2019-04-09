@@ -146,6 +146,9 @@ namespace ggwp.Modules
         [Alias("cytuj")]
         public async Task Cytat(IUser user, [Remainder]string cytat)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
 
             if (cytat == "")
@@ -170,6 +173,38 @@ namespace ggwp.Modules
             eb.WithDescription($"📜 Lista komend dostępna pod `!komendy`\n❔ Częste pytania i kontakt z administracją na kanale {Messages.HelpChannel}");
             eb.WithColor(new Color(7, 116, 180));
             await ReplyAsync("", false, eb.Build());
+        }
+
+        [Cooldown(5)]
+        [Command("akomendy")]
+        [Alias("acommands", "a komendy", "a commands")]
+        [RequireUserPermission(GuildPermission.ManageNicknames)]
+        public async Task AdminCommands(string option = null)
+        {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
+            var dmChannel = Context.Channel;
+
+            await Context.Message.DeleteAsync();
+
+            if (option is null)
+                await dmChannel.SendMessageAsync("", false, Messages.GenerateAdminCommandsCategoriesEmbed());
+            else if (option.ToLower() == "pomocnik")
+                await dmChannel.SendMessageAsync("", false, Messages.GenerateAdminCommandsPomocnikEmbed());
+            else if (option.ToLower() == "pomocnik+")
+                await dmChannel.SendMessageAsync("", false, Messages.GenerateAdminCommandsPomocnikPlusEmbed());
+            else if (option.ToLower() == "moderator")
+                await dmChannel.SendMessageAsync("", false, Messages.GenerateAdminCommandsModEmbed());
+            else if (option.ToLower() == "admin")
+                await dmChannel.SendMessageAsync("", false, Messages.GenerateAdminCommandsAdminEmbed());
+            else if (option.ToLower() == "reakcje")
+                await dmChannel.SendMessageAsync("", false, Messages.GenerateAdminCommandsReactionsEmbed());
+            else
+            {
+                await ReplyAsync($"{Messages.wrong} {Context.User.Mention} Nie ma takiej kategorii!");
+                return;
+            }
         }
 
         [Cooldown(5)]
@@ -207,7 +242,7 @@ namespace ggwp.Modules
 
                 if (option is null)
                     await Context.Channel.SendMessageAsync("", false, Messages.GenerateCommandsCategoriesEmbed());
-                else if(option.ToLower() == "gracz")
+                else if (option.ToLower() == "gracz")
                     await dmChannel.SendMessageAsync("", false, Messages.GenerateCommandsGraczEmbed());
                 else if (option.ToLower() == "zabawa" || option.ToLower() == "fun")
                     await dmChannel.SendMessageAsync("", false, Messages.GenerateCommandsFunEmbed());
@@ -229,10 +264,14 @@ namespace ggwp.Modules
                 await Helpers.RemoveMessage(msg);
             }
         }
+
         [Command("praca")]
         [Alias("pracuj", "job")]
         public async Task Job()
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
 
             string GoodEvent;
@@ -447,6 +486,9 @@ namespace ggwp.Modules
         [Alias("losujtemat", "losuj temat")]
         public async Task Topic()
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             await Context.Message.DeleteAsync();
 
             string[] questions = 
@@ -502,6 +544,9 @@ namespace ggwp.Modules
         [Alias("rozwiązano", "solved", "zamknij", "close")]
         public async Task CloseHelpChannel(SocketGuildUser user = null)
         {
+            if (Context.Channel is IPrivateChannel)
+                return;
+
             var pomocnik = Context.Guild.Roles.FirstOrDefault(x => x.Name == "POMOCNIK");
             var pomocnikp = Context.Guild.Roles.FirstOrDefault(x => x.Name == "POMOCNIK+");
             var moderator = Context.Guild.Roles.FirstOrDefault(x => x.Name == "MODERATOR");
